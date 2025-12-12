@@ -1,90 +1,137 @@
-import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
-import Project from "./project";
+import { Link } from "react-router-dom";
+
 const Home = () => {
-    const Navigate = useNavigate();
   return (
-    <div className="relative h-full w-full overflow-hidden">
+    <div className="min-h-screen bg-gray-50">
 
-      {/* SOFT GRADIENT BACKGROUND */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#1a1f3c] via-[#141826] to-[#0d0f15] opacity-95"></div>
-      <div className="absolute top-20 right-20 w-72 h-72 bg-purple-600/20 rounded-full blur-3xl"></div>
-      <div className="absolute bottom-10 left-10 w-64 h-64 bg-blue-500/20 rounded-full blur-3xl"></div>
+      {/* ---------------- NAVBAR ---------------- */}
+      <nav className="w-full bg-white shadow-sm py-4 px-6 flex justify-between items-center">
+        <h1 className="text-2xl font-bold text-blue-600">MeetFlow</h1>
 
-      {/* TOP RIGHT PROFILE */}
-      <div className="absolute top-4 right-6 flex items-center gap-3 cursor-pointer group">
-        <span className="text-gray-300 text-sm">Anish</span>
-        <div className="w-11 h-11 rounded-full bg-white/10 border border-white/20 backdrop-blur-sm flex items-center justify-center group-hover:bg-white/20 transition">
-          <span className="text-white font-medium">A</span>
+        <div className="space-x-6">
+          <Link to="/login" className="text-gray-600 hover:text-blue-600">
+            Login
+          </Link>
+          <Link
+            to="/register"
+            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+          >
+            Get Started
+          </Link>
         </div>
-      </div>
+      </nav>
 
-      {/* MAIN CONTENT */}
-      <div className="relative z-10 h-full flex flex-col items-center justify-center text-center max-w-3xl mx-auto px-4">
+      {/* ---------------- HERO SECTION ---------------- */}
+      <section className="px-6 md:px-20 py-20 grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+        
+        {/* Left Side */}
+        <div>
+          <h1 className="text-5xl font-bold leading-tight text-gray-900">
+            Meet. Decide. Assign — <span className="text-blue-600">in one place.</span>
+          </h1>
 
-        {/* ANIMATED WELCOME TEXT */}
-        <motion.h1
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.6 }}
-          className="text-4xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 text-transparent bg-clip-text"
-        >
-          Welcome to Your Productivity Hub
-        </motion.h1>
+          <p className="mt-6 text-lg text-gray-600">
+            Run meetings that actually produce action. AI-powered transcript,
+            smart task suggestions, and real-time task assignment — all inside
+            your meeting room.
+          </p>
 
-        <motion.p
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 1, opacity: 1 }}
-          transition={{ duration: 0.8 }}
-          className="text-gray-300 mt-3 text-lg leading-relaxed"
-        >
-          Organize projects, manage tasks, host meetings, and collaborate with your team — all in one minimal, powerful platform built for speed and clarity.
-        </motion.p>
+          <div className="mt-8 flex space-x-4">
+            <Link
+              to="/register"
+              className="bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700"
+            >
+              Start for Free
+            </Link>
 
-        {/* FEATURE CARDS */}
-        <div className="flex justify-center gap-16 mt-14">
-
-          {/* New Project */}
-          <motion.div
-            whileHover={{ scale: 1.08 }}
-            className="flex flex-col items-center transition bg-white/5 border border-white/10 w-56 px-6 py-6 rounded-2xl backdrop-blur-xl shadow-lg hover:shadow-purple-500/20"
-          >
-            <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-blue-500 to-purple-500 shadow-xl"></div>
-
-            <p className="mt-4 text-gray-200">Create and manage new projects</p>
-
-            <button onClick={() => Navigate("/project")}className="mt-4 px-4 py-2 bg-white/10 hover:bg-white/20 rounded-md">
-              New Project
+            <button className="border border-blue-600 text-blue-600 px-6 py-3 rounded-lg hover:bg-blue-100">
+              Watch Demo
             </button>
-          </motion.div>
+          </div>
 
-          {/* Meetings */}
-          <motion.div
-            whileHover={{ scale: 1.08 }}
-            className="flex flex-col items-center transition bg-white/5 border border-white/10 w-56 px-6 py-6 rounded-2xl backdrop-blur-xl shadow-lg hover:shadow-blue-500/20"
-          >
-            <div className="grid grid-cols-2 gap-2">
-              <div className="w-6 h-6 bg-green-400 rounded-full"></div>
-              <div className="w-6 h-6 bg-purple-400 rounded-full"></div>
-              <div className="w-6 h-6 bg-blue-400 rounded-full"></div>
-              <div className="w-6 h-6 bg-orange-400 rounded-full"></div>
+          <p className="mt-4 text-gray-500 text-sm">
+            No credit card required · AI Transcript included · Task automation
+          </p>
+        </div>
+
+        {/* Right Side — Illustration */}
+        <div className="flex justify-center">
+          <div className="bg-white p-6 shadow-xl rounded-2xl w-full max-w-lg">
+
+            {/* Fake Meeting Preview */}
+            <div className="grid grid-cols-2 gap-3 mb-4">
+              <div className="bg-gray-200 h-28 rounded-lg animate-pulse"></div>
+              <div className="bg-gray-200 h-28 rounded-lg animate-pulse"></div>
+              <div className="bg-gray-200 h-28 rounded-lg animate-pulse"></div>
+              <div className="bg-gray-200 h-28 rounded-lg animate-pulse"></div>
             </div>
 
-            <p className="mt-4 text-gray-200">Start an instant meeting</p>
+            {/* Task + Transcript preview */}
+            <div className="border rounded-lg p-4 bg-gray-50">
+              <p className="font-semibold text-gray-700">AI Suggestions</p>
+              <ul className="mt-2 text-sm text-gray-600 space-y-1">
+                <li>• Finalize API structure for Sprint 4</li>
+                <li>• Assign UI redesign to Rohan by Friday</li>
+                <li>• Review backend merge conflicts</li>
+              </ul>
+            </div>
 
-            <button  onClick={() => Navigate("/meet")} className="mt-4 px-4 py-2 bg-white/10 hover:bg-white/20 rounded-md">
-              Meet Now
-            </button>
-          </motion.div>
-
+          </div>
         </div>
 
-        {/* FOOTER */}
-        <p className="mt-12 text-gray-500 text-sm">
-          Powered by Tailwind + React + Modern UI Design.
+      </section>
+
+      {/* ---------------- FEATURES SECTION ---------------- */}
+      <section className="px-6 md:px-20 py-20 bg-white">
+        <h2 className="text-4xl font-bold text-center text-gray-900">
+          Everything you need for<br />
+          <span className="text-blue-600">productive meetings.</span>
+        </h2>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mt-14">
+
+          {/* Feature 1 */}
+          <div className="bg-gray-50 p-8 rounded-xl shadow-sm hover:shadow-md transition">
+            <h3 className="text-xl font-bold text-blue-600">Live Transcripts</h3>
+            <p className="mt-3 text-gray-600">
+              Capture every word during the meeting with real-time AI transcripts.
+            </p>
+          </div>
+
+          {/* Feature 2 */}
+          <div className="bg-gray-50 p-8 rounded-xl shadow-sm hover:shadow-md transition">
+            <h3 className="text-xl font-bold text-blue-600">AI Task Suggestions</h3>
+            <p className="mt-3 text-gray-600">
+              AI converts your meeting conversation into clear, structured tasks.
+            </p>
+          </div>
+
+          {/* Feature 3 */}
+          <div className="bg-gray-50 p-8 rounded-xl shadow-sm hover:shadow-md transition">
+            <h3 className="text-xl font-bold text-blue-600">Task Assignment</h3>
+            <p className="mt-3 text-gray-600">
+              Assign tasks to participants instantly — no switching tools.
+            </p>
+          </div>
+
+        </div>
+      </section>
+
+      {/* ---------------- CTA SECTION ---------------- */}
+      <section className="px-6 md:px-20 py-16 bg-blue-600 text-white text-center">
+        <h2 className="text-3xl font-bold">Ready to make your meetings smarter?</h2>
+        <p className="mt-3 text-blue-100">
+          Try MeetFlow — the AI-powered meeting workspace.
         </p>
 
-      </div>
+        <Link
+          to="/register"
+          className="inline-block mt-6 bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100"
+        >
+          Get Started Free
+        </Link>
+      </section>
+
     </div>
   );
 };
