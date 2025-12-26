@@ -1,59 +1,158 @@
-import { useContext, useState } from "react";
-import { AuthContext } from "../context/AuthContext";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
+import { loginApi } from "../api/authApi";
+import { useAuth } from "../context/AuthContext";
 
 const Login = () => {
-  const { login } = useContext(AuthContext);
+  const { login } = useAuth();
   const navigate = useNavigate();
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [form, setForm] = useState({
+    email: "",
+    password: "",
+  });
 
-  const handleLogin = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const res = await login(email, password);
-    if (res.success) navigate("/dashboard");
-    else setError(res.message);
+    const res = await loginApi(form);
+    login(res.data.token);
+    navigate("/dashboard");
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
-      <div className="w-full max-w-md bg-white shadow-lg rounded-xl p-8">
-        <h2 className="text-3xl font-bold mb-6 text-center">Welcome Back</h2>
-
-        {error && <p className="text-red-500 mb-2 text-center">{error}</p>}
-
-        <form onSubmit={handleLogin} className="space-y-4">
-          
-          <input
-            type="email"
-            placeholder="Email"
-            className="w-full p-3 border rounded-lg focus:ring focus:ring-blue-300"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-
-          <input
-            type="password"
-            placeholder="Password"
-            className="w-full p-3 border rounded-lg focus:ring focus:ring-blue-300"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-
-          <button className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700">
-            Login
-          </button>
-        </form>
-
-        <p className="text-center mt-4 text-gray-600">
-          Don’t have an account?{" "}
-          <Link to="/register" className="text-blue-600 font-semibold">Register</Link>
-        </p>
+    <div className="min-h-screen flex items-center justify-center bg-meettask-gradient px-6 lg:px-0">
+      
+      {/* BACKGROUND SHAPES */}
+      <div className="absolute inset-0 z-0 overflow-hidden">
+        <div className="blob blur-2xl opacity-30"></div>
+        <div className="blob2 blur-2xl opacity-30"></div>
       </div>
+
+      <motion.div
+        className="relative z-10 grid lg:grid-cols-2 gap-10 items-center w-full max-w-6xl"
+        initial={{ opacity: 0, scale: 0.92 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.7 }}
+      >
+        {/* LEFT CONTENT (Optional Illustration or Text) */}
+        <div className="hidden lg:flex flex-col justify-center px-10">
+          <motion.h1
+            className="text-4xl font-extrabold text-meettask-primary mb-2"
+            initial={{ x: -50, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            transition={{ delay: 0.3 }}
+          >
+            Welcome to MeetTask
+          </motion.h1>
+          <motion.p
+            className="text-meettask-light text-lg mb-6"
+            initial={{ x: -30, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            transition={{ delay: 0.4 }}
+          >
+            Sign in to manage your meetings, extract tasks, and get work done!
+          </motion.p>
+
+        <motion.div
+  className="w-4/5 bg-white/70 backdrop-blur-md 
+             rounded-3xl p-6 
+             border border-white/60
+             shadow-[0_20px_50px_rgba(0,0,0,0.12)]"
+  initial={{ opacity: 0, y: 20 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ delay: 0.35 }}
+>
+  <img
+    src="/meeting-illustration.png"
+    alt="Meeting illustration"
+    className="w-full rounded-2xl"
+  />
+</motion.div>
+
+        </div>
+
+        {/* RIGHT FORM */}
+        <motion.div
+          className="bg-meettask-card backdrop-blur-xl rounded-3xl shadow-2xl p-12"
+          initial={{ y: 30, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.2 }}
+        >
+          <h2 className="text-3xl font-bold text-meettask-accent text-center mb-6">
+            Sign In to MeetTask
+          </h2>
+
+          <form
+            onSubmit={handleSubmit}
+            className="space-y-5"
+          >
+            {/* EMAIL */}
+            <div>
+              <label className="block text-meettask-text font-semibold mb-1">
+                Email
+              </label>
+              <input
+                type="email"
+                value={form.email}
+                onChange={(e) =>
+                  setForm({ ...form, email: e.target.value })
+                }
+                required
+                className="w-full px-4 py-3 rounded-lg border-gray-800 bg-meettask-input text-meettask-text outline-none focus:ring-2 focus:ring-meettask-primary  transition"
+                placeholder="you@example.com"
+              />
+            </div>
+
+            {/* PASSWORD */}
+            <div>
+              <label className="block text-meettask-text font-semibold mb-1">
+                Password
+              </label>
+              <input
+                type="password"
+                value={form.password}
+                onChange={(e) =>
+                  setForm({ ...form, password: e.target.value })
+                }
+                required
+                className="w-full px-4 py-3 rounded-lg bg-meettask-input text-meettask-text outline-none focus:ring-2 focus:ring-meettask-primary transition"
+                placeholder="••••••••"
+              />
+            </div>
+
+            {/* SIGN IN BUTTON */}
+            <button
+              type="submit"
+              className="w-full bg-meettask-accent text-white font-bold py-3 rounded-lg hover:scale-105 transition"
+            >
+              Sign In
+            </button>
+          </form>
+
+          {/* LINKS */}
+          <div className="mt-6 text-center text-meettask-text text-sm">
+            <Link to="/forgot-password" className="text-meettask-primary hover:underline">
+              Forgot password?
+            </Link>
+            <span className="mx-2 text-meettask-text">|</span>
+            <Link to="/register" className="text-meettask-primary hover:underline">
+              Create an account
+            </Link>
+          </div>
+
+          {/* GOOGLE LOGIN */}
+          <motion.a
+            href="http://localhost:8080/oauth2/authorization/google"
+            className="flex items-center justify-center gap-2 border border-meettask-primary rounded-lg py-2 mt-6 hover:bg-meettask-primary/10 transition text-meettask-primary font-medium"
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.97 }}
+          >
+            <img src="/public/Google__G__logo.svg.webp" className="w-6" alt="Google logo" />
+            Continue with Google
+          </motion.a>
+        </motion.div>
+      </motion.div>
     </div>
   );
 };

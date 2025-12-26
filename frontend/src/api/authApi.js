@@ -1,8 +1,16 @@
 import axiosClient from "./axiosClient";
 
-const authApi = {
-  register: (payload) => axiosClient.post("/auth/register", payload),
-  login: (payload) => axiosClient.post("/auth/login", payload),
-};
+export const loginApi = (data) =>
+  axiosClient.post("/auth/login", data);
 
-export default authApi;
+export const registerApi = (data) =>
+  axiosClient.post("/auth/register", data);
+
+export const forgotPasswordApi = (email) =>
+  axiosClient.post("/auth/forgot-password", { email });
+
+export const resetPasswordApi = (token, password) =>
+  axiosClient.post("/auth/reset-password", { token, password });
+
+export const verifyEmailApi = (token) =>
+  axiosClient.get(`/auth/verify-email?token=${token}`);

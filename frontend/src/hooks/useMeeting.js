@@ -5,13 +5,14 @@ export default function useMeeting() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const createMeeting = async ({ title, scheduledFor, participants = [] }) => {
+  const createMeeting = async ({ title, startTime, participants = [] }) => {
     setLoading(true);
     setError(null);
     try {
+      // Prefer caller-provided start time; fallback to now to avoid undefined
       const payload = {
         title,
-        startTime: scheduledFor || new Date().toISOString(),
+        startTime: startTime || new Date().toISOString(),
         participants, // array of emails or userIds (backend expects IDs)
       };
       const res = await meetingApi.createMeeting(payload);
@@ -19,8 +20,9 @@ export default function useMeeting() {
       return { success: true, meeting: res.data };
     } catch (err) {
       setLoading(false);
-      setError(err.response?.data?.message || err.message);
-      return { success: false, message: error || "Create meeting failed" };
+      const message = err.response?.data?.message || err.message || "Create meeting failed";
+      setError(message);
+      return { success: false, message };
     }
   };
 
