@@ -13,17 +13,23 @@ const Register = () => {
   });
 
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (loading) return;
 
+    setError("");
     try {
       setLoading(true);
       await registerApi(form);
-      navigate("/verify-email");
-    } catch {
-      alert("Registration failed");
+      navigate("/verify-info", { state: { email: form.email } });
+    } catch (error) {
+      const errorMessage =
+        error.response?.data?.message ||
+        error.response?.data?.error ||
+        "Registration failed. Please try again.";
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -95,6 +101,13 @@ const Register = () => {
           </h2>
 
           <form onSubmit={handleSubmit} className="space-y-5">
+            {/* ERROR MESSAGE */}
+            {error && (
+              <div className="bg-red-500/10 border border-red-500/50 rounded-lg p-3">
+                <p className="text-red-500 text-sm">{error}</p>
+              </div>
+            )}
+
             {/* NAME */}
             <div>
               <label className="block text-meettask-text font-semibold mb-1">
@@ -104,9 +117,10 @@ const Register = () => {
                 type="text"
                 required
                 value={form.name}
-                onChange={(e) =>
-                  setForm({ ...form, name: e.target.value })
-                }
+                onChange={(e) => {
+                  setForm({ ...form, name: e.target.value });
+                  setError("");
+                }}
                 className="w-full px-4 py-3 rounded-lg bg-meettask-input text-meettask-text outline-none focus:ring-2 focus:ring-meettask-primary transition"
                 placeholder="John Doe"
               />
@@ -121,9 +135,10 @@ const Register = () => {
                 type="email"
                 required
                 value={form.email}
-                onChange={(e) =>
-                  setForm({ ...form, email: e.target.value })
-                }
+                onChange={(e) => {
+                  setForm({ ...form, email: e.target.value });
+                  setError("");
+                }}
                 className="w-full px-4 py-3 rounded-lg bg-meettask-input text-meettask-text outline-none focus:ring-2 focus:ring-meettask-primary transition"
                 placeholder="you@example.com"
               />
@@ -138,9 +153,10 @@ const Register = () => {
                 type="password"
                 required
                 value={form.password}
-                onChange={(e) =>
-                  setForm({ ...form, password: e.target.value })
-                }
+                onChange={(e) => {
+                  setForm({ ...form, password: e.target.value });
+                  setError("");
+                }}
                 className="w-full px-4 py-3 rounded-lg bg-meettask-input text-meettask-text outline-none focus:ring-2 focus:ring-meettask-primary transition"
                 placeholder="••••••••"
               />
@@ -150,7 +166,7 @@ const Register = () => {
             <button
               type="submit"
               disabled={loading}
-              className={`w-full py-3 rounded-lg border-gray-700 border-2 font-semibold text-gray transition
+              className={`w-full py-3 rounded-lg border-gray-700 border-2 font-semibold text-gray-700 transition
                 ${loading
                   ? "bg-gray-600 cursor-not-allowed"
                   : "bg-meettask-accent hover:scale-105"
