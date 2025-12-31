@@ -21,7 +21,7 @@ const Register = () => {
     try {
       setLoading(true);
       await registerApi(form);
-      navigate("/verify-info");
+      navigate("/verify-email");
     } catch {
       alert("Registration failed");
     } finally {
@@ -150,9 +150,9 @@ const Register = () => {
             <button
               type="submit"
               disabled={loading}
-              className={`w-full py-3 rounded-lg font-bold text-black transition
+              className={`w-full py-3 rounded-lg border-gray-700 border-2 font-semibold text-gray transition
                 ${loading
-                  ? "bg-gray-900 cursor-not-allowed"
+                  ? "bg-gray-600 cursor-not-allowed"
                   : "bg-meettask-accent hover:scale-105"
                 }`}
             >

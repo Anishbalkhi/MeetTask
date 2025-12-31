@@ -15,9 +15,17 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const res = await loginApi(form);
-    login(res.data.token);
-    navigate("/dashboard");
+    try {
+      const res = await loginApi(form);
+      if (res.data && res.data.token) {
+        login(res.data.token);
+        navigate("/dashboard");
+      } else {
+        alert("Login failed: Invalid response from server");
+      }
+    } catch (error) {
+      alert(error.response?.data?.message || "Login failed. Please check your credentials.");
+    }
   };
 
   return (
@@ -124,7 +132,7 @@ const Login = () => {
             {/* SIGN IN BUTTON */}
             <button
               type="submit"
-              className="w-full bg-meettask-accent text-white font-bold py-3 rounded-lg hover:scale-105 transition"
+              className="w-full bg-meettask-accent border-2 border-gray-700 text-gray-700 font-semibold py-3 rounded-lg hover:scale-105 transition"
             >
               Sign In
             </button>
@@ -148,7 +156,7 @@ const Login = () => {
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
           >
-            <img src="/public/Google__G__logo.svg.webp" className="w-6" alt="Google logo" />
+            <img src="/Google__G__logo.svg.webp" className="w-6" alt="Google logo" />
             Continue with Google
           </motion.a>
         </motion.div>

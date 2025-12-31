@@ -92,19 +92,28 @@ const ForgotPassword = () => {
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-5">
-            <input
-              className="auth-input w-100 h-10"
-              type="email"
-              placeholder="  Email address"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
+            <div>
+              <label className="block text-meettask-text font-semibold mb-1">
+                Email
+              </label>
+              <input
+                className="w-full px-4 py-3 rounded-lg bg-meettask-input text-meettask-text outline-none focus:ring-2 focus:ring-meettask-primary transition"
+                type="email"
+                placeholder="you@example.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </div>
 
             <button
               type="submit"
               disabled={loading}
-              className={`auth-btn ${loading && "opacity-60 cursor-not-allowed"}`}
+              className={`w-full bg-meettask-accent border-2 border-gray-700 text-gray-700 font-semibold py-3 rounded-lg transition
+                ${loading
+                  ? "opacity-60 cursor-not-allowed"
+                  : "hover:scale-105"
+                }`}
             >
               {loading ? "Sending..." : "Send Reset Link"}
             </button>

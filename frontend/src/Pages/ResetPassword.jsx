@@ -42,19 +42,28 @@ const ResetPassword = () => {
           </h2>
 
           <form onSubmit={handleSubmit} className="space-y-5">
-            <input
-              className="auth-input"
-              type="password"
-              placeholder="New password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
+            <div>
+              <label className="block text-meettask-text font-semibold mb-1">
+                New Password
+              </label>
+              <input
+                className="w-full px-4 py-3 rounded-lg bg-meettask-input text-meettask-text outline-none focus:ring-2 focus:ring-meettask-primary transition"
+                type="password"
+                placeholder="Enter new password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </div>
 
             <button
               type="submit"
               disabled={loading}
-              className="auth-btn"
+              className={`w-full bg-meettask-accent border-2 border-gray-700 text-gray-700 font-semibold py-3 rounded-lg transition
+                ${loading
+                  ? "opacity-60 cursor-not-allowed"
+                  : "hover:scale-105"
+                }`}
             >
               {loading ? "Updating..." : "Update Password"}
             </button>
