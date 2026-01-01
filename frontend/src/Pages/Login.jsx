@@ -1,11 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { loginApi } from "../api/authApi";
 import { useAuth } from "../context/AuthContext";
 
 const Login = () => {
-  const { login } = useAuth();
+  const { login, token } = useAuth();
   const navigate = useNavigate();
 
   const [form, setForm] = useState({
@@ -13,18 +13,38 @@ const Login = () => {
     password: "",
   });
 
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  // Redirect if already logged in
+  useEffect(() => {
+    if (token) {
+      navigate("/dashboard", { replace: true });
+    }
+  }, [token, navigate]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (loading) return;
+
+    setError("");
     try {
+      setLoading(true);
       const res = await loginApi(form);
       if (res.data && res.data.token) {
         login(res.data.token);
         navigate("/dashboard");
       } else {
-        alert("Login failed: Invalid response from server");
+        setError("Login failed: Invalid response from server");
       }
     } catch (error) {
-      alert(error.response?.data?.message || "Login failed. Please check your credentials.");
+      const errorMessage =
+        error.response?.data?.message ||
+        error.response?.data?.error ||
+        "Login failed. Please check your credentials.";
+      setError(errorMessage);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -95,6 +115,13 @@ const Login = () => {
             onSubmit={handleSubmit}
             className="space-y-5"
           >
+            {/* ERROR MESSAGE */}
+            {error && (
+              <div className="bg-red-500/10 border border-red-500/50 rounded-lg p-3">
+                <p className="text-red-500 text-sm">{error}</p>
+              </div>
+            )}
+
             {/* EMAIL */}
             <div>
               <label className="block text-meettask-text font-semibold mb-1">
@@ -103,9 +130,10 @@ const Login = () => {
               <input
                 type="email"
                 value={form.email}
-                onChange={(e) =>
-                  setForm({ ...form, email: e.target.value })
-                }
+                onChange={(e) => {
+                  setForm({ ...form, email: e.target.value });
+                  setError("");
+                }}
                 required
                 className="w-full px-4 py-3 rounded-lg border-gray-800 bg-meettask-input text-meettask-text outline-none focus:ring-2 focus:ring-meettask-primary  transition"
                 placeholder="you@example.com"
@@ -120,9 +148,10 @@ const Login = () => {
               <input
                 type="password"
                 value={form.password}
-                onChange={(e) =>
-                  setForm({ ...form, password: e.target.value })
-                }
+                onChange={(e) => {
+                  setForm({ ...form, password: e.target.value });
+                  setError("");
+                }}
                 required
                 className="w-full px-4 py-3 rounded-lg bg-meettask-input text-meettask-text outline-none focus:ring-2 focus:ring-meettask-primary transition"
                 placeholder="••••••••"
@@ -132,9 +161,14 @@ const Login = () => {
             {/* SIGN IN BUTTON */}
             <button
               type="submit"
-              className="w-full bg-meettask-accent border-2 border-gray-700 text-gray-700 font-semibold py-3 rounded-lg hover:scale-105 transition"
+              disabled={loading}
+              className={`w-full py-3 rounded-lg border-gray-700 border-2 font-semibold text-gray-700 transition
+                ${loading
+                  ? "bg-gray-600 cursor-not-allowed"
+                  : "bg-meettask-accent hover:scale-105"
+                }`}
             >
-              Sign In
+              {loading ? "Signing in..." : "Sign In"}
             </button>
           </form>
 
