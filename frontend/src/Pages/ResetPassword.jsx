@@ -6,6 +6,7 @@ import { resetPasswordApi } from "../api/authApi";
 const ResetPassword = () => {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const [params] = useSearchParams();
   const navigate = useNavigate();
 
@@ -13,12 +14,27 @@ const ResetPassword = () => {
     e.preventDefault();
     if (loading) return;
 
+    setError("");
+    const token = params.get("token");
+    if (!token) {
+      setError("Invalid reset link. Please request a new password reset.");
+      return;
+    }
+
+    if (password.length < 6) {
+      setError("Password must be at least 6 characters long");
+      return;
+    }
+
     try {
       setLoading(true);
-      await resetPasswordApi(params.get("token"), password);
-      navigate("/login");
-    } catch {
-      alert("Invalid or expired token");
+      await resetPasswordApi(token, password);
+      navigate("/login", { state: { message: "Password reset successfully! Please login with your new password." } });
+    } catch (error) {
+      const errorMessage =
+        error.response?.data?.message ||
+        "Invalid or expired token. Please request a new password reset.";
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -42,6 +58,13 @@ const ResetPassword = () => {
           </h2>
 
           <form onSubmit={handleSubmit} className="space-y-5">
+            {/* ERROR MESSAGE */}
+            {error && (
+              <div className="bg-red-500/10 border border-red-500/50 rounded-lg p-3">
+                <p className="text-red-500 text-sm">{error}</p>
+              </div>
+            )}
+
             <div>
               <label className="block text-meettask-text font-semibold mb-1">
                 New Password
@@ -49,11 +72,20 @@ const ResetPassword = () => {
               <input
                 className="w-full px-4 py-3 rounded-lg bg-meettask-input text-meettask-text outline-none focus:ring-2 focus:ring-meettask-primary transition"
                 type="password"
-                placeholder="Enter new password"
+                placeholder="Enter new password (min 6 characters)"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                  setError("");
+                }}
                 required
+                minLength={6}
               />
+              {password && password.length < 6 && (
+                <p className="text-yellow-500 text-xs mt-1">
+                  Password must be at least 6 characters
+                </p>
+              )}
             </div>
 
             <button

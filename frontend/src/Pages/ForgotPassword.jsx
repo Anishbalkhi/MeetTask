@@ -6,17 +6,24 @@ import { Link } from "react-router-dom";
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (loading) return;
 
+    setError("");
+    setSuccess("");
     try {
       setLoading(true);
-      await forgotPasswordApi(email);
-      alert("Reset link sent to your email");
-    } catch {
-      alert("Something went wrong");
+      const res = await forgotPasswordApi(email);
+      setSuccess(res.data?.message || "If the email exists, a password reset link has been sent to your email.");
+    } catch (error) {
+      const errorMessage =
+        error.response?.data?.message ||
+        "Something went wrong. Please try again.";
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -92,6 +99,20 @@ const ForgotPassword = () => {
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-5">
+            {/* ERROR MESSAGE */}
+            {error && (
+              <div className="bg-red-500/10 border border-red-500/50 rounded-lg p-3">
+                <p className="text-red-500 text-sm">{error}</p>
+              </div>
+            )}
+
+            {/* SUCCESS MESSAGE */}
+            {success && (
+              <div className="bg-green-500/10 border border-green-500/50 rounded-lg p-3">
+                <p className="text-green-500 text-sm">{success}</p>
+              </div>
+            )}
+
             <div>
               <label className="block text-meettask-text font-semibold mb-1">
                 Email
@@ -101,7 +122,11 @@ const ForgotPassword = () => {
                 type="email"
                 placeholder="you@example.com"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  setError("");
+                  setSuccess("");
+                }}
                 required
               />
             </div>
