@@ -84,7 +84,7 @@ const Login = () => {
 
         <motion.div
   className="w-4/5 bg-white/70 backdrop-blur-md 
-             rounded-3xl p-6 
+             rounded-3xl p-1 
              border border-white/60
              shadow-[0_20px_50px_rgba(0,0,0,0.12)]"
   initial={{ opacity: 0, y: 20 }}

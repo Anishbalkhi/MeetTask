@@ -65,7 +65,7 @@ const Home = () => {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.7 }}
           >
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight mb-6">
+            <h1 className="text-4xl p-4 md:text-5xl lg:text-6xl font-extrabold leading-tight mb-6">
               <span className="text-meettask-primary">Meet.</span>{" "}
               <span className="text-meettask-accent">Decide.</span>{" "}
               <span className="text-meettask-primary">Assign.</span>
@@ -73,13 +73,13 @@ const Home = () => {
               <span className="text-meettask-text">All in one place.</span>
             </h1>
 
-            <p className="text-lg md:text-xl text-meettask-light mb-8 max-w-xl">
+            <p className="text-lg p-4 md:text-xl text-meettask-light mb-8 max-w-xl">
               MeetTask turns meetings into action.  
               Get AI-powered transcripts, smart task suggestions,
               and instant task assignment — without switching tools.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4">
+            <div className="flex p-4 flex-col sm:flex-row gap-4">
               <Link
                 to="/register"
                 className="bg-meettask-accent border-2 border-gray-700 text-gray-700 px-8 py-3 rounded-lg font-semibold text-center"
@@ -91,7 +91,7 @@ const Home = () => {
               </button>
             </div>
 
-            <p className="text-sm text-meettask-text/70 mt-6">
+            <p className="text-sm p-4 text-meettask-text/70 mt-6">
               No credit card required · AI transcript included
             </p>
           </motion.div>
