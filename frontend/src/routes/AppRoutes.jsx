@@ -7,8 +7,12 @@ import ResetPassword from "../pages/ResetPassword";
 import VerifyEmail from "../pages/VerifyEmail";
 import VerifyInfo from "../pages/VerifyInfo";
 import Dashboard from "../pages/Dashboard";
+import UserHome from "../pages/UserHome";
+import TeamHome from "../pages/TeamHome";
+import CreateWorkspace from "../pages/CreateWorkspace";
+import WorkspaceSettings from "../pages/Workspace";
 import ProtectedRoute from "../components/layout/ProtectedRoute";
-// import CreateMeeting from "../pages/CreateMeeting";
+import MainLayout from "../components/layout/MainLayout";
 
 const AppRoutes = () => {
   return (
@@ -22,17 +26,19 @@ const AppRoutes = () => {
       <Route path="/reset-password" element={<ResetPassword />} />
       <Route path="/verify-info" element={<VerifyInfo />} />
       <Route path="/verify-email" element={<VerifyEmail />} />
-      {/* <Route path="/meet" element={<CreateMeeting />} /> */}
 
-
-      <Route 
-        path="/dashboard" 
-        element={
-          <ProtectedRoute>
-            <Dashboard />
-          </ProtectedRoute>
-        } 
-      />
+      {/* Protected Dashboard Routes with MainLayout */}
+      <Route
+        path="/dashboard"
+        element={<MainLayout />}
+      >
+        {/* Nested Routes */}
+        <Route index element={<UserHome />} />
+        <Route path="home" element={<UserHome />} />
+        <Route path="team" element={<TeamHome />} />
+        <Route path="workspace" element={<WorkspaceSettings />} />
+        <Route path="create-workspace" element={<CreateWorkspace />} />
+      </Route>
 
     </Routes>
   );

@@ -1,20 +1,15 @@
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useWorkspace } from "../../context/WorkspaceContext";
-import { useState } from "react";
-import { FiHome, FiUsers, FiBox, FiMessageSquare, FiVideo, FiCommand, FiPlus, FiGrid, FiSettings } from "react-icons/fi";
+import { Link, useLocation } from "react-router-dom";
+import { FiHome, FiUsers, FiBox, FiMessageSquare, FiVideo, FiCommand, FiGrid, FiSettings } from "react-icons/fi";
+import { motion } from "framer-motion";
 
 const Sidebar = () => {
-    const { workspaces, currentWorkspace, setCurrentWorkspace } = useWorkspace();
     const location = useLocation();
-    const navigate = useNavigate();
-    const [isWsOpen, setIsWsOpen] = useState(false);
 
     const isActive = (path) => location.pathname.includes(path);
 
     const navItems = [
         { icon: FiHome, label: "Home", path: "/dashboard/home" },
         { icon: FiUsers, label: "Team", path: "/dashboard/team" },
-        { icon: FiGrid, label: "Workspace", path: "/dashboard/workspace" },
     ];
 
     const secondaryItems = [
@@ -23,108 +18,108 @@ const Sidebar = () => {
         { icon: FiCommand, label: "AI", path: "/dashboard/ai" },
     ];
 
-    const handleWsSwitch = (ws) => {
-        setCurrentWorkspace(ws);
-        setIsWsOpen(false);
-    };
-
-    const handleNewWorkspace = () => {
-        setIsWsOpen(false);
-        navigate("/dashboard/create-workspace");
-    };
-
     return (
-        <aside className="w-[72px] bg-[#0f0f11] flex flex-col items-center py-6 border-r border-white/5 fixed left-0 top-0 h-full z-50 text-gray-500">
+        <aside className="w-[72px] bg-gradient-to-b from-slate-50 to-white flex flex-col items-center py-6 border-r border-slate-200/80 fixed left-0 top-0 h-full z-50 text-slate-700 shadow-sm">
 
-            {/* Workspace Switcher (Slack Style) */}
-            <div className="relative mb-6 group px-2">
-                <button
-                    onClick={() => setIsWsOpen(!isWsOpen)}
-                    className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-600 to-purple-700 flex items-center justify-center text-white font-bold text-sm shadow-lg hover:ring-2 hover:ring-blue-500/50 transition-all"
+            {/* App Logo / Brand */}
+            <Link to="/dashboard" className="mb-8 group">
+                <motion.div
+                    className="w-11 h-11 rounded-xl bg-slate-100 flex items-center justify-center text-slate-800 font-black text-xl hover:bg-slate-200 transition-colors duration-200"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
                 >
-                    {currentWorkspace ? currentWorkspace.name.substring(0, 2).toUpperCase() : "WS"}
-                </button>
+                    M
+                </motion.div>
+            </Link>
 
-                {/* Dropdown */}
-                {isWsOpen && (
-                    <div className="absolute left-14 top-0 bg-[#1a1b1e] border border-white/10 rounded-lg shadow-2xl p-1 w-56 flex flex-col gap-1 z-50 animate-fade-in-up origin-top-left">
-                        <div className="px-3 py-2 text-[10px] font-bold text-gray-500 uppercase tracking-widest border-b border-white/5 bg-white/5 mb-1">
-                            Switch Workspace
-                        </div>
-                        {workspaces.map(ws => (
-                            <button
-                                key={ws.id}
-                                onClick={() => handleWsSwitch(ws)}
-                                className={`text-left px-3 py-2 rounded md:bg-transparent hover:bg-white/5 text-xs transition-colors flex items-center justify-between
-                                    ${currentWorkspace?.id === ws.id ? 'text-blue-400 bg-blue-500/10' : 'text-gray-300'}
-                                `}
-                            >
-                                {ws.name}
-                                {currentWorkspace?.id === ws.id && <span className="w-1.5 h-1.5 rounded-full bg-blue-500"></span>}
-                            </button>
-                        ))}
-                        <div className="my-1 border-t border-white/5"></div>
-                        <button
-                            onClick={handleNewWorkspace}
-                            className="text-left px-3 py-2 rounded hover:bg-white/5 text-xs text-blue-400 font-medium transition-colors flex items-center gap-2"
-                        >
-                            <FiPlus /> Create Workspace
-                        </button>
-                    </div>
-                )}
-            </div>
+            {/* Divider */}
+            <div className="w-9 h-[2px] bg-gradient-to-r from-transparent via-slate-300 to-transparent mb-6"></div>
 
-            <div className="w-8 h-px bg-white/5 mb-6"></div>
-
-            {/* Nav Links (Linear Style) */}
-            <nav className="flex flex-col gap-3 w-full items-center">
-                {navItems.map((item) => (
+            {/* Primary Nav Links */}
+            <nav className="flex flex-col gap-2 w-full items-center px-3">
+                {navItems.map((item, index) => (
                     <Link
                         key={item.label}
                         to={item.path}
-                        className={`group relative flex items-center justify-center w-10 h-10 rounded-lg transition-all duration-200
-                            ${isActive(item.path)
-                                ? "bg-blue-500/10 text-blue-400"
-                                : "hover:bg-white/5 hover:text-gray-300"
-                            }
-                        `}
+                        className="group relative w-full"
                     >
-                        <item.icon className="text-xl" />
+                        <motion.div
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            className={`flex items-center justify-center w-full h-12 rounded-xl transition-all duration-300 relative overflow-hidden
+                                ${isActive(item.path)
+                                    ? "bg-purple-600 text-white shadow-md"
+                                    : "hover:bg-slate-100 text-slate-600 hover:text-slate-900"
+                                }
+                            `}
+                        >
+                            <item.icon className="text-[22px] relative z-10" />
 
-                        {/* Tooltip */}
-                        <div className="absolute left-14 px-2 py-1 bg-black border border-white/10 rounded text-[10px] font-medium text-white opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50 shadow-xl">
+                            {/* Active indicator bar */}
+                            {isActive(item.path) && (
+                                <motion.div
+                                    layoutId="activeIndicator"
+                                    className="absolute -left-3 w-1.5 h-8 bg-white rounded-r-full shadow-md"
+                                    initial={false}
+                                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                                />
+                            )}
+                        </motion.div>
+
+                        {/* Enhanced Tooltip */}
+                        <div className="absolute left-16 px-3 py-1.5 bg-slate-900 rounded-lg text-xs font-semibold text-white opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50 shadow-xl">
                             {item.label}
+                            <div className="absolute -left-1 top-1/2 -translate-y-1/2 w-2 h-2 bg-slate-900 rotate-45"></div>
                         </div>
-
-                        {isActive(item.path) && (
-                            <div className="absolute -left-3 w-1 h-5 bg-blue-500 rounded-r-full" />
-                        )}
                     </Link>
                 ))}
             </nav>
 
-            <div className="w-8 h-px bg-white/5 my-6"></div>
+            {/* Elegant Divider */}
+            <div className="w-9 h-[2px] bg-gradient-to-r from-transparent via-slate-300 to-transparent my-6"></div>
 
             {/* Secondary Links */}
-            <nav className="flex flex-col gap-3 w-full items-center">
+            <nav className="flex flex-col gap-2 w-full items-center px-3">
                 {secondaryItems.map((item) => (
                     <Link
                         key={item.label}
                         to={item.path}
-                        className="group relative flex items-center justify-center w-10 h-10 rounded-lg transition-all duration-200 hover:bg-white/5 hover:text-gray-300"
+                        className="group relative w-full"
                     >
-                        <item.icon className="text-lg" />
-                        <div className="absolute left-14 px-2 py-1 bg-black border border-white/10 rounded text-[10px] font-medium text-white opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50 shadow-xl">
+                        <motion.div
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            className="flex items-center justify-center w-full h-11 rounded-xl transition-all duration-200 hover:bg-slate-100 text-slate-500 hover:text-slate-800"
+                        >
+                            <item.icon className="text-[20px]" />
+                        </motion.div>
+
+                        {/* Tooltip */}
+                        <div className="absolute left-16 px-3 py-1.5 bg-slate-900 rounded-lg text-xs font-semibold text-white opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50 shadow-xl">
                             {item.label}
+                            <div className="absolute -left-1 top-1/2 -translate-y-1/2 w-2 h-2 bg-slate-900 rotate-45"></div>
                         </div>
                     </Link>
                 ))}
             </nav>
 
-            <div className="mt-auto mb-6">
-                <button className="w-10 h-10 flex items-center justify-center rounded-lg hover:bg-white/5 text-gray-500 hover:text-white transition-colors">
-                    <FiSettings className="text-xl" />
-                </button>
+            {/* Settings at Bottom */}
+            <div className="mt-auto px-3 w-full">
+                <Link to="/dashboard/workspace">
+                    <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        className="w-full h-11 flex items-center justify-center rounded-xl hover:bg-slate-100 text-slate-500 hover:text-slate-800 transition-all duration-200 group relative"
+                    >
+                        <FiSettings className="text-xl" />
+
+                        {/* Tooltip */}
+                        <div className="absolute left-16 px-3 py-1.5 bg-slate-900 rounded-lg text-xs font-semibold text-white opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50 shadow-xl">
+                            Settings
+                            <div className="absolute -left-1 top-1/2 -translate-y-1/2 w-2 h-2 bg-slate-900 rotate-45"></div>
+                        </div>
+                    </motion.button>
+                </Link>
             </div>
 
         </aside>

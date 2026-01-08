@@ -2,21 +2,39 @@ import { createContext, useContext, useEffect, useState, useCallback, useMemo } 
 
 const AuthContext = createContext();
 
-export const AuthProvider = ({ children }) => {
-  const [token, setToken] = useState(localStorage.getItem("token"));
+// Mock mode for testing without backend
+const MOCK_MODE = true; // Set to false when backend is ready
 
-  // Derive user state from token instead of separate state
+export const AuthProvider = ({ children }) => {
+  const [token, setToken] = useState(
+    MOCK_MODE ? "mock-token-123" : localStorage.getItem("token")
+  );
+
+  // Derive user state from token with mock data
   const user = useMemo(() => {
+    if (MOCK_MODE) {
+      return {
+        loggedIn: true,
+        id: 1,
+        name: "John Doe",
+        email: "john@example.com",
+        avatar: "https://i.pravatar.cc/150?u=john"
+      };
+    }
     return token ? { loggedIn: true } : null;
   }, [token]);
 
   const login = useCallback((jwt) => {
-    localStorage.setItem("token", jwt);
+    if (!MOCK_MODE) {
+      localStorage.setItem("token", jwt);
+    }
     setToken(jwt);
   }, []);
 
   const logout = useCallback(() => {
-    localStorage.removeItem("token");
+    if (!MOCK_MODE) {
+      localStorage.removeItem("token");
+    }
     setToken(null);
   }, []);
 
