@@ -1,51 +1,30 @@
-@import 'tailwindcss';
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+@import "tailwindcss";
 
-/* Body styling - Enhanced gradient background */
-body {
-    @apply text-slate-900;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
-    background: linear-gradient(135deg, #e9d5ff 0%, #ddd6fe 20%, #e0e7ff 50%, #dbeafe 80%, #bfdbfe 100%);
-    min-height: 100vh;
+/* Smooth global transitions */
+* {
+    transition-property: color, background-color, border-color, transform, opacity, box-shadow;
+    transition-duration: 200ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Custom animations & utilities */
-.animate-fade-in {
-    animation: fadeIn 0.5s ease-in;
+/* Page entrance animation */
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
-.animate-fade-in-up {
-    animation: fadeInUp 0.3s ease-out;
+.animate-slide-up {
+    animation: slideUp 0.5s ease-out;
 }
 
-.animate-pulse-slow {
-    animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-}
-
-.delay-1000 {
-    animation-delay: 1s;
-}
-
-/* Scrollbar Styling */
-.scrollbar-thin::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-}
-
-.scrollbar-thin::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-.scrollbar-thin::-webkit-scrollbar-thumb {
-    background: rgba(139, 92, 246, 0.2);
-    border-radius: 10px;
-}
-
-.scrollbar-thin::-webkit-scrollbar-thumb:hover {
-    background: rgba(139, 92, 246, 0.4);
-}
-
-/* Animations */
+/* Fade in animation */
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -56,142 +35,219 @@ body {
     }
 }
 
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+.animate-fade-in {
+    animation: fadeIn 0.3s ease-out;
 }
 
-@keyframes pulse {
+/* Bounce animation for icons */
+@keyframes bounce {
 
     0%,
     100% {
-        opacity: 0.4;
-    }
-
-    50% {
-        opacity: 0.6;
-    }
-}
-
-@keyframes floatSlow {
-    0% {
         transform: translateY(0);
     }
 
     50% {
         transform: translateY(-10px);
     }
+}
 
+.animate-bounce-slow {
+    animation: bounce 2s ease-in-out infinite;
+}
+
+/* Float animation for illustrations */
+@keyframes float {
+
+    0%,
     100% {
-        transform: translateY(0);
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-15px);
     }
 }
 
-/* No visible blobs - clean like login page */
-.blob {
-    display: none;
+.animate-float {
+    animation: float 3s ease-in-out infinite;
 }
 
-.blob2 {
-    display: none;
+/* Pulse animation */
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.7;
+    }
 }
 
-/* Task Priority Colors */
-.priority-high {
-    background: rgba(239, 68, 68, 0.1);
-    color: rgb(185, 28, 28);
-    border-color: rgba(239, 68, 68, 0.3);
-    font-weight: 600;
+.animate-pulse-slow {
+    animation: pulse 3s ease-in-out infinite;
 }
 
-.priority-medium {
-    background: rgba(245, 158, 11, 0.1);
-    color: rgb(146, 64, 14);
-    border-color: rgba(245, 158, 11, 0.3);
-    font-weight: 600;
+/* Shimmer loading effect */
+@keyframes shimmer {
+    0% {
+        background-position: -1000px 0;
+    }
+
+    100% {
+        background-position: 1000px 0;
+    }
 }
 
-.priority-low {
-    background: rgba(34, 197, 94, 0.1);
-    color: rgb(22, 101, 52);
-    border-color: rgba(34, 197, 94, 0.3);
-    font-weight: 600;
+.shimmer {
+    background: linear-gradient(90deg,
+            rgba(255, 255, 255, 0) 0%,
+            rgba(255, 255, 255, 0.2) 50%,
+            rgba(255, 255, 255, 0) 100%);
+    background-size: 1000px 100%;
+    animation: shimmer 2s infinite;
 }
 
-/* Task Status Colors */
-.status-todo {
-    background: rgba(100, 116, 139, 0.1);
-    color: rgb(51, 65, 85);
-    border-color: rgba(100, 116, 139, 0.3);
-    font-weight: 600;
+/* Skeleton loading */
+.skeleton {
+    background: linear-gradient(90deg,
+            #f0f0f0 25%,
+            #e0e0e0 50%,
+            #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
 }
 
-.status-inprogress {
-    background: rgba(59, 130, 246, 0.1);
-    color: rgb(30, 64, 175);
-    border-color: rgba(59, 130, 246, 0.3);
-    font-weight: 600;
+/* Scale on hover */
+@keyframes scaleIn {
+    from {
+        transform: scale(0.9);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
 }
 
-.status-completed {
-    background: rgba(34, 197, 94, 0.1);
-    color: rgb(22, 101, 52);
-    border-color: rgba(34, 197, 94, 0.3);
-    font-weight: 600;
+.animate-scale-in {
+    animation: scaleIn 0.3s ease-out;
 }
 
-.status-blocked {
-    background: rgba(239, 68, 68, 0.1);
-    color: rgb(185, 28, 28);
-    border-color: rgba(239, 68, 68, 0.3);
-    font-weight: 600;
+/* Rotate animation */
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
 }
 
-/* Glass morphism - matching login cards */
-.glass {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(226, 232, 240, 0.8);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+.animate-rotate {
+    animation: rotate 2s linear infinite;
 }
 
-.glass-hover:hover {
-    background: rgba(255, 255, 255, 1);
-    border-color: rgba(139, 92, 246, 0.3);
+/* Slide from right */
+@keyframes slideFromRight {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }
 
-/* Smooth transitions */
-* {
-    transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+.animate-slide-right {
+    animation: slideFromRight 0.4s ease-out;
 }
 
-button,
-a {
-    transition: all 0.2s ease;
+/* Stagger animation helper */
+.stagger-1 {
+    animation-delay: 0.1s;
 }
 
-/* Task card - matching login card style */
-.task-card {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(226, 232, 240, 0.8);
-    border-radius: 0.75rem;
-    padding: 1.25rem;
-    cursor: pointer;
-    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+.stagger-2 {
+    animation-delay: 0.2s;
 }
 
-.task-card:hover {
-    background: rgba(255, 255, 255, 1);
-    border-color: rgba(139, 92, 246, 0.4);
-    transform: translateY(-2px);
-    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+.stagger-3 {
+    animation-delay: 0.3s;
+}
+
+.stagger-4 {
+    animation-delay: 0.4s;
+}
+
+/* Smooth scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f3f4f6;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #d1d5db;
+    border-radius: 4px;
+    transition: background 0.2s;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #9ca3af;
+}
+
+/* Card hover effect */
+.card-hover {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-hover:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* Button press effect */
+.btn-press:active {
+    transform: scale(0.95);
+}
+
+/* Ripple effect on click */
+@keyframes ripple {
+    to {
+        transform: scale(4);
+        opacity: 0;
+    }
+}
+
+.ripple {
+    position: relative;
+    overflow: hidden;
+}
+
+.ripple::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.ripple:active::after {
+    width: 300px;
+    height: 300px;
 }

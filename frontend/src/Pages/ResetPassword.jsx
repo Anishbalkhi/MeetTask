@@ -1,107 +1,104 @@
 import { useState } from "react";
-import { useSearchParams, useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
-import { resetPasswordApi } from "../api/authApi";
+import { useNavigate, Link } from "react-router-dom";
+import { ArrowLeft, Lock } from "lucide-react";
 
 const ResetPassword = () => {
-  const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [form, setForm] = useState({ password: "", confirmPassword: "" });
   const [error, setError] = useState("");
-  const [params] = useSearchParams();
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (loading) return;
-
     setError("");
-    const token = params.get("token");
-    if (!token) {
-      setError("Invalid reset link. Please request a new password reset.");
+
+    if (form.password !== form.confirmPassword) {
+      setError("Passwords do not match");
       return;
     }
 
-    if (password.length < 6) {
-      setError("Password must be at least 6 characters long");
-      return;
-    }
+    setLoading(true);
 
-    try {
-      setLoading(true);
-      await resetPasswordApi(token, password);
-      navigate("/login", { state: { message: "Password reset successfully! Please login with your new password." } });
-    } catch (error) {
-      const errorMessage =
-        error.response?.data?.message ||
-        "Invalid or expired token. Please request a new password reset.";
-      setError(errorMessage);
-    } finally {
-      setLoading(false);
-    }
+    // Mock API call
+    setTimeout(() => {
+      navigate("/login");
+    }, 1000);
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-meettask-gradient px-6 relative overflow-hidden">
-      <div className="absolute inset-0 z-0">
-        <div className="blob blur-2xl opacity-30"></div>
-        <div className="blob2 blur-2xl opacity-30"></div>
-      </div>
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center px-6 py-12">
 
-      <motion.div
-        className="relative z-10 w-full max-w-md"
-        initial={{ opacity: 0, y: 40 }}
-        animate={{ opacity: 1, y: 0 }}
-      >
-        <div className="bg-meettask-card backdrop-blur-xl rounded-3xl shadow-2xl p-12">
-          <h2 className="text-2xl font-bold text-meettask-accent text-center mb-4">
-            Set new password
-          </h2>
+      <div className="w-full max-w-md">
+
+        <Link
+          to="/login"
+          className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-8 font-medium transition-colors text-sm"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          Back to login
+        </Link>
+
+        <div className="bg-white border border-gray-200 rounded-lg p-8">
+          <div className="mb-8">
+            <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center mb-4">
+              <Lock className="w-6 h-6 text-gray-700" />
+            </div>
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">
+              Set new password
+            </h1>
+            <p className="text-gray-600">
+              Your new password must be different from previous passwords
+            </p>
+          </div>
+
+          {error && (
+            <div className="bg-red-50 border border-red-200 rounded-lg p-3 mb-6">
+              <p className="text-red-700 text-sm">{error}</p>
+            </div>
+          )}
 
           <form onSubmit={handleSubmit} className="space-y-5">
-            {/* ERROR MESSAGE */}
-            {error && (
-              <div className="bg-red-500/10 border border-red-500/50 rounded-lg p-3">
-                <p className="text-red-500 text-sm">{error}</p>
-              </div>
-            )}
-
             <div>
-              <label className="block text-meettask-text font-semibold mb-1">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
                 New Password
               </label>
               <input
-                className="w-full px-4 py-3 rounded-lg bg-meettask-input text-meettask-text outline-none focus:ring-2 focus:ring-meettask-primary transition"
                 type="password"
-                placeholder="Enter new password (min 6 characters)"
-                value={password}
-                onChange={(e) => {
-                  setPassword(e.target.value);
-                  setError("");
-                }}
+                value={form.password}
+                onChange={(e) => setForm({ ...form, password: e.target.value })}
                 required
-                minLength={6}
+                className="w-full px-3 py-2 bg-white border border-gray-200 rounded text-gray-900 text-sm focus:outline-none focus:border-gray-300 transition-colors"
+                placeholder="••••••••"
               />
-              {password && password.length < 6 && (
-                <p className="text-yellow-500 text-xs mt-1">
-                  Password must be at least 6 characters
-                </p>
-              )}
+              <p className="text-xs text-gray-500 mt-2">
+                Must be at least 8 characters
+              </p>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Confirm Password
+              </label>
+              <input
+                type="password"
+                value={form.confirmPassword}
+                onChange={(e) => setForm({ ...form, confirmPassword: e.target.value })}
+                required
+                className="w-full px-3 py-2 bg-white border border-gray-200 rounded text-gray-900 text-sm focus:outline-none focus:border-gray-300 transition-colors"
+                placeholder="••••••••"
+              />
             </div>
 
             <button
               type="submit"
               disabled={loading}
-              className={`w-full bg-meettask-accent border-2 border-gray-700 text-gray-700 font-semibold py-3 rounded-lg transition
-                ${loading
-                  ? "opacity-60 cursor-not-allowed"
-                  : "hover:scale-105"
-                }`}
+              className="w-full bg-gray-900 text-white px-6 py-2.5 rounded font-medium hover:bg-gray-800 transition-colors disabled:opacity-50 text-sm"
             >
-              {loading ? "Updating..." : "Update Password"}
+              {loading ? "Resetting..." : "Reset password"}
             </button>
           </form>
         </div>
-      </motion.div>
+      </div>
     </div>
   );
 };

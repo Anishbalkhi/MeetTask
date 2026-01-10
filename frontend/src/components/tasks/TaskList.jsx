@@ -5,9 +5,9 @@ const TaskList = ({ tasks, onTaskClick, emptyMessage = "No tasks found", viewMod
     if (!tasks || tasks.length === 0) {
         return (
             <div className="flex flex-col items-center justify-center py-20 px-4">
-                <div className="w-24 h-24 mb-6 rounded-full bg-gradient-to-br from-purple-500/20 to-blue-500/20 flex items-center justify-center">
+                <div className="w-24 h-24 mb-6 rounded-full bg-gradient-to-br from-[#CCFF00]/20 to-[#b3e600]/20 flex items-center justify-center">
                     <svg
-                        className="w-12 h-12 text-gray-600"
+                        className="w-12 h-12 text-gray-400"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -20,8 +20,8 @@ const TaskList = ({ tasks, onTaskClick, emptyMessage = "No tasks found", viewMod
                         />
                     </svg>
                 </div>
-                <p className="text-gray-400 text-lg font-medium">{emptyMessage}</p>
-                <p className="text-gray-600 text-sm mt-2">
+                <p className="text-gray-300 text-lg font-medium">{emptyMessage}</p>
+                <p className="text-gray-500 text-sm mt-2">
                     Create your first task to get started
                 </p>
             </div>

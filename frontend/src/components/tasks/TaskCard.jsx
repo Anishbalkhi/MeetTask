@@ -5,29 +5,29 @@ const TaskCard = ({ task, onClick, onStatusChange, viewMode = "grid" }) => {
     const getPriorityClass = (priority) => {
         switch (priority?.toLowerCase()) {
             case "high":
-                return "bg-red-50 text-red-700 border-red-200";
+                return "bg-red-500/15 text-red-400 border-red-500/30";
             case "medium":
-                return "bg-yellow-50 text-yellow-700 border-yellow-200";
+                return "bg-yellow-500/15 text-yellow-400 border-yellow-500/30";
             case "low":
-                return "bg-gray-50 text-gray-700 border-gray-200";
+                return "bg-[#CCFF00]/15 text-[#CCFF00] border-[#CCFF00]/30";
             default:
-                return "bg-gray-50 text-gray-700 border-gray-200";
+                return "bg-gray-500/15 text-gray-400 border-gray-500/30";
         }
     };
 
     const getStatusClass = (status) => {
         switch (status?.toLowerCase()) {
             case "todo":
-                return "bg-slate-50 text-slate-700 border-slate-200";
+                return "bg-slate-500/15 text-slate-300 border-slate-500/30";
             case "in_progress":
             case "inprogress":
-                return "bg-blue-50 text-blue-700 border-blue-200";
+                return "bg-blue-500/15 text-blue-400 border-blue-500/30";
             case "completed":
-                return "bg-green-50 text-green-700 border-green-200";
+                return "bg-[#CCFF00]/15 text-[#CCFF00] border-[#CCFF00]/30";
             case "blocked":
-                return "bg-red-50 text-red-700 border-red-200";
+                return "bg-red-500/15 text-red-400 border-red-500/30";
             default:
-                return "bg-slate-50 text-slate-700 border-slate-200";
+                return "bg-slate-500/15 text-slate-300 border-slate-500/30";
         }
     };
 
@@ -57,18 +57,18 @@ const TaskCard = ({ task, onClick, onStatusChange, viewMode = "grid" }) => {
                 exit={{ opacity: 0, x: -10 }}
                 whileHover={{ x: 2 }}
                 onClick={onClick}
-                className="group bg-white/90 backdrop-blur-sm border border-slate-200 hover:border-purple-300 rounded-xl p-4 cursor-pointer transition-all hover:shadow-md"
+                className="group bg-[#141517]/80 backdrop-blur-sm border border-white/10 hover:border-[#CCFF00]/50 rounded-xl p-4 cursor-pointer transition-all hover:shadow-lg"
             >
                 <div className="flex items-center justify-between gap-4">
                     {/* Left side - Task info */}
                     <div className="flex-1 flex items-center gap-3">
                         {/* Task content */}
                         <div className="flex-1 min-w-0">
-                            <h3 className="text-slate-900 font-semibold text-sm mb-0.5 truncate group-hover:text-purple-600 transition-colors">
+                            <h3 className="text-white font-semibold text-sm mb-0.5 truncate group-hover:text-[#CCFF00] transition-colors">
                                 {task.title || "Untitled Task"}
                             </h3>
                             {task.description && (
-                                <p className="text-slate-500 text-xs truncate">
+                                <p className="text-gray-400 text-xs truncate">
                                     {task.description}
                                 </p>
                             )}
@@ -89,7 +89,7 @@ const TaskCard = ({ task, onClick, onStatusChange, viewMode = "grid" }) => {
 
                         {/* Assigned User */}
                         {task.assignedUser && (
-                            <div className="flex items-center gap-1.5 text-slate-600">
+                            <div className="flex items-center gap-1.5 text-gray-400">
                                 <FiUser className="text-xs" />
                                 <span className="text-xs hidden lg:inline">{task.assignedUser.name || task.assignedUser.email}</span>
                             </div>
@@ -97,7 +97,7 @@ const TaskCard = ({ task, onClick, onStatusChange, viewMode = "grid" }) => {
 
                         {/* Due Date */}
                         {task.dueDate && (
-                            <div className="flex items-center gap-1.5 text-slate-600">
+                            <div className="flex items-center gap-1.5 text-gray-400">
                                 <FiClock className="text-xs" />
                                 <span className="text-xs hidden xl:inline">
                                     {new Date(task.dueDate).toLocaleDateString("en-US", {
@@ -114,8 +114,8 @@ const TaskCard = ({ task, onClick, onStatusChange, viewMode = "grid" }) => {
                         <button
                             onClick={handleMarkComplete}
                             className={`px-3 py-1.5 rounded-md font-medium text-xs transition-all flex items-center gap-1.5 ${isCompleted
-                                ? 'bg-green-50 text-green-700 border border-green-200 hover:bg-green-100'
-                                : 'bg-blue-50 text-blue-700 border border-blue-200 hover:bg-blue-100'
+                                ? 'bg-[#CCFF00]/15 text-[#CCFF00] border border-[#CCFF00]/30 hover:bg-[#CCFF00]/20'
+                                : 'bg-blue-500/15 text-blue-400 border border-blue-500/30 hover:bg-blue-500/20'
                                 }`}
                         >
                             <FiCheckCircle className="text-sm" />
@@ -135,11 +135,11 @@ const TaskCard = ({ task, onClick, onStatusChange, viewMode = "grid" }) => {
             exit={{ opacity: 0, scale: 0.95 }}
             whileHover={{ y: -2 }}
             onClick={onClick}
-            className="group bg-white/90 backdrop-blur-sm border border-slate-200 hover:border-purple-300 rounded-xl p-4 cursor-pointer transition-all hover:shadow-lg"
+            className="group bg-[#141517]/80 backdrop-blur-sm border border-white/10 hover:border-[#CCFF00]/50 rounded-xl p-4 cursor-pointer transition-all hover:shadow-lg"
         >
             {/* Task Header */}
             <div className="flex items-start justify-between mb-3">
-                <h3 className="text-slate-900 font-semibold text-sm flex-1 pr-2 line-clamp-2 group-hover:text-purple-600 transition-colors">
+                <h3 className="text-white font-semibold text-sm flex-1 pr-2 line-clamp-2 group-hover:text-[#CCFF00] transition-colors">
                     {task.title || "Untitled Task"}
                 </h3>
                 <div
@@ -153,13 +153,13 @@ const TaskCard = ({ task, onClick, onStatusChange, viewMode = "grid" }) => {
 
             {/* Task Description */}
             {task.description && (
-                <p className="text-slate-500 text-xs mb-3 line-clamp-2">
+                <p className="text-gray-400 text-xs mb-3 line-clamp-2">
                     {task.description}
                 </p>
             )}
 
             {/* Task Footer */}
-            <div className="space-y-2.5 pt-3 border-t border-slate-100">
+            <div className="space-y-2.5 pt-3 border-t border-white/10">
                 <div className="flex items-center justify-between">
                     {/* Status */}
                     <div
@@ -171,12 +171,12 @@ const TaskCard = ({ task, onClick, onStatusChange, viewMode = "grid" }) => {
                     </div>
 
                     {/* Meta Info */}
-                    <div className="flex items-center gap-2 text-slate-500 text-[11px]">
+                    <div className="flex items-center gap-2 text-gray-400 text-[11px]">
                         {/* Assigned User */}
                         {task.assignedUser && (
                             <div className="flex items-center gap-1 group/user">
-                                <FiUser className="text-xs group-hover/user:text-purple-600 transition-colors" />
-                                <span className="hidden sm:inline group-hover/user:text-slate-700 transition-colors">
+                                <FiUser className="text-xs group-hover/user:text-[#CCFF00] transition-colors" />
+                                <span className="hidden sm:inline group-hover/user:text-gray-200 transition-colors">
                                     {task.assignedUser.name || task.assignedUser.email}
                                 </span>
                             </div>
@@ -185,8 +185,8 @@ const TaskCard = ({ task, onClick, onStatusChange, viewMode = "grid" }) => {
                         {/* Due Date */}
                         {task.dueDate && (
                             <div className="flex items-center gap-1 group/date">
-                                <FiClock className="text-xs group-hover/date:text-purple-600 transition-colors" />
-                                <span className="hidden sm:inline group-hover/date:text-slate-700 transition-colors">
+                                <FiClock className="text-xs group-hover/date:text-[#CCFF00] transition-colors" />
+                                <span className="hidden sm:inline group-hover/date:text-gray-200 transition-colors">
                                     {new Date(task.dueDate).toLocaleDateString("en-US", {
                                         month: "short",
                                         day: "numeric",
@@ -201,8 +201,8 @@ const TaskCard = ({ task, onClick, onStatusChange, viewMode = "grid" }) => {
                 <button
                     onClick={handleMarkComplete}
                     className={`w-full py-2 rounded-lg font-medium text-xs transition-all flex items-center justify-center gap-1.5 ${isCompleted
-                        ? 'bg-green-50 text-green-700 border border-green-200 hover:bg-green-100'
-                        : 'bg-blue-50 text-blue-700 border border-blue-200 hover:bg-blue-100'
+                        ? 'bg-[#CCFF00]/15 text-[#CCFF00] border border-[#CCFF00]/30 hover:bg-[#CCFF00]/20'
+                        : 'bg-blue-500/15 text-blue-400 border border-blue-500/30 hover:bg-blue-500/20'
                         }`}
                 >
                     <FiCheckCircle className="text-sm" />

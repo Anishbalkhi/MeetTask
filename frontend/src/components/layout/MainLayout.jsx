@@ -4,17 +4,16 @@ import Header from "./Header";
 
 const MainLayout = () => {
     return (
-        <div className="min-h-screen text-slate-900 flex relative overflow-hidden font-inter selection:bg-purple-200/50 bg-gradient-to-br from-purple-50 via-blue-50/30 to-white">
-
+        <div className="min-h-screen flex bg-gray-50">
             {/* Sidebar */}
             <Sidebar />
 
-            <div className="flex-1 ml-[72px] flex flex-col min-h-screen relative z-10 transition-all">
+            <div className="flex-1 ml-16 flex flex-col min-h-screen">
                 {/* Header */}
                 <Header />
 
                 {/* Main Content Area */}
-                <main className="flex-1 p-6 md:px-8 md:py-6 overflow-y-auto overflow-x-hidden scrollbar-thin">
+                <main className="flex-1 overflow-y-auto">
                     <Outlet />
                 </main>
             </div>
@@ -23,8 +22,3 @@ const MainLayout = () => {
 };
 
 export default MainLayout;
-
-
-
-
-

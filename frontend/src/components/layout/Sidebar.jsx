@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { FiHome, FiUsers, FiBox, FiMessageSquare, FiVideo, FiCommand, FiGrid, FiSettings } from "react-icons/fi";
+import { Home, Users, Settings, Sparkles, Plus } from "lucide-react";
 import { motion } from "framer-motion";
 
 const Sidebar = () => {
@@ -8,115 +8,105 @@ const Sidebar = () => {
     const isActive = (path) => location.pathname.includes(path);
 
     const navItems = [
-        { icon: FiHome, label: "Home", path: "/dashboard/home" },
-        { icon: FiUsers, label: "Team", path: "/dashboard/team" },
-    ];
-
-    const secondaryItems = [
-        { icon: FiMessageSquare, label: "Chat", path: "/dashboard/chat" },
-        { icon: FiVideo, label: "Meet", path: "/dashboard/meet" },
-        { icon: FiCommand, label: "AI", path: "/dashboard/ai" },
+        { icon: Home, label: "Home", path: "/dashboard/home" },
+        { icon: Users, label: "Team", path: "/dashboard/team" },
     ];
 
     return (
-        <aside className="w-[72px] bg-gradient-to-b from-slate-50 to-white flex flex-col items-center py-6 border-r border-slate-200/80 fixed left-0 top-0 h-full z-50 text-slate-700 shadow-sm">
+        <aside className="w-16 bg-gradient-to-b from-[#1E1E1E] to-[#2D2D2D] flex flex-col items-center py-4 fixed left-0 top-0 h-full z-50 border-r border-gray-800">
 
-            {/* App Logo / Brand */}
-            <Link to="/dashboard" className="mb-8 group">
+            {/* App Logo */}
+            <Link to="/dashboard" className="mb-8 group relative">
                 <motion.div
-                    className="w-11 h-11 rounded-xl bg-slate-100 flex items-center justify-center text-slate-800 font-black text-xl hover:bg-slate-200 transition-colors duration-200"
-                    whileHover={{ scale: 1.05 }}
+                    className="w-10 h-10 rounded-lg bg-white flex items-center justify-center shadow-lg"
+                    whileHover={{ scale: 1.1, rotate: 5 }}
                     whileTap={{ scale: 0.95 }}
+                    transition={{ type: "spring", stiffness: 300 }}
                 >
-                    M
+                    <Sparkles className="w-5 h-5 text-gray-900" />
                 </motion.div>
+
+                {/* Tooltip */}
+                <div className="absolute left-14 top-1/2 -translate-y-1/2 px-3 py-1.5 bg-gray-900 rounded text-xs font-medium text-white opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50 shadow-xl">
+                    MeetTask
+                    <div className="absolute -left-1 top-1/2 -translate-y-1/2 w-2 h-2 bg-gray-900 rotate-45"></div>
+                </div>
             </Link>
 
-            {/* Divider */}
-            <div className="w-9 h-[2px] bg-gradient-to-r from-transparent via-slate-300 to-transparent mb-6"></div>
-
-            {/* Primary Nav Links */}
-            <nav className="flex flex-col gap-2 w-full items-center px-3">
-                {navItems.map((item, index) => (
+            {/* Nav Links */}
+            <nav className="flex flex-col gap-1 w-full items-center px-2 mb-4">
+                {navItems.map((item) => (
                     <Link
                         key={item.label}
                         to={item.path}
                         className="group relative w-full"
                     >
                         <motion.div
-                            whileHover={{ scale: 1.05 }}
+                            whileHover={{ scale: 1.08, x: 2 }}
                             whileTap={{ scale: 0.95 }}
-                            className={`flex items-center justify-center w-full h-12 rounded-xl transition-all duration-300 relative overflow-hidden
+                            className={`flex items-center justify-center w-full h-10 rounded-lg transition-all relative overflow-hidden
                                 ${isActive(item.path)
-                                    ? "bg-purple-600 text-white shadow-md"
-                                    : "hover:bg-slate-100 text-slate-600 hover:text-slate-900"
+                                    ? "bg-white text-gray-900 shadow-lg"
+                                    : "hover:bg-[#3D3D3D] text-gray-400 hover:text-white"
                                 }
                             `}
                         >
-                            <item.icon className="text-[22px] relative z-10" />
+                            <item.icon className="w-5 h-5" />
 
-                            {/* Active indicator bar */}
+                            {/* Active indicator */}
                             {isActive(item.path) && (
                                 <motion.div
                                     layoutId="activeIndicator"
-                                    className="absolute -left-3 w-1.5 h-8 bg-white rounded-r-full shadow-md"
+                                    className="absolute -left-2 w-1 h-6 bg-white rounded-r shadow-lg"
                                     initial={false}
                                     transition={{ type: "spring", stiffness: 300, damping: 30 }}
                                 />
                             )}
                         </motion.div>
 
-                        {/* Enhanced Tooltip */}
-                        <div className="absolute left-16 px-3 py-1.5 bg-slate-900 rounded-lg text-xs font-semibold text-white opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50 shadow-xl">
-                            {item.label}
-                            <div className="absolute -left-1 top-1/2 -translate-y-1/2 w-2 h-2 bg-slate-900 rotate-45"></div>
-                        </div>
-                    </Link>
-                ))}
-            </nav>
-
-            {/* Elegant Divider */}
-            <div className="w-9 h-[2px] bg-gradient-to-r from-transparent via-slate-300 to-transparent my-6"></div>
-
-            {/* Secondary Links */}
-            <nav className="flex flex-col gap-2 w-full items-center px-3">
-                {secondaryItems.map((item) => (
-                    <Link
-                        key={item.label}
-                        to={item.path}
-                        className="group relative w-full"
-                    >
-                        <motion.div
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
-                            className="flex items-center justify-center w-full h-11 rounded-xl transition-all duration-200 hover:bg-slate-100 text-slate-500 hover:text-slate-800"
-                        >
-                            <item.icon className="text-[20px]" />
-                        </motion.div>
-
                         {/* Tooltip */}
-                        <div className="absolute left-16 px-3 py-1.5 bg-slate-900 rounded-lg text-xs font-semibold text-white opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50 shadow-xl">
+                        <div className="absolute left-14 top-1/2 -translate-y-1/2 px-3 py-1.5 bg-gray-900 rounded text-xs font-medium text-white opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50 shadow-xl">
                             {item.label}
-                            <div className="absolute -left-1 top-1/2 -translate-y-1/2 w-2 h-2 bg-slate-900 rotate-45"></div>
+                            <div className="absolute -left-1 top-1/2 -translate-y-1/2 w-2 h-2 bg-gray-900 rotate-45"></div>
                         </div>
                     </Link>
                 ))}
             </nav>
+
+            {/* Divider */}
+            <div className="w-8 h-px bg-gradient-to-r from-transparent via-gray-700 to-transparent mb-4"></div>
+
+            {/* Create Button */}
+            <Link to="/dashboard/create-workspace" className="group relative w-full px-2">
+                <motion.button
+                    whileHover={{ scale: 1.08, y: -2 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="w-full h-10 flex items-center justify-center rounded-lg bg-white text-gray-900 transition-all shadow-lg hover:shadow-xl"
+                >
+                    <Plus className="w-5 h-5" />
+                </motion.button>
+
+                {/* Tooltip */}
+                <div className="absolute left-14 top-1/2 -translate-y-1/2 px-3 py-1.5 bg-gray-900 rounded text-xs font-medium text-white opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50 shadow-xl">
+                    Create
+                    <div className="absolute -left-1 top-1/2 -translate-y-1/2 w-2 h-2 bg-gray-900 rotate-45"></div>
+                </div>
+            </Link>
 
             {/* Settings at Bottom */}
-            <div className="mt-auto px-3 w-full">
-                <Link to="/dashboard/workspace">
+            <div className="mt-auto px-2 w-full">
+                <Link to="/dashboard/workspace" className="group relative w-full block">
                     <motion.button
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
-                        className="w-full h-11 flex items-center justify-center rounded-xl hover:bg-slate-100 text-slate-500 hover:text-slate-800 transition-all duration-200 group relative"
+                        className="w-full h-10 flex items-center justify-center rounded-lg hover:bg-[#2D2D2D] text-gray-400 hover:text-white transition-all"
                     >
-                        <FiSettings className="text-xl" />
+                        <Settings className="w-5 h-5" />
 
                         {/* Tooltip */}
-                        <div className="absolute left-16 px-3 py-1.5 bg-slate-900 rounded-lg text-xs font-semibold text-white opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50 shadow-xl">
+                        <div className="absolute left-14 top-1/2 -translate-y-1/2 px-3 py-1.5 bg-gray-900 rounded text-xs font-medium text-white opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50 shadow-xl">
                             Settings
-                            <div className="absolute -left-1 top-1/2 -translate-y-1/2 w-2 h-2 bg-slate-900 rotate-45"></div>
+                            <div className="absolute -left-1 top-1/2 -translate-y-1/2 w-2 h-2 bg-gray-900 rotate-45"></div>
                         </div>
                     </motion.button>
                 </Link>

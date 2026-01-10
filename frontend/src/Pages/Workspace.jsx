@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
-import { FiLink, FiCopy, FiUsers, FiMail, FiSettings, FiTrash2, FiUserX, FiShield, FiCheck } from "react-icons/fi";
+import { Link2, Copy, Users, Trash2, X, Check, Settings as SettingsIcon, Mail } from "lucide-react";
 import { useWorkspace } from "../context/WorkspaceContext";
 import { getWorkspaceMembers } from "../api/workspaceApi";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 
 const WorkspaceSettings = () => {
     const { currentWorkspace } = useWorkspace();
@@ -10,12 +11,14 @@ const WorkspaceSettings = () => {
     const [loadingMembers, setLoadingMembers] = useState(false);
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
     const [copied, setCopied] = useState(false);
+    const [activeTab, setActiveTab] = useState("general");
     const navigate = useNavigate();
 
     useEffect(() => {
         if (currentWorkspace) {
             fetchMembers();
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentWorkspace]);
 
     const fetchMembers = async () => {
@@ -35,20 +38,13 @@ const WorkspaceSettings = () => {
             setShowDeleteConfirm(true);
             return;
         }
-        // Mock delete - implement actual API call
         alert("Workspace deleted! (Mock)");
-        navigate("/dashboard/home");
+        navigate("/dashboard");
     };
 
-    const handleRemoveMember = async (memberId) => {
-        // Mock remove - implement actual API call
+    // eslint-disable-next-line no-unused-vars
+    const handleRemoveMember = async (_memberId) => {
         alert(`Member removed! (Mock)`);
-        fetchMembers();
-    };
-
-    const handleChangeRole = async (memberId, newRole) => {
-        // Mock role change - implement actual API call
-        alert(`Role changed to ${newRole}! (Mock)`);
         fetchMembers();
     };
 
@@ -58,155 +54,255 @@ const WorkspaceSettings = () => {
         setTimeout(() => setCopied(false), 2000);
     };
 
-    if (!currentWorkspace) return <div className="p-10 text-gray-500">Select a workspace first.</div>;
-
-    return (
-        <div className="max-w-6xl mx-auto pt-6 pb-20 animate-fade-in-up px-4">
-
-            <div className="flex items-center gap-6 mb-10 border-b border-white/5 pb-8">
-                <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-blue-600 to-purple-700 flex items-center justify-center text-white text-3xl font-bold shadow-[0_0_30px_rgba(59,130,246,0.3)] border border-white/10">
-                    {currentWorkspace.name.substring(0, 2).toUpperCase()}
-                </div>
-                <div>
-                    <h1 className="text-4xl font-bold text-white mb-2 tracking-tight">Workspace Settings</h1>
-                    <p className="text-gray-400 text-lg">Manage <span className="text-blue-400 font-medium">{currentWorkspace.name}</span></p>
+    if (!currentWorkspace) {
+        return (
+            <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+                <div className="text-center bg-white border border-gray-200 rounded-lg p-12 shadow-sm">
+                    <SettingsIcon className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                    <p className="text-gray-600">Select a workspace first.</p>
                 </div>
             </div>
+        );
+    }
 
-            <div className="grid gap-8">
+    const tabs = [
+        { id: "general", label: "General", icon: SettingsIcon },
+        { id: "members", label: "Members", icon: Users },
+        { id: "invite", label: "Invite", icon: Mail },
+    ];
 
-                {/* Section 1: Share Link & Members */}
-                <div className="grid lg:grid-cols-2 gap-8">
-                    {/* Invite Link Section */}
-                    <div className="bg-[#121315]/80 backdrop-blur-xl border border-white/5 rounded-3xl p-8 shadow-2xl relative overflow-hidden group">
-                        <div className="absolute inset-0 bg-gradient-to-tr from-blue-500/5 to-purple-500/5 opacity-50 pointer-events-none"></div>
+    return (
+        <div className="min-h-screen bg-gray-50">
 
-                        <div className="flex items-center gap-3 mb-8 relative z-10">
-                            <div className="p-3 rounded-xl bg-black/40 border border-white/5 text-blue-400 shadow-inner">
-                                <FiLink className="text-2xl" />
-                            </div>
-                            <div>
-                                <h3 className="text-xl font-bold text-gray-100">Invite Link</h3>
-                                <p className="text-gray-500 text-sm">Share this link to invite members</p>
-                            </div>
-                        </div>
+            <div className="max-w-5xl mx-auto p-6">
 
-                        <div className="relative z-10">
-                            <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">
-                                Workspace Invite Link
-                            </label>
-                            <div className="flex gap-2 group/link">
-                                <div className="flex-1 bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-gray-400 text-sm truncate flex items-center gap-2 font-mono hover:text-gray-300 transition-colors cursor-copy" onClick={handleCopyLink}>
-                                    <FiLink className="flex-shrink-0" />
-                                    <span className="truncate">https://meettask.com/join/{currentWorkspace.id}</span>
-                                </div>
-                                <button
-                                    onClick={handleCopyLink}
-                                    className="bg-black/40 hover:bg-black/60 text-gray-400 hover:text-white px-4 py-3 rounded-xl transition-colors border border-white/10 flex items-center gap-2"
-                                >
-                                    {copied ? (
-                                        <>
-                                            <FiCheck className="text-green-400" />
-                                            <span className="text-green-400 text-sm font-medium">Copied!</span>
-                                        </>
-                                    ) : (
-                                        <>
-                                            <FiCopy />
-                                            <span className="text-sm font-medium">Copy</span>
-                                        </>
-                                    )}
-                                </button>
-                            </div>
-                            <p className="text-xs text-gray-500 mt-3">Anyone with this link can join your workspace</p>
-                        </div>
-                    </div>
+                {/* Page Header */}
+                <motion.div
+                    className="mb-8"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                >
+                    <h1 className="text-4xl font-bold text-gray-900 mb-2">Workspace Settings</h1>
+                    <p className="text-gray-600">Manage your workspace and team</p>
+                </motion.div>
 
-                    {/* Members List */}
-                    <div className="bg-[#121315]/80 backdrop-blur-xl border border-white/5 rounded-3xl p-8 shadow-2xl h-full flex flex-col relative overflow-hidden">
-                        <div className="absolute inset-0 bg-gradient-to-bl from-blue-500/5 to-transparent opacity-30 pointer-events-none"></div>
-                        <h3 className="text-xl font-bold text-gray-100 mb-6 relative z-10 flex items-center justify-between">
-                            Current Members
-                            <span className="text-xs font-normal text-gray-500 bg-white/5 px-2 py-1 rounded-lg border border-white/5">{members.length} Active</span>
-                        </h3>
-
-                        <div className="flex-1 overflow-y-auto pr-2 custom-scrollbar relative z-10 space-y-3">
-                            {loadingMembers ? (
-                                <div className="text-gray-500 animate-pulse text-sm">Loading members...</div>
-                            ) : (
-                                <>
-                                    {members.length > 0 ? members.map((member, i) => (
-                                        <div key={i} className="flex items-center gap-4 p-3 bg-white/5 border border-white/5 hover:border-white/10 rounded-xl transition-all group">
-                                            <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-gray-700 to-gray-600 flex items-center justify-center text-white font-bold text-sm border border-white/10">
-                                                {member.email[0].toUpperCase()}
-                                            </div>
-                                            <div className="flex-1">
-                                                <p className="text-gray-200 font-medium text-sm group-hover:text-white transition-colors">{member.email}</p>
-                                                <p className="text-[10px] text-gray-500 uppercase tracking-wider font-bold">Member</p>
-                                            </div>
-                                            <button
-                                                onClick={() => handleRemoveMember(member.id)}
-                                                className="ml-auto text-gray-600 hover:text-red-400 opacity-0 group-hover:opacity-100 transition-all p-2 bg-black/20 rounded-lg"
-                                                title="Remove member"
-                                            >
-                                                <FiUserX />
-                                            </button>
-                                        </div>
-                                    )) : (
-                                        <div className="text-gray-500 italic text-sm py-4 text-center border-2 border-dashed border-white/5 rounded-xl">No members found via API.</div>
-                                    )}
-                                </>
-                            )}
-                        </div>
-                    </div>
-                </div>
-
-                {/* Section 2: Danger Zone - Delete Workspace */}
-                <div className="bg-[#121315]/80 backdrop-blur-xl border border-red-500/20 rounded-3xl p-8 shadow-2xl relative overflow-hidden">
-                    <div className="absolute inset-0 bg-gradient-to-tr from-red-500/10 to-transparent opacity-30 pointer-events-none"></div>
-
-                    <div className="flex items-center gap-3 mb-6 relative z-10">
-                        <div className="p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 shadow-inner">
-                            <FiTrash2 className="text-2xl" />
-                        </div>
-                        <div>
-                            <h3 className="text-xl font-bold text-red-400">Danger Zone</h3>
-                            <p className="text-gray-500 text-sm">Irreversible actions</p>
-                        </div>
-                    </div>
-
-                    <div className="relative z-10 space-y-4">
-                        <div className="flex items-center justify-between p-6 bg-black/20 border border-red-500/10 rounded-2xl">
-                            <div>
-                                <h4 className="text-white font-bold mb-1">Delete Workspace</h4>
-                                <p className="text-gray-400 text-sm">Once deleted, all data will be permanently removed. This action cannot be undone.</p>
-                            </div>
+                {/* Tabs */}
+                <motion.div
+                    className="border-b border-gray-200 mb-8"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.1 }}
+                >
+                    <div className="flex gap-8">
+                        {tabs.map((tab) => (
                             <button
-                                onClick={handleDeleteWorkspace}
-                                className={`px-6 py-3 rounded-xl font-bold transition-all ${showDeleteConfirm
-                                    ? 'bg-red-600 hover:bg-red-700 text-white'
-                                    : 'bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/30'
+                                key={tab.id}
+                                onClick={() => setActiveTab(tab.id)}
+                                className={`pb-4 px-1 border-b-2 font-medium transition-colors flex items-center gap-2 ${activeTab === tab.id
+                                        ? "border-gray-900 text-gray-900"
+                                        : "border-transparent text-gray-500 hover:text-gray-900"
                                     }`}
                             >
-                                {showDeleteConfirm ? 'Confirm Delete?' : 'Delete Workspace'}
+                                <tab.icon className="w-4 h-4" />
+                                {tab.label}
                             </button>
-                        </div>
-                        {showDeleteConfirm && (
-                            <div className="flex gap-3 justify-end">
-                                <button
-                                    onClick={() => setShowDeleteConfirm(false)}
-                                    className="px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg transition-all"
-                                >
-                                    Cancel
-                                </button>
-                            </div>
-                        )}
+                        ))}
                     </div>
-                </div>
+                </motion.div>
 
+                {/* Tab Content */}
+                <div className="space-y-6">
+
+                    {/* General Tab */}
+                    {activeTab === "general" && (
+                        <motion.div
+                            className="space-y-6"
+                            initial={{ opacity: 0, x: -20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                        >
+                            {/* Workspace Info Card */}
+                            <div className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm">
+                                <h2 className="text-xl font-semibold text-gray-900 mb-6">Workspace Information</h2>
+
+                                <div className="space-y-4">
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            Workspace Name
+                                        </label>
+                                        <input
+                                            type="text"
+                                            value={currentWorkspace.name}
+                                            readOnly
+                                            className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-gray-900 focus:outline-none"
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            Workspace ID
+                                        </label>
+                                        <input
+                                            type="text"
+                                            value={currentWorkspace.id}
+                                            readOnly
+                                            className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-gray-600 font-mono text-sm focus:outline-none"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Danger Zone */}
+                            <div className="bg-white border border-red-200 rounded-lg p-6 shadow-sm">
+                                <h2 className="text-xl font-semibold text-red-600 mb-4">Danger Zone</h2>
+
+                                <div className="bg-red-50 border border-red-100 rounded-lg p-4">
+                                    <div className="flex items-start justify-between gap-4">
+                                        <div className="flex-1">
+                                            <p className="font-semibold text-gray-900 mb-1">Delete Workspace</p>
+                                            <p className="text-sm text-gray-600">
+                                                Once deleted, all data will be permanently removed. This action cannot be undone.
+                                            </p>
+                                        </div>
+                                        <button
+                                            onClick={handleDeleteWorkspace}
+                                            className={`px-4 py-2 rounded-lg font-medium transition-colors whitespace-nowrap ${showDeleteConfirm
+                                                    ? "bg-red-600 text-white hover:bg-red-700"
+                                                    : "bg-white text-red-600 border border-red-300 hover:bg-red-50"
+                                                }`}
+                                        >
+                                            {showDeleteConfirm ? "Confirm Delete?" : "Delete Workspace"}
+                                        </button>
+                                    </div>
+
+                                    {showDeleteConfirm && (
+                                        <div className="mt-4 flex gap-2 justify-end">
+                                            <button
+                                                onClick={() => setShowDeleteConfirm(false)}
+                                                className="px-4 py-2 bg-white text-gray-700 border border-gray-300 rounded-lg font-medium hover:bg-gray-50 transition-colors"
+                                            >
+                                                Cancel
+                                            </button>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        </motion.div>
+                    )}
+
+                    {/* Members Tab */}
+                    {activeTab === "members" && (
+                        <motion.div
+                            initial={{ opacity: 0, x: -20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                        >
+                            <div className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm">
+                                <div className="flex items-center justify-between mb-6">
+                                    <div>
+                                        <h2 className="text-xl font-semibold text-gray-900">Team Members</h2>
+                                        <p className="text-sm text-gray-600 mt-1">{members.length} members in this workspace</p>
+                                    </div>
+                                </div>
+
+                                {loadingMembers ? (
+                                    <div className="text-center py-12">
+                                        <div className="animate-spin rounded-full h-10 w-10 border-2 border-gray-200 border-t-gray-900 mx-auto"></div>
+                                        <p className="text-gray-500 mt-3">Loading members...</p>
+                                    </div>
+                                ) : (
+                                    <div className="space-y-2">
+                                        {members.length > 0 ? (
+                                            members.map((member, i) => (
+                                                <motion.div
+                                                    key={i}
+                                                    className="flex items-center justify-between p-4 hover:bg-gray-50 rounded-lg transition-colors group"
+                                                    initial={{ opacity: 0, y: 10 }}
+                                                    animate={{ opacity: 1, y: 0 }}
+                                                    transition={{ delay: i * 0.05 }}
+                                                >
+                                                    <div className="flex items-center gap-3">
+                                                        <div className="w-10 h-10 rounded-full bg-gray-900 flex items-center justify-center text-white font-semibold">
+                                                            {member.email[0].toUpperCase()}
+                                                        </div>
+                                                        <div>
+                                                            <p className="font-medium text-gray-900">{member.email}</p>
+                                                            <p className="text-xs text-gray-500">Member</p>
+                                                        </div>
+                                                    </div>
+                                                    <button
+                                                        onClick={() => handleRemoveMember(member.id)}
+                                                        className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg opacity-0 group-hover:opacity-100 transition-all"
+                                                        title="Remove member"
+                                                    >
+                                                        <X className="w-5 h-5" />
+                                                    </button>
+                                                </motion.div>
+                                            ))
+                                        ) : (
+                                            <div className="text-center py-12 border-2 border-dashed border-gray-200 rounded-lg">
+                                                <Users className="w-12 h-12 text-gray-300 mx-auto mb-3" />
+                                                <p className="text-gray-500">No members found</p>
+                                                <p className="text-sm text-gray-400 mt-1">Invite team members to get started</p>
+                                            </div>
+                                        )}
+                                    </div>
+                                )}
+                            </div>
+                        </motion.div>
+                    )}
+
+                    {/* Invite Tab */}
+                    {activeTab === "invite" && (
+                        <motion.div
+                            initial={{ opacity: 0, x: -20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                        >
+                            <div className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm">
+                                <h2 className="text-xl font-semibold text-gray-900 mb-6">Invite Team Members</h2>
+
+                                <p className="text-gray-600 mb-6">
+                                    Share this link to invite members to your workspace
+                                </p>
+
+                                <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                                    <div className="flex items-center gap-3">
+                                        <Link2 className="w-5 h-5 text-gray-500 flex-shrink-0" />
+                                        <input
+                                            type="text"
+                                            value={`https://meettask.com/join/${currentWorkspace.id}`}
+                                            readOnly
+                                            className="flex-1 bg-transparent text-gray-700 font-mono text-sm focus:outline-none"
+                                            onClick={(e) => e.target.select()}
+                                        />
+                                        <button
+                                            onClick={handleCopyLink}
+                                            className="px-4 py-2 bg-gray-900 text-white rounded-lg font-medium hover:bg-gray-800 transition-colors flex items-center gap-2 whitespace-nowrap"
+                                        >
+                                            {copied ? (
+                                                <>
+                                                    <Check className="w-4 h-4" />
+                                                    Copied
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <Copy className="w-4 h-4" />
+                                                    Copy Link
+                                                </>
+                                            )}
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <p className="text-sm text-gray-500 mt-4">
+                                    Anyone with this link can join your workspace
+                                </p>
+                            </div>
+                        </motion.div>
+                    )}
+
+                </div>
             </div>
         </div>
     );
 };
 
 export default WorkspaceSettings;
-

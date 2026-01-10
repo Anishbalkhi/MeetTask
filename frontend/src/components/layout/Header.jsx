@@ -2,12 +2,12 @@ import { useWorkspace } from "../../context/WorkspaceContext";
 import { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { FiSearch, FiBell, FiChevronDown, FiLogOut, FiSettings, FiPlus, FiCheck } from "react-icons/fi";
+import { Search, ChevronDown, Plus, Check, Settings, User, LogOut } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const Header = () => {
     const { currentWorkspace, workspaces, setCurrentWorkspace } = useWorkspace();
-    const { logout, user } = useAuth();
+    const { logout } = useAuth();
     const navigate = useNavigate();
     const [isProfileOpen, setIsProfileOpen] = useState(false);
     const [isWsOpen, setIsWsOpen] = useState(false);
@@ -28,160 +28,127 @@ const Header = () => {
     };
 
     return (
-        <header className="h-20 flex items-center justify-between px-8 sticky top-0 z-40 bg-white/95 backdrop-blur-lg border-b border-slate-200/60 shadow-sm">
+        <header className="h-14 flex items-center justify-between px-6 bg-white border-b border-gray-200 sticky top-0 z-40 shadow-sm">
 
-            {/* Left Side - Workspace Switcher */}
-            <div className="flex items-center gap-6 animate-fade-in">
+            {/* Left Side - Workspace Switcher & Search */}
+            <div className="flex items-center gap-4 flex-1">
                 {/* Workspace Switcher */}
                 <div className="relative">
-                    <motion.button
-                        whileHover={{ scale: 1.01 }}
-                        whileTap={{ scale: 0.99 }}
+                    <button
                         onClick={() => setIsWsOpen(!isWsOpen)}
-                        className="flex items-center gap-3 px-4 py-2.5 rounded-xl bg-gradient-to-br from-slate-50 to-white border border-slate-200/80 hover:border-slate-300 transition-all group shadow-sm hover:shadow-md"
+                        className="flex items-center gap-2 px-3 py-1.5 rounded hover:bg-gray-100 transition-colors text-sm font-medium text-gray-700"
                     >
-                        <div className="w-9 h-9 rounded-lg bg-purple-600 flex items-center justify-center text-white font-bold text-sm shadow-sm">
-                            {currentWorkspace ? currentWorkspace.name.substring(0, 2).toUpperCase() : "WS"}
+                        <div className="w-5 h-5 rounded bg-gray-900 flex items-center justify-center text-white text-xs font-bold">
+                            {currentWorkspace ? currentWorkspace.name.substring(0, 1).toUpperCase() : "W"}
                         </div>
-                        <div className="text-left hidden sm:block">
-                            <p className="text-slate-900 font-bold text-sm leading-tight">
-                                {currentWorkspace?.name || "Select Workspace"}
-                            </p>
-                            <p className="text-slate-500 text-xs font-medium">Workspace</p>
-                        </div>
-                        <FiChevronDown className={`text-slate-500 transition-transform ml-1 ${isWsOpen ? 'rotate-180' : ''}`} />
-                    </motion.button>
+                        <span>{currentWorkspace?.name || "Select Workspace"}</span>
+                        <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform ${isWsOpen ? 'rotate-180' : ''}`} />
+                    </button>
 
                     {/* Workspace Dropdown */}
                     <AnimatePresence>
                         {isWsOpen && (
                             <motion.div
-                                initial={{ opacity: 0, y: -10, scale: 0.95 }}
-                                animate={{ opacity: 1, y: 0, scale: 1 }}
-                                exit={{ opacity: 0, y: -10, scale: 0.95 }}
-                                transition={{ duration: 0.2 }}
-                                className="absolute left-0 top-14 bg-white border border-slate-200 rounded-2xl shadow-2xl p-2 w-80 flex flex-col gap-1 z-50 origin-top-left"
+                                initial={{ opacity: 0, y: -10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -10 }}
+                                transition={{ duration: 0.15 }}
+                                className="absolute left-0 top-10 bg-white border border-gray-200 rounded-lg shadow-lg p-2 w-64 z-50"
                             >
-                                <div className="px-4 py-3 text-[11px] font-bold text-slate-500 uppercase tracking-wider border-b border-slate-100">
-                                    Switch Workspace
+                                <div className="text-xs font-semibold text-gray-500 px-3 py-2">
+                                    WORKSPACES
                                 </div>
-                                <div className="max-h-72 overflow-y-auto scrollbar-thin py-1">
+                                <div className="max-h-64 overflow-y-auto">
                                     {workspaces.map(ws => (
-                                        <motion.button
+                                        <button
                                             key={ws.id}
-                                            whileHover={{ x: 2 }}
                                             onClick={() => handleWsSwitch(ws)}
-                                            className={`w-full text-left px-4 py-3 rounded-xl text-sm transition-all flex items-center justify-between group/item
+                                            className={`w-full text-left px-3 py-2 rounded text-sm flex items-center justify-between transition-colors
                                                 ${currentWorkspace?.id === ws.id
-                                                    ? 'bg-gradient-to-r from-blue-50 to-purple-50 text-blue-700 font-semibold border border-blue-200/50'
-                                                    : 'text-slate-700 hover:bg-slate-50'}`}
+                                                    ? 'bg-gray-100 text-gray-900 font-medium'
+                                                    : 'text-gray-700 hover:bg-gray-50'}`}
                                         >
-                                            <div className="flex items-center gap-3">
-                                                <div className="w-8 h-8 rounded-lg bg-purple-600 flex items-center justify-center text-white font-bold text-xs">
-                                                    {ws.name.substring(0, 2).toUpperCase()}
+                                            <div className="flex items-center gap-2">
+                                                <div className="w-5 h-5 rounded bg-gray-900 flex items-center justify-center text-white text-xs font-bold">
+                                                    {ws.name.substring(0, 1).toUpperCase()}
                                                 </div>
                                                 <span>{ws.name}</span>
                                             </div>
                                             {currentWorkspace?.id === ws.id && (
-                                                <FiCheck className="text-blue-600" />
+                                                <Check className="w-4 h-4 text-gray-900" />
                                             )}
-                                        </motion.button>
+                                        </button>
                                     ))}
                                 </div>
-                                <div className="mt-1 pt-2 border-t border-slate-100"></div>
-                                <motion.button
-                                    whileHover={{ x: 2 }}
-                                    onClick={handleNewWorkspace}
-                                    className="text-left px-4 py-3 rounded-xl hover:bg-blue-50 text-sm text-blue-600 font-semibold transition-all flex items-center gap-2"
-                                >
-                                    <FiPlus className="text-base" /> Create New Workspace
-                                </motion.button>
-                                <motion.button
-                                    whileHover={{ x: 2 }}
-                                    onClick={() => {
-                                        setIsWsOpen(false);
-                                        navigate("/dashboard/workspace");
-                                    }}
-                                    className="text-left px-4 py-3 rounded-xl hover:bg-slate-50 text-sm text-slate-700 font-medium transition-all flex items-center gap-2"
-                                >
-                                    <FiSettings className="text-base" /> Workspace Settings
-                                </motion.button>
+                                <div className="border-t border-gray-200 mt-2 pt-2">
+                                    <button
+                                        onClick={handleNewWorkspace}
+                                        className="w-full text-left px-3 py-2 rounded text-sm text-gray-700 hover:bg-gray-50 font-medium flex items-center gap-2 transition-colors"
+                                    >
+                                        <Plus className="w-4 h-4" /> New Workspace
+                                    </button>
+                                    <button
+                                        onClick={() => {
+                                            setIsWsOpen(false);
+                                            navigate("/dashboard/workspace");
+                                        }}
+                                        className="w-full text-left px-3 py-2 rounded text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2 transition-colors"
+                                    >
+                                        <Settings className="w-4 h-4" /> Workspace Settings
+                                    </button>
+                                </div>
                             </motion.div>
                         )}
                     </AnimatePresence>
                 </div>
+
+                {/* Search Bar */}
+                <div className="relative flex-1 max-w-md">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
+                    <input
+                        type="text"
+                        placeholder="Search..."
+                        className="w-full bg-gray-50 border border-gray-200 text-sm text-gray-900 rounded pl-9 pr-4 py-2 focus:outline-none focus:border-gray-300 focus:bg-white transition-all placeholder-gray-400"
+                    />
+                </div>
             </div>
 
             {/* Right Side Actions */}
-            <div className="flex items-center gap-4">
-
-                {/* Search Bar */}
-                <div className="relative group hidden md:block">
-                    <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-purple-600 transition-colors" />
-                    <input
-                        type="text"
-                        placeholder="Search tasks..."
-                        className="bg-gradient-to-br from-slate-50 to-white border border-slate-200/80 text-sm text-slate-800 rounded-xl py-3 pl-11 pr-4 w-72 focus:outline-none focus:bg-white focus:border-purple-400 focus:ring-2 focus:ring-purple-100 transition-all placeholder-slate-400 shadow-sm font-medium"
-                    />
-                </div>
-
-                <div className="h-9 w-px bg-slate-200"></div>
-
-                {/* Notifications */}
-                <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="relative p-2.5 text-slate-600 hover:text-slate-900 transition-colors bg-gradient-to-br from-slate-50 to-white rounded-xl hover:bg-slate-100 border border-slate-200/80 hover:border-slate-300 shadow-sm"
-                >
-                    <FiBell className="text-lg" />
-                    <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full border-2 border-white"></span>
-                </motion.button>
-
+            <div className="flex items-center gap-2">
                 {/* Profile Dropdown */}
                 <div className="relative">
-                    <motion.button
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.98 }}
+                    <button
                         onClick={() => setIsProfileOpen(!isProfileOpen)}
-                        className="flex items-center gap-3 focus:outline-none px-2 py-1.5 rounded-xl hover:bg-slate-50 transition-all border border-transparent hover:border-slate-200 shadow-sm"
+                        className="flex items-center gap-2 px-2 py-1.5 rounded hover:bg-gray-100 transition-colors"
                     >
-                        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 via-purple-500 to-purple-600 p-0.5 shadow-md">
-                            <img
-                                src="https://i.pravatar.cc/150?u=a042581f4e29026024d"
-                                alt="Profile"
-                                className="w-full h-full rounded-[10px] object-cover border-2 border-white"
-                            />
+                        <div className="w-7 h-7 rounded-full bg-gray-900 flex items-center justify-center text-white text-sm font-medium">
+                            <User className="w-4 h-4" />
                         </div>
-                        <FiChevronDown className={`text-slate-500 transition-transform ${isProfileOpen ? 'rotate-180' : ''}`} />
-                    </motion.button>
+                    </button>
 
                     <AnimatePresence>
                         {isProfileOpen && (
                             <motion.div
-                                initial={{ opacity: 0, y: -10, scale: 0.95 }}
-                                animate={{ opacity: 1, y: 0, scale: 1 }}
-                                exit={{ opacity: 0, y: -10, scale: 0.95 }}
-                                transition={{ duration: 0.2 }}
-                                className="absolute right-0 top-14 w-64 bg-white border border-slate-200 rounded-2xl shadow-2xl overflow-hidden py-1 z-50 origin-top-right"
+                                initial={{ opacity: 0, y: -10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -10 }}
+                                transition={{ duration: 0.15 }}
+                                className="absolute right-0 top-10 w-56 bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden z-50"
                             >
-                                <div className="px-4 py-4 border-b border-slate-100 bg-gradient-to-br from-slate-50 to-white">
-                                    <p className="text-sm font-bold text-slate-900">Guest User</p>
-                                    <p className="text-xs text-slate-500 mt-0.5 truncate">user@example.com</p>
+                                <div className="px-4 py-3 border-b border-gray-200">
+                                    <p className="text-sm font-semibold text-gray-900">Guest User</p>
+                                    <p className="text-xs text-gray-500">user@example.com</p>
                                 </div>
-                                <div className="p-1.5">
-                                    <motion.button
-                                        whileHover={{ x: 2 }}
-                                        className="w-full text-left px-3 py-2.5 text-sm text-slate-700 hover:bg-slate-50 hover:text-slate-900 transition-all rounded-xl flex items-center gap-2 font-medium"
-                                    >
-                                        <FiSettings /> Settings
-                                    </motion.button>
-                                    <motion.button
-                                        whileHover={{ x: 2 }}
+                                <div className="p-1">
+                                    <button className="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded flex items-center gap-2 transition-colors">
+                                        <Settings className="w-4 h-4" /> Settings
+                                    </button>
+                                    <button
                                         onClick={handleLogout}
-                                        className="w-full text-left px-3 py-2.5 text-sm text-red-600 hover:bg-red-50 hover:text-red-700 transition-all rounded-xl flex items-center gap-2 font-medium"
+                                        className="w-full text-left px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded flex items-center gap-2 transition-colors"
                                     >
-                                        <FiLogOut /> Logout
-                                    </motion.button>
+                                        <LogOut className="w-4 h-4" /> Logout
+                                    </button>
                                 </div>
                             </motion.div>
                         )}
