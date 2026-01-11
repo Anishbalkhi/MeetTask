@@ -4,6 +4,7 @@ import { useAuth } from "../context/AuthContext";
 import { ArrowLeft } from "lucide-react";
 import { motion } from "framer-motion";
 import AnimatedBackground from "../components/common/AnimatedBackground";
+import ThemeToggle from "../components/ThemeToggle";
 
 const Login = () => {
   const [form, setForm] = useState({ email: "", password: "" });
@@ -28,9 +29,14 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center px-6 py-12 relative overflow-hidden">
+    <div className="min-h-screen flex items-center justify-center px-6 py-12 relative overflow-hidden" style={{ background: 'var(--bg-secondary)' }}>
       {/* Enhanced Animated Background */}
       <AnimatedBackground />
+
+      {/* Theme Toggle - Fixed Position */}
+      <div className="fixed top-6 right-6 z-50">
+        <ThemeToggle />
+      </div>
 
       <div className="w-full max-w-md relative z-10">
 
@@ -42,7 +48,10 @@ const Login = () => {
         >
           <Link
             to="/"
-            className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-8 font-medium transition-colors text-sm"
+            className="inline-flex items-center gap-2 mb-8 font-medium transition-colors text-sm"
+            style={{ color: 'var(--text-tertiary)' }}
+            onMouseEnter={(e) => e.currentTarget.style.color = 'var(--text-primary)'}
+            onMouseLeave={(e) => e.currentTarget.style.color = 'var(--text-tertiary)'}
           >
             <ArrowLeft className="w-4 h-4" />
             Back to home
@@ -50,16 +59,21 @@ const Login = () => {
         </motion.div>
 
         <motion.div
-          className="bg-white border border-gray-200 rounded-lg p-8 shadow-lg"
+          className="rounded-lg p-8"
+          style={{
+            background: 'var(--card-bg)',
+            border: '1px solid var(--card-border)',
+            boxShadow: 'var(--shadow-lg)'
+          }}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.1 }}
         >
           <div className="mb-8">
-            <h1 className="text-3xl font-bold mb-2">
-              <span className="text-gradient-fast">Welcome back</span>
+            <h1 className="text-3xl font-bold mb-2" style={{ color: 'var(--text-primary)' }}>
+              Welcome back
             </h1>
-            <p className="text-gray-600 text-reveal-delay-1">
+            <p className="text-reveal-delay-1" style={{ color: 'var(--text-secondary)' }}>
               Sign in to continue to your workspace
             </p>
           </div>
@@ -72,7 +86,7 @@ const Login = () => {
 
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium mb-2" style={{ color: 'var(--text-secondary)' }}>
                 Email
               </label>
               <input
@@ -80,13 +94,18 @@ const Login = () => {
                 value={form.email}
                 onChange={(e) => setForm({ ...form, email: e.target.value })}
                 required
-                className="w-full px-3 py-2 bg-white border border-gray-200 rounded text-gray-900 text-sm focus:outline-none focus:border-gray-300 transition-colors"
+                className="w-full px-3 py-2 rounded text-sm focus:outline-none transition-colors"
+                style={{
+                  background: 'var(--input-bg)',
+                  border: '1px solid var(--input-border)',
+                  color: 'var(--text-primary)'
+                }}
                 placeholder="you@example.com"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium mb-2" style={{ color: 'var(--text-secondary)' }}>
                 Password
               </label>
               <input
@@ -94,19 +113,25 @@ const Login = () => {
                 value={form.password}
                 onChange={(e) => setForm({ ...form, password: e.target.value })}
                 required
-                className="w-full px-3 py-2 bg-white border border-gray-200 rounded text-gray-900 text-sm focus:outline-none focus:border-gray-300 transition-colors"
+                className="w-full px-3 py-2 rounded text-sm focus:outline-none transition-colors"
+                style={{
+                  background: 'var(--input-bg)',
+                  border: '1px solid var(--input-border)',
+                  color: 'var(--text-primary)'
+                }}
                 placeholder="••••••••"
               />
             </div>
 
             <div className="flex items-center justify-between text-sm">
-              <label className="flex items-center gap-2 text-gray-600 cursor-pointer">
-                <input type="checkbox" className="w-4 h-4 rounded border-gray-300 text-gray-900" />
+              <label className="flex items-center gap-2 cursor-pointer" style={{ color: 'var(--text-secondary)' }}>
+                <input type="checkbox" className="w-4 h-4 rounded" style={{ borderColor: 'var(--border-primary)' }} />
                 Remember me
               </label>
               <Link
                 to="/forgot-password"
-                className="text-gray-900 hover:text-gray-700 font-medium transition-colors"
+                className="font-medium transition-colors"
+                style={{ color: 'var(--text-primary)' }}
               >
                 Forgot password?
               </Link>
@@ -115,18 +140,20 @@ const Login = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-gray-900 text-white px-6 py-2.5 rounded font-medium hover:bg-gray-800 transition-all disabled:opacity-50 text-sm magnetic-hover"
+              className="w-full px-6 py-2.5 rounded font-medium transition-all disabled:opacity-50 text-sm magnetic-hover"
+              style={{ background: 'var(--accent-primary)', color: 'var(--text-inverse)' }}
             >
               {loading ? "Signing in..." : "Sign in"}
             </button>
           </form>
 
           <div className="mt-6 text-center">
-            <p className="text-gray-600 text-sm">
+            <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>
               Don't have an account?{" "}
               <Link
                 to="/register"
-                className="text-gray-900 font-semibold hover:text-gray-700 transition-colors"
+                className="font-semibold transition-colors"
+                style={{ color: 'var(--text-primary)' }}
               >
                 Sign up
               </Link>
@@ -134,7 +161,7 @@ const Login = () => {
           </div>
         </motion.div>
 
-        <p className="text-center text-xs text-gray-500 mt-6">
+        <p className="text-center text-xs mt-6" style={{ color: 'var(--text-muted)' }}>
           By continuing, you agree to our Terms and Privacy Policy
         </p>
       </div>

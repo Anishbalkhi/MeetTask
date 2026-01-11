@@ -1,4 +1,6 @@
 @import "tailwindcss";
+@import "./global-theme-overrides.css";
+
 
 /* ==========================================
    PREMIUM TYPOGRAPHY
@@ -9,6 +11,99 @@
     --font-heading: 'Poppins', system-ui, -apple-system, sans-serif;
     --font-body: 'Inter', system-ui, -apple-system, sans-serif;
     --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+}
+
+/* ==========================================
+   THEME VARIABLES - DARK MODE (Default)
+   ========================================== */
+
+:root,
+[data-theme="dark"] {
+    /* Background Colors - Unified */
+    --bg-primary: #1a1a1a;
+    --bg-secondary: #1a1a1a;
+    --bg-tertiary: #1a1a1a;
+    --bg-elevated: #1a1a1a;
+    --bg-hover: #2a2a2a;
+    --bg-active: #333333;
+
+    /* Text Colors */
+    --text-primary: #ffffff;
+    --text-secondary: #d1d5db;
+    --text-tertiary: #9ca3af;
+    --text-muted: #6b7280;
+    --text-inverse: #1f2937;
+
+    /* Border Colors */
+    --border-primary: #374151;
+    --border-secondary: #4b5563;
+    --border-hover: #6b7280;
+
+    /* Accent Colors */
+    --accent-primary: #ffffff;
+    --accent-secondary: #ccff00;
+    --accent-hover: #f3f4f6;
+
+    /* UI Element Colors - Unified */
+    --card-bg: #1a1a1a;
+    --card-border: #2D2D2D;
+    --input-bg: #1a1a1a;
+    --input-border: #374151;
+    --scrollbar-track: #1a1a1a;
+    --scrollbar-thumb: #4b5563;
+    --scrollbar-hover: #6b7280;
+
+    /* Shadows */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.6);
+}
+
+/* ==========================================
+   THEME VARIABLES - LIGHT MODE
+   ========================================== */
+
+[data-theme="light"] {
+    /* Background Colors */
+    --bg-primary: #ffffff;
+    --bg-secondary: #f9fafb;
+    --bg-tertiary: #f3f4f6;
+    --bg-elevated: #ffffff;
+    --bg-hover: #f3f4f6;
+    --bg-active: #e5e7eb;
+
+    /* Text Colors */
+    --text-primary: #111827;
+    --text-secondary: #374151;
+    --text-tertiary: #6b7280;
+    --text-muted: #9ca3af;
+    --text-inverse: #ffffff;
+
+    /* Border Colors */
+    --border-primary: #e5e7eb;
+    --border-secondary: #d1d5db;
+    --border-hover: #9ca3af;
+
+    /* Accent Colors */
+    --accent-primary: #111827;
+    --accent-secondary: #ccff00;
+    --accent-hover: #1f2937;
+
+    /* UI Element Colors */
+    --card-bg: #ffffff;
+    --card-border: #e5e7eb;
+    --input-bg: #f9fafb;
+    --input-border: #d1d5db;
+    --scrollbar-track: #f3f4f6;
+    --scrollbar-thumb: #d1d5db;
+    --scrollbar-hover: #9ca3af;
+
+    /* Shadows */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
 }
 
 /* Base Typography */
@@ -660,17 +755,17 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-    background: #f3f4f6;
+    background: var(--scrollbar-track);
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #d1d5db;
+    background: var(--scrollbar-thumb);
     border-radius: 4px;
     transition: background 0.2s;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #9ca3af;
+    background: var(--scrollbar-hover);
 }
 
 /* Card hover effect */
@@ -1559,7 +1654,9 @@ body {
     align-items: center;
     justify-content: center;
     animation: checkPop 2s ease-in-out infinite;
-}/* ==========================================
+}
+
+/* ==========================================
    ENHANCED BACKGROUND ANIMATIONS
    ========================================== */
 

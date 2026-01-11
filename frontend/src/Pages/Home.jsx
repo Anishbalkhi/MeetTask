@@ -2,6 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useAuth } from "../context/AuthContext";
 import { CheckCircle, ArrowRight, Users, Calendar, Zap, Target } from "lucide-react";
+import ThemeToggle from "../components/ThemeToggle";
 
 const Home = () => {
   const { token, logout } = useAuth();
@@ -49,7 +50,12 @@ const Home = () => {
 
       {/* ENHANCED NAVBAR */}
       <motion.nav
-        className="sticky top-0 z-50 backdrop-blur-md bg-white/80 border-b border-gray-200/50 shadow-sm"
+        className="sticky top-0 z-50 backdrop-blur-md"
+        style={{
+          background: 'var(--bg-primary)cc',  // cc = 80% opacity for glassmorphism
+          borderBottom: '1px solid var(--border-primary)',
+          boxShadow: 'var(--shadow-sm)'
+        }}
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
@@ -63,16 +69,25 @@ const Home = () => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                {/* Dark Premium Background */}
-                <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-black to-gray-900 rounded-2xl shadow-2xl group-hover:shadow-gray-700/50 transition-all duration-500"></div>
+                {/* Theme-aware Premium Background */}
+                <div
+                  className="absolute inset-0 rounded-2xl shadow-2xl transition-all duration-500"
+                  style={{
+                    background: 'linear-gradient(to bottom right, var(--accent-primary), var(--text-primary))'
+                  }}
+                ></div>
 
-                {/* Gray accent ring */}
-                <div className="absolute inset-0 rounded-2xl border-2 border-gray-600/20 group-hover:border-gray-400/40 transition-all duration-500"></div>
+                {/* Accent ring */}
+                <div
+                  className="absolute inset-0 rounded-2xl border-2 transition-all duration-500"
+                  style={{ borderColor: 'var(--border-secondary)' }}
+                ></div>
 
                 {/* Icon - Modern Checkmark/Task Symbol */}
                 <div className="absolute inset-0 flex items-center justify-center">
                   <svg
-                    className="w-6 h-6 text-white drop-shadow-lg"
+                    className="w-6 h-6 drop-shadow-lg"
+                    style={{ color: 'var(--text-inverse)' }}
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
@@ -95,10 +110,13 @@ const Home = () => {
               </motion.div>
 
               <div className="flex flex-col">
-                <span className="text-xl font-bold text-gray-900 leading-tight">
+                <span className="text-xl font-bold leading-tight" style={{ color: 'var(--text-primary)' }}>
                   MeetTask
                 </span>
-                <span className="text-[10px] text-gray-500 -mt-0.5 hidden sm:block font-medium tracking-wide">
+                <span
+                  className="text-[10px] -mt-0.5 hidden sm:block font-medium tracking-wide"
+                  style={{ color: 'var(--text-tertiary)' }}
+                >
                   Meet. Transcribe. Execute.
                 </span>
               </div>
@@ -110,7 +128,10 @@ const Home = () => {
                 <motion.a
                   key={item}
                   href={`#${item.toLowerCase()}`}
-                  className="text-gray-600 hover:text-gray-900 font-medium transition-colors text-sm relative group"
+                  className="font-medium transition-colors text-sm relative group"
+                  style={{ color: 'var(--text-secondary)' }}
+                  onMouseEnter={(e) => e.currentTarget.style.color = 'var(--text-primary)'}
+                  onMouseLeave={(e) => e.currentTarget.style.color = 'var(--text-secondary)'}
                   initial={{ opacity: 0, y: -20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 + 0.3 }}
@@ -119,6 +140,9 @@ const Home = () => {
                   <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 group-hover:w-full transition-all duration-300"></span>
                 </motion.a>
               ))}
+
+              {/* Theme Toggle */}
+              <ThemeToggle />
             </div>
 
             {/* CTA Buttons */}
@@ -132,13 +156,25 @@ const Home = () => {
                 <>
                   <Link
                     to="/dashboard"
-                    className="hidden sm:inline-block text-gray-600 hover:text-gray-900 font-medium transition-colors text-sm px-4 py-2 rounded-lg hover:bg-gray-100"
+                    className="hidden sm:inline-block font-medium transition-colors text-sm px-4 py-2 rounded-lg"
+                    style={{ color: 'var(--text-secondary)', background: 'transparent' }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.color = 'var(--text-primary)';
+                      e.currentTarget.style.background = 'var(--bg-hover)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.color = 'var(--text-secondary)';
+                      e.currentTarget.style.background = 'transparent';
+                    }}
                   >
                     Dashboard
                   </Link>
                   <motion.button
                     onClick={handleLogout}
-                    className="bg-gray-900 text-white px-5 py-2.5 rounded-lg font-medium hover:bg-gray-800 transition-all text-sm shadow-lg hover:shadow-xl"
+                    className="px-5 py-2.5 rounded-lg font-medium transition-all text-sm shadow-lg hover:shadow-xl"
+                    style={{ background: 'var(--accent-primary)', color: 'var(--text-inverse)' }}
+                    onMouseEnter={(e) => e.currentTarget.style.background = 'var(--accent-hover)'}
+                    onMouseLeave={(e) => e.currentTarget.style.background = 'var(--accent-primary)'}
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                   >
@@ -149,13 +185,26 @@ const Home = () => {
                 <>
                   <Link
                     to="/login"
-                    className="hidden sm:inline-block text-gray-600 hover:text-gray-900 font-medium transition-colors text-sm px-4 py-2 rounded-lg hover:bg-gray-100"
+                    className="hidden sm:inline-block font-medium transition-colors text-sm px-4 py-2 rounded-lg"
+                    style={{ color: 'var(--text-secondary)', background: 'transparent' }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.color = 'var(--text-primary)';
+                      e.currentTarget.style.background = 'var(--bg-hover)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.color = 'var(--text-secondary)';
+                      e.currentTarget.style.background = 'transparent';
+                    }}
                   >
                     Login
                   </Link>
                   <Link to="/register">
                     <motion.button
-                      className="bg-gradient-to-r from-gray-900 to-gray-800 text-white px-5 py-2.5 rounded-lg font-medium hover:from-gray-800 hover:to-gray-700 transition-all text-sm shadow-lg hover:shadow-xl flex items-center gap-2"
+                      className="px-5 py-2.5 rounded-lg font-medium transition-all text-sm shadow-lg hover:shadow-xl flex items-center gap-2"
+                      style={{
+                        background: 'linear-gradient(to right, var(--accent-primary), var(--text-primary))',
+                        color: 'var(--text-inverse)'
+                      }}
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                     >
@@ -209,27 +258,35 @@ const Home = () => {
           >
             <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
               <span className="text-gradient block">The everything app</span>
-              <span className="text-gray-900 block">for work</span>
+              <span className="block" style={{ color: 'var(--text-primary)' }}>for work</span>
             </h1>
-            <p className="text-xl text-gray-600 mb-10 max-w-2xl mx-auto slide-up-stagger stagger-delay-2">
+            <p className="text-xl mb-10 max-w-2xl mx-auto slide-up-stagger stagger-delay-2" style={{ color: 'var(--text-secondary)' }}>
               Plan, track, and manage any project with tasks, docs, goals, and more. All in one place.
             </p>
             <div className="flex items-center justify-center gap-4 flex-wrap slide-up-stagger stagger-delay-3">
               <Link
                 to="/register"
-                className="bg-gray-900 text-white px-8 py-4 rounded-lg font-semibold hover:bg-gray-800 transition-all inline-flex items-center gap-2 text-base magnetic-hover glow-pulse"
+                className="px-8 py-4 rounded-lg font-semibold transition-all inline-flex items-center gap-2 text-base magnetic-hover glow-pulse"
+                style={{ background: 'var(--accent-primary)', color: 'var(--text-inverse)' }}
               >
                 Get Started - It's Free
                 <ArrowRight className="w-5 h-5" />
               </Link>
               <a
                 href="#features"
-                className="bg-white text-gray-900 px-8 py-4 rounded-lg font-semibold border-2 border-gray-200 hover:border-gray-300 transition-all text-base tilt-hover"
+                className="px-8 py-4 rounded-lg font-semibold border-2 transition-all text-base tilt-hover"
+                style={{
+                  background: 'var(--bg-elevated)',
+                  color: 'var(--text-primary)',
+                  borderColor: 'var(--border-primary)'
+                }}
+                onMouseEnter={(e) => e.currentTarget.style.borderColor = 'var(--border-hover)'}
+                onMouseLeave={(e) => e.currentTarget.style.borderColor = 'var(--border-primary)'}
               >
                 See How It Works
               </a>
             </div>
-            <p className="text-sm text-gray-500 mt-6 slide-up-stagger stagger-delay-4">Free forever. No credit card required.</p>
+            <p className="text-sm mt-6 slide-up-stagger stagger-delay-4" style={{ color: 'var(--text-muted)' }}>Free forever. No credit card required.</p>
           </motion.div>
 
           {/* Hero Image/Mockup */}

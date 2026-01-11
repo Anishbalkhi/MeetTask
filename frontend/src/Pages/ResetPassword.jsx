@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { ArrowLeft, Lock } from "lucide-react";
 import { motion } from "framer-motion";
+import AnimatedBackground from "../components/common/AnimatedBackground";
+import ThemeToggle from "../components/ThemeToggle";
 
 const ResetPassword = () => {
   const [form, setForm] = useState({ password: "", confirmPassword: "" });
@@ -27,9 +29,12 @@ const ResetPassword = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center px-6 py-12 relative overflow-hidden">
-      {/* Enhanced Animated Background */}
+    <div className="min-h-screen flex items-center justify-center px-6 py-12 relative overflow-hidden" style={{ background: 'var(--bg-secondary)' }}>
       <AnimatedBackground />
+
+      <div className="fixed top-6 right-6 z-50">
+        <ThemeToggle />
+      </div>
 
       <div className="w-full max-w-md relative z-10">
 
@@ -40,7 +45,10 @@ const ResetPassword = () => {
         >
           <Link
             to="/login"
-            className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-8 font-medium transition-colors text-sm"
+            className="inline-flex items-center gap-2 mb-8 font-medium transition-colors text-sm"
+            style={{ color: 'var(--text-tertiary)' }}
+            onMouseEnter={(e) => e.currentTarget.style.color = 'var(--text-primary)'}
+            onMouseLeave={(e) => e.currentTarget.style.color = 'var(--text-tertiary)'}
           >
             <ArrowLeft className="w-4 h-4" />
             Back to login
@@ -48,7 +56,12 @@ const ResetPassword = () => {
         </motion.div>
 
         <motion.div
-          className="bg-white border border-gray-200 rounded-lg p-8 shadow-lg"
+          className="rounded-lg p-8"
+          style={{
+            background: 'var(--card-bg)',
+            border: '1px solid var(--card-border)',
+            boxShadow: 'var(--shadow-lg)'
+          }}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.1 }}
@@ -57,10 +70,10 @@ const ResetPassword = () => {
             <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center mb-4">
               <Lock className="w-6 h-6 text-gray-700" />
             </div>
-            <h1 className="text-3xl font-bold mb-2">
-              <span className="text-gradient-fast">Set new password</span>
+            <h1 className="text-3xl font-bold mb-2" style={{ color: 'var(--text-primary)' }}>
+              Set new password
             </h1>
-            <p className="text-gray-600 text-reveal-delay-1">
+            <p className="text-reveal-delay-1" style={{ color: 'var(--text-secondary)' }}>
               Your new password must be different from previous passwords
             </p>
           </div>
@@ -73,7 +86,7 @@ const ResetPassword = () => {
 
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium mb-2" style={{ color: 'var(--text-secondary)' }}>
                 New Password
               </label>
               <input
@@ -81,10 +94,15 @@ const ResetPassword = () => {
                 value={form.password}
                 onChange={(e) => setForm({ ...form, password: e.target.value })}
                 required
-                className="w-full px-3 py-2 bg-white border border-gray-200 rounded text-gray-900 text-sm focus:outline-none focus:border-gray-300 transition-colors"
+                className="w-full px-3 py-2 rounded text-sm focus:outline-none transition-colors"
+                style={{
+                  background: 'var(--input-bg)',
+                  border: '1px solid var(--input-border)',
+                  color: 'var(--text-primary)'
+                }}
                 placeholder="••••••••"
               />
-              <p className="text-xs text-gray-500 mt-2">
+              <p className="text-xs mt-2" style={{ color: 'var(--text-muted)' }}>
                 Must be at least 8 characters
               </p>
             </div>
@@ -106,7 +124,8 @@ const ResetPassword = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-gray-900 text-white px-6 py-2.5 rounded font-medium hover:bg-gray-800 transition-all disabled:opacity-50 text-sm magnetic-hover"
+              className="w-full px-6 py-2.5 rounded font-medium transition-all disabled:opacity-50 text-sm magnetic-hover"
+              style={{ background: 'var(--accent-primary)', color: 'var(--text-inverse)' }}
             >
               {loading ? "Resetting..." : "Reset password"}
             </button>

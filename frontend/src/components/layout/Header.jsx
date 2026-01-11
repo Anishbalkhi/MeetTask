@@ -4,6 +4,7 @@ import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { Search, ChevronDown, Plus, Check, Settings, User, LogOut } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import ThemeToggle from "../ThemeToggle";
 
 const Header = () => {
     const { currentWorkspace, workspaces, setCurrentWorkspace } = useWorkspace();
@@ -28,7 +29,14 @@ const Header = () => {
     };
 
     return (
-        <header className="h-14 flex items-center justify-between px-6 bg-white border-b border-gray-200 sticky top-0 z-40 shadow-sm">
+        <header
+            className="h-14 flex items-center justify-between px-6 sticky top-0 z-40"
+            style={{
+                background: 'var(--bg-primary)',
+                borderBottom: '1px solid var(--border-primary)',
+                boxShadow: 'var(--shadow-sm)'
+            }}
+        >
 
             {/* Left Side - Workspace Switcher & Search */}
             <div className="flex items-center gap-4 flex-1">
@@ -36,13 +44,28 @@ const Header = () => {
                 <div className="relative">
                     <button
                         onClick={() => setIsWsOpen(!isWsOpen)}
-                        className="flex items-center gap-2 px-3 py-1.5 rounded hover:bg-gray-100 transition-colors text-sm font-medium text-gray-700"
+                        className="flex items-center gap-2 px-3 py-1.5 rounded transition-colors text-sm font-medium"
+                        style={{
+                            color: 'var(--text-secondary)',
+                            background: 'transparent'
+                        }}
+                        onMouseEnter={(e) => e.currentTarget.style.background = 'var(--bg-hover)'}
+                        onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
                     >
-                        <div className="w-5 h-5 rounded bg-gray-900 flex items-center justify-center text-white text-xs font-bold">
+                        <div
+                            className="w-5 h-5 rounded flex items-center justify-center text-xs font-bold"
+                            style={{
+                                background: 'var(--accent-primary)',
+                                color: 'var(--text-inverse)'
+                            }}
+                        >
                             {currentWorkspace ? currentWorkspace.name.substring(0, 1).toUpperCase() : "W"}
                         </div>
                         <span className="hidden sm:inline">{currentWorkspace?.name || "Select Workspace"}</span>
-                        <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform ${isWsOpen ? 'rotate-180' : ''}`} />
+                        <ChevronDown
+                            className={`w-4 h-4 transition-transform ${isWsOpen ? 'rotate-180' : ''}`}
+                            style={{ color: 'var(--text-tertiary)' }}
+                        />
                     </button>
 
                     {/* Workspace Dropdown */}
@@ -53,9 +76,14 @@ const Header = () => {
                                 animate={{ opacity: 1, y: 0 }}
                                 exit={{ opacity: 0, y: -10 }}
                                 transition={{ duration: 0.15 }}
-                                className="absolute left-0 top-10 bg-white border border-gray-200 rounded-lg shadow-lg p-2 w-64 z-50"
+                                className="absolute left-0 top-10 rounded-lg p-2 w-64 z-50"
+                                style={{
+                                    background: 'var(--bg-elevated)',
+                                    border: '1px solid var(--border-primary)',
+                                    boxShadow: 'var(--shadow-lg)'
+                                }}
                             >
-                                <div className="text-xs font-semibold text-gray-500 px-3 py-2">
+                                <div className="text-xs font-semibold px-3 py-2" style={{ color: 'var(--text-muted)' }}>
                                     WORKSPACES
                                 </div>
                                 <div className="max-h-64 overflow-y-auto">
@@ -63,27 +91,48 @@ const Header = () => {
                                         <button
                                             key={ws.id}
                                             onClick={() => handleWsSwitch(ws)}
-                                            className={`w-full text-left px-3 py-2 rounded text-sm flex items-center justify-between transition-colors
-                                                ${currentWorkspace?.id === ws.id
-                                                    ? 'bg-gray-100 text-gray-900 font-medium'
-                                                    : 'text-gray-700 hover:bg-gray-50'}`}
+                                            className="w-full text-left px-3 py-2 rounded text-sm flex items-center justify-between transition-colors"
+                                            style={{
+                                                background: currentWorkspace?.id === ws.id ? 'var(--bg-hover)' : 'transparent',
+                                                color: currentWorkspace?.id === ws.id ? 'var(--text-primary)' : 'var(--text-secondary)',
+                                                fontWeight: currentWorkspace?.id === ws.id ? '500' : '400'
+                                            }}
+                                            onMouseEnter={(e) => {
+                                                if (currentWorkspace?.id !== ws.id) {
+                                                    e.currentTarget.style.background = 'var(--bg-hover)';
+                                                }
+                                            }}
+                                            onMouseLeave={(e) => {
+                                                if (currentWorkspace?.id !== ws.id) {
+                                                    e.currentTarget.style.background = 'transparent';
+                                                }
+                                            }}
                                         >
                                             <div className="flex items-center gap-2">
-                                                <div className="w-5 h-5 rounded bg-gray-900 flex items-center justify-center text-white text-xs font-bold">
+                                                <div
+                                                    className="w-5 h-5 rounded flex items-center justify-center text-xs font-bold"
+                                                    style={{
+                                                        background: 'var(--accent-primary)',
+                                                        color: 'var(--text-inverse)'
+                                                    }}
+                                                >
                                                     {ws.name.substring(0, 1).toUpperCase()}
                                                 </div>
                                                 <span>{ws.name}</span>
                                             </div>
                                             {currentWorkspace?.id === ws.id && (
-                                                <Check className="w-4 h-4 text-gray-900" />
+                                                <Check className="w-4 h-4" style={{ color: 'var(--text-primary)' }} />
                                             )}
                                         </button>
                                     ))}
                                 </div>
-                                <div className="border-t border-gray-200 mt-2 pt-2">
+                                <div className="mt-2 pt-2" style={{ borderTop: '1px solid var(--border-primary)' }}>
                                     <button
                                         onClick={handleNewWorkspace}
-                                        className="w-full text-left px-3 py-2 rounded text-sm text-gray-700 hover:bg-gray-50 font-medium flex items-center gap-2 transition-colors"
+                                        className="w-full text-left px-3 py-2 rounded text-sm font-medium flex items-center gap-2 transition-colors"
+                                        style={{ color: 'var(--text-secondary)', background: 'transparent' }}
+                                        onMouseEnter={(e) => e.currentTarget.style.background = 'var(--bg-hover)'}
+                                        onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
                                     >
                                         <Plus className="w-4 h-4" /> New Workspace
                                     </button>
@@ -92,7 +141,10 @@ const Header = () => {
                                             setIsWsOpen(false);
                                             navigate("/dashboard/workspace");
                                         }}
-                                        className="w-full text-left px-3 py-2 rounded text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2 transition-colors"
+                                        className="w-full text-left px-3 py-2 rounded text-sm flex items-center gap-2 transition-colors"
+                                        style={{ color: 'var(--text-secondary)', background: 'transparent' }}
+                                        onMouseEnter={(e) => e.currentTarget.style.background = 'var(--bg-hover)'}
+                                        onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
                                     >
                                         <Settings className="w-4 h-4" /> Workspace Settings
                                     </button>
@@ -104,24 +156,49 @@ const Header = () => {
 
                 {/* Search Bar - Hidden on mobile */}
                 <div className="relative flex-1 max-w-md hidden md:block">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: 'var(--text-tertiary)' }} />
                     <input
                         type="text"
                         placeholder="Search..."
-                        className="w-full bg-gray-50 border border-gray-200 text-sm text-gray-900 rounded pl-9 pr-4 py-2 focus:outline-none focus:border-gray-300 focus:bg-white transition-all placeholder-gray-400"
+                        className="w-full text-sm rounded pl-9 pr-4 py-2 focus:outline-none transition-all"
+                        style={{
+                            background: 'var(--input-bg)',
+                            border: '1px solid var(--input-border)',
+                            color: 'var(--text-primary)'
+                        }}
+                        onFocus={(e) => {
+                            e.currentTarget.style.borderColor = 'var(--border-hover)';
+                            e.currentTarget.style.background = 'var(--bg-primary)';
+                        }}
+                        onBlur={(e) => {
+                            e.currentTarget.style.borderColor = 'var(--input-border)';
+                            e.currentTarget.style.background = 'var(--input-bg)';
+                        }}
                     />
                 </div>
             </div>
 
             {/* Right Side Actions */}
             <div className="flex items-center gap-2">
+                {/* Theme Toggle */}
+                <ThemeToggle />
+
                 {/* Profile Dropdown */}
                 <div className="relative">
                     <button
                         onClick={() => setIsProfileOpen(!isProfileOpen)}
-                        className="flex items-center gap-2 px-2 py-1.5 rounded hover:bg-gray-100 transition-colors"
+                        className="flex items-center gap-2 px-2 py-1.5 rounded transition-colors"
+                        style={{ background: 'transparent' }}
+                        onMouseEnter={(e) => e.currentTarget.style.background = 'var(--bg-hover)'}
+                        onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
                     >
-                        <div className="w-7 h-7 rounded-full bg-gray-900 flex items-center justify-center text-white text-sm font-medium">
+                        <div
+                            className="w-7 h-7 rounded-full flex items-center justify-center text-sm font-medium"
+                            style={{
+                                background: 'var(--accent-primary)',
+                                color: 'var(--text-inverse)'
+                            }}
+                        >
                             <User className="w-4 h-4" />
                         </div>
                     </button>
@@ -133,11 +210,19 @@ const Header = () => {
                                 animate={{ opacity: 1, y: 0 }}
                                 exit={{ opacity: 0, y: -10 }}
                                 transition={{ duration: 0.15 }}
-                                className="absolute right-0 top-10 w-56 bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden z-50"
+                                className="absolute right-0 top-10 w-56 rounded-lg overflow-hidden z-50"
+                                style={{
+                                    background: 'var(--bg-elevated)',
+                                    border: '1px solid var(--border-primary)',
+                                    boxShadow: 'var(--shadow-lg)'
+                                }}
                             >
-                                <div className="px-4 py-3 border-b border-gray-200">
-                                    <p className="text-sm font-semibold text-gray-900">Guest User</p>
-                                    <p className="text-xs text-gray-500">user@example.com</p>
+                                <div
+                                    className="px-4 py-3"
+                                    style={{ borderBottom: '1px solid var(--border-primary)' }}
+                                >
+                                    <p className="text-sm font-semibold" style={{ color: 'var(--text-primary)' }}>Guest User</p>
+                                    <p className="text-xs" style={{ color: 'var(--text-muted)' }}>user@example.com</p>
                                 </div>
                                 <div className="p-1">
                                     <button
@@ -145,16 +230,27 @@ const Header = () => {
                                             setIsProfileOpen(false);
                                             navigate("/dashboard/profile");
                                         }}
-                                        className="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded flex items-center gap-2 transition-colors"
+                                        className="w-full text-left px-3 py-2 text-sm rounded flex items-center gap-2 transition-colors"
+                                        style={{ color: 'var(--text-secondary)', background: 'transparent' }}
+                                        onMouseEnter={(e) => e.currentTarget.style.background = 'var(--bg-hover)'}
+                                        onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
                                     >
                                         <User className="w-4 h-4" /> Profile
                                     </button>
-                                    <button className="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded flex items-center gap-2 transition-colors">
+                                    <button
+                                        className="w-full text-left px-3 py-2 text-sm rounded flex items-center gap-2 transition-colors"
+                                        style={{ color: 'var(--text-secondary)', background: 'transparent' }}
+                                        onMouseEnter={(e) => e.currentTarget.style.background = 'var(--bg-hover)'}
+                                        onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                                    >
                                         <Settings className="w-4 h-4" /> Settings
                                     </button>
                                     <button
                                         onClick={handleLogout}
-                                        className="w-full text-left px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded flex items-center gap-2 transition-colors"
+                                        className="w-full text-left px-3 py-2 text-sm rounded flex items-center gap-2 transition-colors"
+                                        style={{ color: '#ef4444', background: 'transparent' }}
+                                        onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(239, 68, 68, 0.1)'}
+                                        onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
                                     >
                                         <LogOut className="w-4 h-4" /> Logout
                                     </button>

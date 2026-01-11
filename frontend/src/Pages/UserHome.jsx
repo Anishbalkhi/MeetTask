@@ -79,6 +79,17 @@ const UserHome = () => {
         };
 
         fetchUserTasks();
+
+        // Fallback timeout - if still loading after 6 seconds, show demo data
+        const timeoutId = setTimeout(() => {
+            if (loading) {
+                console.warn('⚠️ Task loading timeout - showing demo data');
+                setUserTasks(DEMO_TASKS);
+                setLoading(false);
+            }
+        }, 6000);
+
+        return () => clearTimeout(timeoutId);
     }, []);
 
     // Close dropdown when clicking outside
@@ -152,18 +163,21 @@ const UserHome = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gray-50">
+        <div className="min-h-screen" style={{ background: 'var(--bg-secondary)' }}>
             <div className="p-6">
                 {/* Page Header */}
                 <div className="mb-6">
                     <div className="flex items-center justify-between mb-4">
                         <div>
-                            <h1 className="text-2xl font-bold text-gray-900">My Tasks</h1>
-                            <p className="text-sm text-gray-500 mt-1">Track and manage your personal tasks</p>
+                            <h1 className="text-2xl font-bold" style={{ color: 'var(--text-primary)' }}>My Tasks</h1>
+                            <p className="text-sm mt-1" style={{ color: 'var(--text-muted)' }}>Track and manage your personal tasks</p>
                         </div>
                         <button
                             onClick={() => setIsModalOpen(true)}
-                            className="px-4 py-2 bg-gray-900 text-white rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors flex items-center gap-2"
+                            className="px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2"
+                            style={{ background: 'var(--accent-primary)', color: 'var(--text-inverse)' }}
+                            onMouseEnter={(e) => e.currentTarget.style.background = 'var(--accent-hover)'}
+                            onMouseLeave={(e) => e.currentTarget.style.background = 'var(--accent-primary)'}
                         >
                             <Plus className="w-4 h-4" />
                             Add Task
@@ -171,21 +185,29 @@ const UserHome = () => {
                     </div>
 
                     {/* Toolbar */}
-                    <div className="flex items-center justify-between bg-white border border-gray-200 rounded-lg p-3">
+                    <div className="flex items-center justify-between rounded-lg p-3" style={{ background: 'var(--bg-primary)', border: '1px solid var(--border-primary)' }}>
                         <div className="flex items-center gap-2">
                             {/* View Toggle */}
-                            <div className="flex items-center gap-1 bg-gray-100 rounded p-0.5">
+                            <div className="flex items-center gap-1 rounded p-0.5" style={{ background: 'var(--bg-tertiary)' }}>
                                 <button
                                     onClick={() => setViewMode("list")}
-                                    className={`p-1.5 rounded transition-colors ${viewMode === "list" ? "bg-white text-gray-900 shadow-sm" : "text-gray-500 hover:text-gray-900"
-                                        }`}
+                                    className="p-1.5 rounded transition-colors"
+                                    style={{
+                                        background: viewMode === "list" ? 'var(--bg-primary)' : 'transparent',
+                                        color: viewMode === "list" ? 'var(--text-primary)' : 'var(--text-tertiary)',
+                                        boxShadow: viewMode === "list" ? 'var(--shadow-sm)' : 'none'
+                                    }}
                                 >
                                     <List className="w-4 h-4" />
                                 </button>
                                 <button
                                     onClick={() => setViewMode("grid")}
-                                    className={`p-1.5 rounded transition-colors ${viewMode === "grid" ? "bg-white text-gray-900 shadow-sm" : "text-gray-500 hover:text-gray-900"
-                                        }`}
+                                    className="p-1.5 rounded transition-colors"
+                                    style={{
+                                        background: viewMode === "grid" ? 'var(--bg-primary)' : 'transparent',
+                                        color: viewMode === "grid" ? 'var(--text-primary)' : 'var(--text-tertiary)',
+                                        boxShadow: viewMode === "grid" ? 'var(--shadow-sm)' : 'none'
+                                    }}
                                 >
                                     <Grid3x3 className="w-4 h-4" />
                                 </button>
@@ -239,9 +261,9 @@ const UserHome = () => {
                     </div>
                 ) : viewMode === "list" ? (
                     // LIST VIEW
-                    <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
+                    <div className="rounded-lg overflow-hidden" style={{ background: 'var(--card-bg)', border: '1px solid var(--card-border)' }}>
                         {/* Table Header */}
-                        <div className="grid grid-cols-12 gap-4 px-4 py-3 bg-gray-50 border-b border-gray-200 text-xs font-semibold text-gray-500 uppercase">
+                        <div className="grid grid-cols-12 gap-4 px-4 py-3 text-xs font-semibold uppercase" style={{ background: 'var(--bg-tertiary)', borderBottom: '1px solid var(--border-primary)', color: 'var(--text-muted)' }}>
                             <div className="col-span-6">Task Name</div>
                             <div className="col-span-2">Status</div>
                             <div className="col-span-2">Priority</div>
@@ -254,7 +276,10 @@ const UserHome = () => {
                             {filteredTasks.map((task, index) => (
                                 <motion.div
                                     key={task.id || index}
-                                    className="grid grid-cols-12 gap-4 px-4 py-3 border-b border-gray-100 hover:bg-gray-50 transition-colors group"
+                                    className="grid grid-cols-12 gap-4 px-4 py-3 transition-colors group"
+                                    style={{ borderBottom: '1px solid var(--border-primary)' }}
+                                    onMouseEnter={(e) => e.currentTarget.style.background = 'var(--bg-hover)'}
+                                    onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
                                     initial={{ opacity: 0, y: 10 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ delay: index * 0.05 }}
@@ -264,7 +289,7 @@ const UserHome = () => {
                                         <button className="text-gray-300 hover:text-gray-900 transition-colors">
                                             <Circle className="w-4 h-4" />
                                         </button>
-                                        <span className="text-sm text-gray-900 font-medium line-clamp-1">
+                                        <span className="text-sm font-medium line-clamp-1" style={{ color: 'var(--text-primary)' }}>
                                             {task.title || task.name || "Untitled Task"}
                                         </span>
                                     </div>

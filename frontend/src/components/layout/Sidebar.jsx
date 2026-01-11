@@ -15,23 +15,41 @@ const Sidebar = () => {
     return (
         <>
             {/* Desktop Sidebar */}
-            <aside className="hidden md:flex w-16 bg-gradient-to-b from-[#1E1E1E] to-[#2D2D2D] flex-col items-center py-4 fixed left-0 top-0 h-full z-50 border-r border-gray-800">
+            <aside
+                className="hidden md:flex w-16 flex-col items-center py-4 fixed left-0 top-0 h-full z-50"
+                style={{
+                    background: 'linear-gradient(to bottom, var(--bg-secondary), var(--bg-tertiary))',
+                    borderRight: '1px solid var(--border-primary)'
+                }}
+            >
 
                 {/* App Logo */}
                 <Link to="/dashboard" className="mb-8 group relative">
                     <motion.div
-                        className="w-10 h-10 rounded-lg bg-white flex items-center justify-center shadow-lg"
+                        className="w-10 h-10 rounded-lg flex items-center justify-center shadow-lg"
+                        style={{
+                            background: 'var(--accent-primary)'
+                        }}
                         whileHover={{ scale: 1.1, rotate: 5 }}
                         whileTap={{ scale: 0.95 }}
                         transition={{ type: "spring", stiffness: 300 }}
                     >
-                        <Sparkles className="w-5 h-5 text-gray-900" />
+                        <Sparkles className="w-5 h-5" style={{ color: 'var(--text-inverse)' }} />
                     </motion.div>
 
                     {/* Tooltip */}
-                    <div className="absolute left-14 top-1/2 -translate-y-1/2 px-3 py-1.5 bg-gray-900 rounded text-xs font-medium text-white opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50 shadow-xl">
+                    <div
+                        className="absolute left-14 top-1/2 -translate-y-1/2 px-3 py-1.5 rounded text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50 shadow-xl"
+                        style={{
+                            background: 'var(--accent-primary)',
+                            color: 'var(--text-inverse)'
+                        }}
+                    >
                         MeetTask
-                        <div className="absolute -left-1 top-1/2 -translate-y-1/2 w-2 h-2 bg-gray-900 rotate-45"></div>
+                        <div
+                            className="absolute -left-1 top-1/2 -translate-y-1/2 w-2 h-2 rotate-45"
+                            style={{ background: 'var(--accent-primary)' }}
+                        ></div>
                     </div>
                 </Link>
 
@@ -46,12 +64,24 @@ const Sidebar = () => {
                             <motion.div
                                 whileHover={{ scale: 1.08, x: 2 }}
                                 whileTap={{ scale: 0.95 }}
-                                className={`flex items-center justify-center w-full h-10 rounded-lg transition-all relative overflow-hidden
-                                    ${isActive(item.path)
-                                        ? "bg-white text-gray-900 shadow-lg"
-                                        : "hover:bg-[#3D3D3D] text-gray-400 hover:text-white"
+                                className="flex items-center justify-center w-full h-10 rounded-lg transition-all relative overflow-hidden"
+                                style={{
+                                    background: isActive(item.path) ? 'var(--accent-primary)' : 'transparent',
+                                    color: isActive(item.path) ? 'var(--text-inverse)' : 'var(--text-tertiary)',
+                                    boxShadow: isActive(item.path) ? 'var(--shadow-md)' : 'none'
+                                }}
+                                onMouseEnter={(e) => {
+                                    if (!isActive(item.path)) {
+                                        e.currentTarget.style.background = 'var(--bg-hover)';
+                                        e.currentTarget.style.color = 'var(--text-primary)';
                                     }
-                                `}
+                                }}
+                                onMouseLeave={(e) => {
+                                    if (!isActive(item.path)) {
+                                        e.currentTarget.style.background = 'transparent';
+                                        e.currentTarget.style.color = 'var(--text-tertiary)';
+                                    }
+                                }}
                             >
                                 <item.icon className="w-5 h-5" />
 
@@ -59,7 +89,8 @@ const Sidebar = () => {
                                 {isActive(item.path) && (
                                     <motion.div
                                         layoutId="activeIndicator"
-                                        className="absolute -left-2 w-1 h-6 bg-white rounded-r shadow-lg"
+                                        className="absolute -left-2 w-1 h-6 rounded-r shadow-lg"
+                                        style={{ background: 'var(--accent-primary)' }}
                                         initial={false}
                                         transition={{ type: "spring", stiffness: 300, damping: 30 }}
                                     />
@@ -67,9 +98,18 @@ const Sidebar = () => {
                             </motion.div>
 
                             {/* Tooltip */}
-                            <div className="absolute left-14 top-1/2 -translate-y-1/2 px-3 py-1.5 bg-gray-900 rounded text-xs font-medium text-white opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50 shadow-xl">
+                            <div
+                                className="absolute left-14 top-1/2 -translate-y-1/2 px-3 py-1.5 rounded text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50 shadow-xl"
+                                style={{
+                                    background: 'var(--accent-primary)',
+                                    color: 'var(--text-inverse)'
+                                }}
+                            >
                                 {item.label}
-                                <div className="absolute -left-1 top-1/2 -translate-y-1/2 w-2 h-2 bg-gray-900 rotate-45"></div>
+                                <div
+                                    className="absolute -left-1 top-1/2 -translate-y-1/2 w-2 h-2 rotate-45"
+                                    style={{ background: 'var(--accent-primary)' }}
+                                ></div>
                             </div>
                         </Link>
                     ))}
@@ -83,15 +123,28 @@ const Sidebar = () => {
                     <motion.button
                         whileHover={{ scale: 1.08, y: -2 }}
                         whileTap={{ scale: 0.95 }}
-                        className="w-full h-10 flex items-center justify-center rounded-lg bg-white text-gray-900 transition-all shadow-lg hover:shadow-xl"
+                        className="w-full h-10 flex items-center justify-center rounded-lg transition-all shadow-lg hover:shadow-xl"
+                        style={{
+                            background: 'var(--accent-primary)',
+                            color: 'var(--text-inverse)'
+                        }}
                     >
                         <Plus className="w-5 h-5" />
                     </motion.button>
 
                     {/* Tooltip */}
-                    <div className="absolute left-14 top-1/2 -translate-y-1/2 px-3 py-1.5 bg-gray-900 rounded text-xs font-medium text-white opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50 shadow-xl">
+                    <div
+                        className="absolute left-14 top-1/2 -translate-y-1/2 px-3 py-1.5 rounded text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50 shadow-xl"
+                        style={{
+                            background: 'var(--accent-primary)',
+                            color: 'var(--text-inverse)'
+                        }}
+                    >
                         Create
-                        <div className="absolute -left-1 top-1/2 -translate-y-1/2 w-2 h-2 bg-gray-900 rotate-45"></div>
+                        <div
+                            className="absolute -left-1 top-1/2 -translate-y-1/2 w-2 h-2 rotate-45"
+                            style={{ background: 'var(--accent-primary)' }}
+                        ></div>
                     </div>
                 </Link>
 
@@ -101,14 +154,35 @@ const Sidebar = () => {
                         <motion.button
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
-                            className="w-full h-10 flex items-center justify-center rounded-lg hover:bg-[#2D2D2D] text-gray-400 hover:text-white transition-all"
+                            className="w-full h-10 flex items-center justify-center rounded-lg transition-all"
+                            style={{
+                                background: 'transparent',
+                                color: 'var(--text-tertiary)'
+                            }}
+                            onMouseEnter={(e) => {
+                                e.currentTarget.style.background = 'var(--bg-tertiary)';
+                                e.currentTarget.style.color = 'var(--text-primary)';
+                            }}
+                            onMouseLeave={(e) => {
+                                e.currentTarget.style.background = 'transparent';
+                                e.currentTarget.style.color = 'var(--text-tertiary)';
+                            }}
                         >
                             <Settings className="w-5 h-5" />
 
                             {/* Tooltip */}
-                            <div className="absolute left-14 top-1/2 -translate-y-1/2 px-3 py-1.5 bg-gray-900 rounded text-xs font-medium text-white opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50 shadow-xl">
+                            <div
+                                className="absolute left-14 top-1/2 -translate-y-1/2 px-3 py-1.5 rounded text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50 shadow-xl"
+                                style={{
+                                    background: 'var(--accent-primary)',
+                                    color: 'var(--text-inverse)'
+                                }}
+                            >
                                 Settings
-                                <div className="absolute -left-1 top-1/2 -translate-y-1/2 w-2 h-2 bg-gray-900 rotate-45"></div>
+                                <div
+                                    className="absolute -left-1 top-1/2 -translate-y-1/2 w-2 h-2 rotate-45"
+                                    style={{ background: 'var(--accent-primary)' }}
+                                ></div>
                             </div>
                         </motion.button>
                     </Link>
@@ -117,7 +191,13 @@ const Sidebar = () => {
             </aside>
 
             {/* Mobile Bottom Navigation */}
-            <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50 safe-area-inset-bottom">
+            <nav
+                className="md:hidden fixed bottom-0 left-0 right-0 z-50 safe-area-inset-bottom"
+                style={{
+                    background: 'var(--bg-primary)',
+                    borderTop: '1px solid var(--border-primary)'
+                }}
+            >
                 <div className="flex items-center justify-around px-2 py-2">
                     {navItems.map((item) => (
                         <Link
@@ -127,17 +207,21 @@ const Sidebar = () => {
                         >
                             <motion.div
                                 whileTap={{ scale: 0.9 }}
-                                className={`${isActive(item.path) ? 'text-gray-900' : 'text-gray-500'}`}
+                                style={{ color: isActive(item.path) ? 'var(--accent-primary)' : 'var(--text-tertiary)' }}
                             >
                                 <item.icon className="w-6 h-6" />
                             </motion.div>
-                            <span className={`text-xs font-medium ${isActive(item.path) ? 'text-gray-900' : 'text-gray-500'}`}>
+                            <span
+                                className="text-xs font-medium"
+                                style={{ color: isActive(item.path) ? 'var(--text-primary)' : 'var(--text-muted)' }}
+                            >
                                 {item.label}
                             </span>
                             {isActive(item.path) && (
                                 <motion.div
                                     layoutId="activeMobileIndicator"
-                                    className="absolute top-0 left-1/2 -translate-x-1/2 w-12 h-1 bg-gray-900 rounded-b"
+                                    className="absolute top-0 left-1/2 -translate-x-1/2 w-12 h-1 rounded-b"
+                                    style={{ background: 'var(--accent-primary)' }}
                                     initial={false}
                                     transition={{ type: "spring", stiffness: 300, damping: 30 }}
                                 />
@@ -152,11 +236,15 @@ const Sidebar = () => {
                     >
                         <motion.div
                             whileTap={{ scale: 0.9 }}
-                            className="w-6 h-6 bg-gray-900 rounded-full flex items-center justify-center"
+                            className="w-6 h-6 rounded-full flex items-center justify-center"
+                            style={{
+                                background: 'var(--accent-primary)',
+                                color: 'var(--text-inverse)'
+                            }}
                         >
-                            <Plus className="w-4 h-4 text-white" />
+                            <Plus className="w-4 h-4" />
                         </motion.div>
-                        <span className="text-xs font-medium text-gray-500">Create</span>
+                        <span className="text-xs font-medium" style={{ color: 'var(--text-muted)' }}>Create</span>
                     </Link>
 
                     {/* Settings */}
@@ -164,8 +252,8 @@ const Sidebar = () => {
                         to="/dashboard/workspace"
                         className="flex flex-col items-center gap-1 px-4 py-2"
                     >
-                        <Settings className="w-6 h-6 text-gray-500" />
-                        <span className="text-xs font-medium text-gray-500">Settings</span>
+                        <Settings className="w-6 h-6" style={{ color: 'var(--text-tertiary)' }} />
+                        <span className="text-xs font-medium" style={{ color: 'var(--text-muted)' }}>Settings</span>
                     </Link>
                 </div>
             </nav>
