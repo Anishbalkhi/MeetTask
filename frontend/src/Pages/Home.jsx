@@ -47,85 +47,189 @@ const Home = () => {
   return (
     <div className="min-h-screen bg-white">
 
-      {/* NAVBAR */}
-      <nav className="sticky top-0 z-50 bg-white border-b border-gray-200">
-        <div className="max-w-6xl mx-auto px-6 md:px-12 py-4 flex justify-between items-center">
-          <Link to="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-gray-900 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm">MT</span>
+      {/* ENHANCED NAVBAR */}
+      <motion.nav
+        className="sticky top-0 z-50 backdrop-blur-md bg-white/80 border-b border-gray-200/50 shadow-sm"
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 py-4">
+          <div className="flex justify-between items-center">
+            {/* Logo with Professional Icon */}
+            <Link to="/" className="flex items-center gap-3 group">
+              <motion.div
+                className="w-11 h-11 relative"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                {/* Dark Premium Background */}
+                <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-black to-gray-900 rounded-2xl shadow-2xl group-hover:shadow-gray-700/50 transition-all duration-500"></div>
+
+                {/* Gray accent ring */}
+                <div className="absolute inset-0 rounded-2xl border-2 border-gray-600/20 group-hover:border-gray-400/40 transition-all duration-500"></div>
+
+                {/* Icon - Modern Checkmark/Task Symbol */}
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <svg
+                    className="w-6 h-6 text-white drop-shadow-lg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    {/* Check mark combined with circle */}
+                    <circle cx="12" cy="12" r="10" strokeWidth="2" opacity="0.3" />
+                    <path d="M9 12l2 2 4-4" />
+                    <path d="M12 2v4M12 18v4M2 12h4M18 12h4" opacity="0.5" strokeWidth="1.5" />
+                  </svg>
+                </div>
+
+                {/* Subtle shine */}
+                <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/20 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-all duration-500 blur-sm"></div>
+
+                {/* Dark glow aura */}
+                <div className="absolute -inset-1 bg-gradient-to-br from-gray-700/30 via-gray-600/20 to-gray-500/30 rounded-2xl blur-lg opacity-0 group-hover:opacity-70 transition-all duration-500 -z-10"></div>
+              </motion.div>
+
+              <div className="flex flex-col">
+                <span className="text-xl font-bold text-gray-900 leading-tight">
+                  MeetTask
+                </span>
+                <span className="text-[10px] text-gray-500 -mt-0.5 hidden sm:block font-medium tracking-wide">
+                  Meet. Transcribe. Execute.
+                </span>
+              </div>
+            </Link>
+
+            {/* Desktop Navigation */}
+            <div className="hidden md:flex items-center gap-8">
+              {['Features', 'Benefits', 'Pricing'].map((item, index) => (
+                <motion.a
+                  key={item}
+                  href={`#${item.toLowerCase()}`}
+                  className="text-gray-600 hover:text-gray-900 font-medium transition-colors text-sm relative group"
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1 + 0.3 }}
+                >
+                  {item}
+                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 group-hover:w-full transition-all duration-300"></span>
+                </motion.a>
+              ))}
             </div>
-            <span className="text-xl font-bold text-gray-900">
-              MeetTask
-            </span>
-          </Link>
 
-          <div className="hidden md:flex items-center gap-8">
-            <a href="#features" className="text-gray-600 hover:text-gray-900 font-medium transition-colors text-sm">Features</a>
-            <a href="#benefits" className="text-gray-600 hover:text-gray-900 font-medium transition-colors text-sm">Benefits</a>
-            <a href="#pricing" className="text-gray-600 hover:text-gray-900 font-medium transition-colors text-sm">Pricing</a>
-          </div>
-
-          <div className="flex items-center gap-3">
-            {token ? (
-              <>
-                <Link to="/dashboard" className="text-gray-600 hover:text-gray-900 font-medium transition-colors text-sm">
-                  Dashboard
-                </Link>
-                <button
-                  onClick={handleLogout}
-                  className="bg-gray-900 text-white px-4 py-2 rounded font-medium hover:bg-gray-800 transition-colors text-sm"
-                >
-                  Logout
-                </button>
-              </>
-            ) : (
-              <>
-                <Link to="/login" className="text-gray-600 hover:text-gray-900 font-medium transition-colors text-sm">
-                  Login
-                </Link>
-                <Link
-                  to="/register"
-                  className="bg-gray-900 text-white px-4 py-2 rounded font-medium hover:bg-gray-800 transition-colors text-sm"
-                >
-                  Get Started
-                </Link>
-              </>
-            )}
+            {/* CTA Buttons */}
+            <motion.div
+              className="flex items-center gap-3"
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.4 }}
+            >
+              {token ? (
+                <>
+                  <Link
+                    to="/dashboard"
+                    className="hidden sm:inline-block text-gray-600 hover:text-gray-900 font-medium transition-colors text-sm px-4 py-2 rounded-lg hover:bg-gray-100"
+                  >
+                    Dashboard
+                  </Link>
+                  <motion.button
+                    onClick={handleLogout}
+                    className="bg-gray-900 text-white px-5 py-2.5 rounded-lg font-medium hover:bg-gray-800 transition-all text-sm shadow-lg hover:shadow-xl"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    Logout
+                  </motion.button>
+                </>
+              ) : (
+                <>
+                  <Link
+                    to="/login"
+                    className="hidden sm:inline-block text-gray-600 hover:text-gray-900 font-medium transition-colors text-sm px-4 py-2 rounded-lg hover:bg-gray-100"
+                  >
+                    Login
+                  </Link>
+                  <Link to="/register">
+                    <motion.button
+                      className="bg-gradient-to-r from-gray-900 to-gray-800 text-white px-5 py-2.5 rounded-lg font-medium hover:from-gray-800 hover:to-gray-700 transition-all text-sm shadow-lg hover:shadow-xl flex items-center gap-2"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      Get Started
+                      <ArrowRight className="w-4 h-4" />
+                    </motion.button>
+                  </Link>
+                </>
+              )}
+            </motion.div>
           </div>
         </div>
-      </nav>
+      </motion.nav>
 
       {/* HERO SECTION */}
-      <section className="relative pt-20 pb-32 px-6">
-        <div className="max-w-6xl mx-auto text-center">
+      <section className="relative pt-20 pb-32 px-6 overflow-hidden">
+        {/* Animated Background Orbs */}
+        <div className="bg-orbs-container">
+          <div className="bg-orb bg-orb-1"></div>
+          <div className="bg-orb bg-orb-2"></div>
+          <div className="bg-orb bg-orb-3"></div>
+          <div className="bg-orb bg-orb-4"></div>
+        </div>
+
+        {/* Additional Animated Background Elements */}
+        <div className="absolute inset-0 pointer-events-none">
+          {/* Floating circles */}
+          <div className="floating-shape circle-1"></div>
+          <div className="floating-shape circle-2"></div>
+          <div className="floating-shape circle-3"></div>
+
+          {/* Floating squares */}
+          <div className="floating-square square-1"></div>
+          <div className="floating-square square-2"></div>
+
+          {/* Grid pattern overlay */}
+          <div className="grid-pattern"></div>
+
+          {/* Animated gradient mesh */}
+          <div className="gradient-mesh"></div>
+
+          {/* Scanning line */}
+          <div className="scan-line"></div>
+        </div>
+
+        <div className="max-w-6xl mx-auto text-center relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <h1 className="text-5xl md:text-7xl font-bold text-gray-900 mb-6 leading-tight">
-              The everything app<br />
-              for work
+            <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
+              <span className="text-gradient block">The everything app</span>
+              <span className="text-gray-900 block">for work</span>
             </h1>
-            <p className="text-xl text-gray-600 mb-10 max-w-2xl mx-auto">
+            <p className="text-xl text-gray-600 mb-10 max-w-2xl mx-auto slide-up-stagger stagger-delay-2">
               Plan, track, and manage any project with tasks, docs, goals, and more. All in one place.
             </p>
-            <div className="flex items-center justify-center gap-4 flex-wrap">
+            <div className="flex items-center justify-center gap-4 flex-wrap slide-up-stagger stagger-delay-3">
               <Link
                 to="/register"
-                className="bg-gray-900 text-white px-8 py-4 rounded-lg font-semibold hover:bg-gray-800 transition-colors inline-flex items-center gap-2 text-base"
+                className="bg-gray-900 text-white px-8 py-4 rounded-lg font-semibold hover:bg-gray-800 transition-all inline-flex items-center gap-2 text-base magnetic-hover glow-pulse"
               >
                 Get Started - It's Free
                 <ArrowRight className="w-5 h-5" />
               </Link>
               <a
                 href="#features"
-                className="bg-white text-gray-900 px-8 py-4 rounded-lg font-semibold border-2 border-gray-200 hover:border-gray-300 transition-colors text-base"
+                className="bg-white text-gray-900 px-8 py-4 rounded-lg font-semibold border-2 border-gray-200 hover:border-gray-300 transition-all text-base tilt-hover"
               >
                 See How It Works
               </a>
             </div>
-            <p className="text-sm text-gray-500 mt-6">Free forever. No credit card required.</p>
+            <p className="text-sm text-gray-500 mt-6 slide-up-stagger stagger-delay-4">Free forever. No credit card required.</p>
           </motion.div>
 
           {/* Hero Image/Mockup */}
@@ -135,12 +239,42 @@ const Home = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-            <div className="bg-gray-50 aspect-video flex items-center justify-center">
-              <div className="text-center">
-                <div className="w-16 h-16 bg-gray-200 rounded-lg mx-auto mb-4 flex items-center justify-center">
-                  <Target className="w-8 h-8 text-gray-400" />
+            {/* Animated Dashboard Mockup */}
+            <div className="animated-dashboard aspect-video">
+              <div className="dashboard-header">
+                <div className="dashboard-dot dot-red"></div>
+                <div className="dashboard-dot dot-yellow"></div>
+                <div className="dashboard-dot dot-green"></div>
+              </div>
+
+              {/* Task Cards List */}
+              <div className="dashboard-card">
+                <div className="card-header">
+                  <div className="card-title"></div>
+                  <div className="card-status status-progress"></div>
                 </div>
-                <p className="text-gray-400 font-medium">Product Screenshot</p>
+                <div className="card-content"></div>
+                <div className="card-content" style={{ width: '60%' }}></div>
+              </div>
+
+              <div className="dashboard-card">
+                <div className="card-header">
+                  <div className="card-title"></div>
+                  <div className="card-status status-done"></div>
+                </div>
+                <div className="card-content"></div>
+                <div className="card-content" style={{ width: '70%' }}></div>
+              </div>
+
+              <div className="dashboard-card">
+                <div className="card-header">
+                  <div className="card-title"></div>
+                  <div className="card-status status-todo"></div>
+                </div>
+                <div className="card-content"></div>
+                <div className="progress-bar">
+                  <div className="progress-fill"></div>
+                </div>
               </div>
             </div>
           </motion.div>
@@ -148,8 +282,11 @@ const Home = () => {
       </section>
 
       {/* FEATURES SECTION */}
-      <section id="features" className="py-20 px-6 bg-gray-50">
-        <div className="max-w-6xl mx-auto">
+      <section id="features" className="py-20 px-6 bg-gray-50 relative overflow-hidden">
+        {/* Subtle animated mesh gradient */}
+        <div className="absolute inset-0 mesh-gradient-animated opacity-60"></div>
+
+        <div className="max-w-6xl mx-auto relative z-10">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-900 mb-4">
               Everything you need to stay productive
@@ -206,19 +343,36 @@ const Home = () => {
                 ))}
               </div>
             </div>
-            <div className="bg-gray-50 rounded-lg border border-gray-200 aspect-square flex items-center justify-center">
-              <div className="text-center">
-                <Users className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-                <p className="text-gray-400 font-medium">Feature Illustration</p>
-              </div>
+            {/* Animated Team Illustration */}
+            <div className="team-illustration aspect-square">
+              {/* Connection Lines SVG */}
+              <svg className="connection-lines" viewBox="0 0 400 400">
+                <path className="connection-line line-1" d="M 100 120 Q 200 150 300 300" />
+                <path className="connection-line line-2" d="M 100 120 Q 200 200 200 200" />
+                <path className="connection-line line-3" d="M 300 300 Q 250 250 200 200" />
+              </svg>
+
+              {/* Floating Particles */}
+              <div className="particle particle-1"></div>
+              <div className="particle particle-2"></div>
+              <div className="particle particle-3"></div>
+              <div className="particle particle-4"></div>
+
+              {/* Animated Avatars */}
+              <div className="avatar-circle avatar-1">JD</div>
+              <div className="avatar-circle avatar-2">AS</div>
+              <div className="avatar-circle avatar-3">MK</div>
             </div>
           </div>
         </div>
       </section>
 
       {/* PRICING SECTION */}
-      <section id="pricing" className="py-20 px-6 bg-gray-50">
-        <div className="max-w-4xl mx-auto text-center">
+      <section id="pricing" className="py-20 px-6 bg-gray-50 relative overflow-hidden">
+        {/* Subtle animated mesh gradient */}
+        <div className="absolute inset-0 mesh-gradient-animated opacity-60"></div>
+
+        <div className="max-w-4xl mx-auto text-center relative z-10">
           <h2 className="text-4xl font-bold text-gray-900 mb-4">
             Simple, transparent pricing
           </h2>

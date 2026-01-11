@@ -99,8 +99,8 @@ const WorkspaceSettings = () => {
                                 key={tab.id}
                                 onClick={() => setActiveTab(tab.id)}
                                 className={`pb-4 px-1 border-b-2 font-medium transition-colors flex items-center gap-2 ${activeTab === tab.id
-                                        ? "border-gray-900 text-gray-900"
-                                        : "border-transparent text-gray-500 hover:text-gray-900"
+                                    ? "border-gray-900 text-gray-900"
+                                    : "border-transparent text-gray-500 hover:text-gray-900"
                                     }`}
                             >
                                 <tab.icon className="w-4 h-4" />
@@ -124,17 +124,30 @@ const WorkspaceSettings = () => {
                             <div className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm">
                                 <h2 className="text-xl font-semibold text-gray-900 mb-6">Workspace Information</h2>
 
-                                <div className="space-y-4">
+                                <form onSubmit={(e) => { e.preventDefault(); alert("Workspace updated!"); }} className="space-y-4">
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-2">
                                             Workspace Name
                                         </label>
                                         <input
                                             type="text"
-                                            value={currentWorkspace.name}
-                                            readOnly
-                                            className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-gray-900 focus:outline-none"
+                                            defaultValue={currentWorkspace.name}
+                                            className="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
+                                            placeholder="Enter workspace name"
                                         />
+                                        <p className="text-xs text-gray-500 mt-1">This is how your workspace will appear to team members</p>
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            Description
+                                        </label>
+                                        <textarea
+                                            rows="3"
+                                            className="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent resize-none"
+                                            placeholder="Describe what this workspace is for..."
+                                        />
+                                        <p className="text-xs text-gray-500 mt-1">Optional description for your workspace</p>
                                     </div>
 
                                     <div>
@@ -145,10 +158,20 @@ const WorkspaceSettings = () => {
                                             type="text"
                                             value={currentWorkspace.id}
                                             readOnly
-                                            className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-gray-600 font-mono text-sm focus:outline-none"
+                                            className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-gray-600 font-mono text-sm focus:outline-none cursor-not-allowed"
                                         />
+                                        <p className="text-xs text-gray-500 mt-1">This ID cannot be changed</p>
                                     </div>
-                                </div>
+
+                                    <div className="flex justify-end pt-4">
+                                        <button
+                                            type="submit"
+                                            className="px-6 py-2.5 bg-gray-900 text-white rounded-lg font-medium hover:bg-gray-800 transition-colors magnetic-hover"
+                                        >
+                                            Save Changes
+                                        </button>
+                                    </div>
+                                </form>
                             </div>
 
                             {/* Danger Zone */}
@@ -166,8 +189,8 @@ const WorkspaceSettings = () => {
                                         <button
                                             onClick={handleDeleteWorkspace}
                                             className={`px-4 py-2 rounded-lg font-medium transition-colors whitespace-nowrap ${showDeleteConfirm
-                                                    ? "bg-red-600 text-white hover:bg-red-700"
-                                                    : "bg-white text-red-600 border border-red-300 hover:bg-red-50"
+                                                ? "bg-red-600 text-white hover:bg-red-700"
+                                                : "bg-white text-red-600 border border-red-300 hover:bg-red-50"
                                                 }`}
                                         >
                                             {showDeleteConfirm ? "Confirm Delete?" : "Delete Workspace"}

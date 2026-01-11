@@ -1,9 +1,55 @@
-import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
-import { Plus, List, Grid3x3, Filter, ChevronDown, Search, MoreHorizontal, Circle } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Plus, List, Grid3x3, Filter, ChevronDown, Search, MoreHorizontal, Circle, Check } from "lucide-react";
 import { useWorkspace } from "../context/WorkspaceContext";
 import { getUserTasks, createTask } from "../api/taskApi";
 import CreateTaskModal from "../components/tasks/CreateTaskModal";
+
+// Fake demo data for when there are no real tasks
+const DEMO_TASKS = [
+    {
+        id: 'demo-1',
+        title: 'Design new landing page',
+        status: 'InProgress',
+        priority: 'High',
+        dueDate: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).toISOString(),
+    },
+    {
+        id: 'demo-2',
+        title: 'Review pull requests',
+        status: 'Todo',
+        priority: 'Medium',
+        dueDate: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000).toISOString(),
+    },
+    {
+        id: 'demo-3',
+        title: 'Update documentation',
+        status: 'InProgress',
+        priority: 'Low',
+        dueDate: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toISOString(),
+    },
+    {
+        id: 'demo-4',
+        title: 'Fix authentication bug',
+        status: 'Completed',
+        priority: 'High',
+        dueDate: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
+    },
+    {
+        id: 'demo-5',
+        title: 'Implement dark mode',
+        status: 'Todo',
+        priority: 'Medium',
+        dueDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
+    },
+    {
+        id: 'demo-6',
+        title: 'Optimize database queries',
+        status: 'InProgress',
+        priority: 'High',
+        dueDate: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString(),
+    },
+];
 
 const UserHome = () => {
     const { currentWorkspace } = useWorkspace();
@@ -13,16 +59,20 @@ const UserHome = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [viewMode, setViewMode] = useState("list");
     const [filterStatus, setFilterStatus] = useState("all");
+    const [statusDropdownOpen, setStatusDropdownOpen] = useState(null);
+    const dropdownRef = useRef(null);
 
     useEffect(() => {
         const fetchUserTasks = async () => {
             try {
                 setLoading(true);
                 const res = await getUserTasks();
-                setUserTasks(res.data || []);
+                // Always combine demo data with real tasks for demonstration
+                setUserTasks(res.data && res.data.length > 0 ? [...DEMO_TASKS, ...res.data] : DEMO_TASKS);
             } catch (error) {
                 console.error("Failed to fetch user tasks:", error);
-                setUserTasks([]);
+                // Use demo data on error
+                setUserTasks(DEMO_TASKS);
             } finally {
                 setLoading(false);
             }
@@ -30,6 +80,34 @@ const UserHome = () => {
 
         fetchUserTasks();
     }, []);
+
+    // Close dropdown when clicking outside
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+                setStatusDropdownOpen(null);
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
+
+    const handleStatusChange = (taskId, newStatus) => {
+        // Update task status in state
+        setUserTasks(prev => prev.map(task =>
+            task.id === taskId ? { ...task, status: newStatus } : task
+        ));
+        setStatusDropdownOpen(null);
+
+        // TODO: Call API to update task status on backend
+        // updateTaskStatus(taskId, newStatus);
+    };
+
+    const statusOptions = [
+        { value: 'Todo', label: 'To Do', color: 'bg-gray-100 text-gray-700 border-gray-200' },
+        { value: 'InProgress', label: 'In Progress', color: 'bg-blue-100 text-blue-700 border-blue-200' },
+        { value: 'Completed', label: 'Completed', color: 'bg-green-100 text-green-700 border-green-200' },
+    ];
 
     const handleCreateTask = async (taskData) => {
         if (!currentWorkspace) {
@@ -75,7 +153,6 @@ const UserHome = () => {
 
     return (
         <div className="min-h-screen bg-gray-50">
-
             <div className="p-6">
                 {/* Page Header */}
                 <div className="mb-6">
@@ -152,16 +229,16 @@ const UserHome = () => {
                     </div>
                 ) : filteredTasks.length === 0 ? (
                     <div className="bg-white border border-gray-200 rounded-lg p-12 text-center">
-                        <p className="text-gray-500 mb-4">No tasks found</p>
+                        <p className="text-gray-500 mb-4">No tasks match the current filters</p>
                         <button
-                            onClick={() => setIsModalOpen(true)}
-                            className="px-4 py-2 bg-gray-900 text-white rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors inline-flex items-center gap-2"
+                            onClick={() => setFilterStatus("all")}
+                            className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-200 transition-colors inline-flex items-center gap-2"
                         >
-                            <Plus className="w-4 h-4" />
-                            Create your first task
+                            Clear Filters
                         </button>
                     </div>
-                ) : (
+                ) : viewMode === "list" ? (
+                    // LIST VIEW
                     <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
                         {/* Table Header */}
                         <div className="grid grid-cols-12 gap-4 px-4 py-3 bg-gray-50 border-b border-gray-200 text-xs font-semibold text-gray-500 uppercase">
@@ -193,10 +270,42 @@ const UserHome = () => {
                                     </div>
 
                                     {/* Status */}
-                                    <div className="col-span-2 flex items-center">
-                                        <span className={`px-2 py-1 rounded text-xs font-medium border ${getStatusColor(task.status)}`}>
+                                    <div className="col-span-2 flex items-center relative">
+                                        <button
+                                            onClick={() => setStatusDropdownOpen(statusDropdownOpen === task.id ? null : task.id)}
+                                            className={`px-2 py-1 rounded text-xs font-medium border ${getStatusColor(task.status)} hover:opacity-80 transition-opacity flex items-center gap-1`}
+                                        >
                                             {task.status || "To Do"}
-                                        </span>
+                                            <ChevronDown className="w-3 h-3" />
+                                        </button>
+
+                                        <AnimatePresence>
+                                            {statusDropdownOpen === task.id && (
+                                                <motion.div
+                                                    ref={dropdownRef}
+                                                    initial={{ opacity: 0, y: -10 }}
+                                                    animate={{ opacity: 1, y: 0 }}
+                                                    exit={{ opacity: 0, y: -10 }}
+                                                    className="absolute top-full left-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-50 min-w-[140px]"
+                                                >
+                                                    {statusOptions.map((option) => (
+                                                        <button
+                                                            key={option.value}
+                                                            onClick={() => handleStatusChange(task.id, option.value)}
+                                                            className={`w-full px-3 py-2 text-left text-xs font-medium hover:bg-gray-50 flex items-center justify-between transition-colors first:rounded-t-lg last:rounded-b-lg ${task.status === option.value ? 'bg-gray-50' : ''
+                                                                }`}
+                                                        >
+                                                            <span className={`px-2 py-0.5 rounded border ${option.color}`}>
+                                                                {option.label}
+                                                            </span>
+                                                            {task.status === option.value && (
+                                                                <Check className="w-3 h-3 text-gray-600" />
+                                                            )}
+                                                        </button>
+                                                    ))}
+                                                </motion.div>
+                                            )}
+                                        </AnimatePresence>
                                     </div>
 
                                     {/* Priority */}
@@ -230,6 +339,96 @@ const UserHome = () => {
                         >
                             <Plus className="w-4 h-4" />
                             Add task
+                        </button>
+                    </div>
+                ) : (
+                    // GRID VIEW
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {filteredTasks.map((task, index) => (
+                            <motion.div
+                                key={task.id || index}
+                                className="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-all group"
+                                initial={{ opacity: 0, scale: 0.95 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                transition={{ delay: index * 0.05 }}
+                            >
+                                {/* Card Header */}
+                                <div className="flex items-start justify-between mb-3">
+                                    <div className="flex items-start gap-2 flex-1">
+                                        <button className="text-gray-300 hover:text-gray-900 transition-colors mt-0.5">
+                                            <Circle className="w-4 h-4" />
+                                        </button>
+                                        <h3 className="text-sm font-medium text-gray-900 line-clamp-2 flex-1">
+                                            {task.title || task.name || "Untitled Task"}
+                                        </h3>
+                                    </div>
+                                    <button className="p-1 text-gray-400 hover:text-gray-900 hover:bg-gray-100 rounded opacity-0 group-hover:opacity-100 transition-all">
+                                        <MoreHorizontal className="w-4 h-4" />
+                                    </button>
+                                </div>
+
+                                {/* Meta Info */}
+                                <div className="flex flex-wrap items-center gap-2 relative">
+                                    {/* Status */}
+                                    <button
+                                        onClick={() => setStatusDropdownOpen(statusDropdownOpen === task.id ? null : task.id)}
+                                        className={`px-2 py-1 rounded text-xs font-medium border ${getStatusColor(task.status)} hover:opacity-80 transition-opacity flex items-center gap-1`}
+                                    >
+                                        {task.status || "To Do"}
+                                        <ChevronDown className="w-3 h-3" />
+                                    </button>
+
+                                    <AnimatePresence>
+                                        {statusDropdownOpen === task.id && (
+                                            <motion.div
+                                                initial={{ opacity: 0, y: -10 }}
+                                                animate={{ opacity: 1, y: 0 }}
+                                                exit={{ opacity: 0, y: -10 }}
+                                                className="absolute top-full left-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-50 min-w-[140px]"
+                                            >
+                                                {statusOptions.map((option) => (
+                                                    <button
+                                                        key={option.value}
+                                                        onClick={() => handleStatusChange(task.id, option.value)}
+                                                        className={`w-full px-3 py-2 text-left text-xs font-medium hover:bg-gray-50 flex items-center justify-between transition-colors first:rounded-t-lg last:rounded-b-lg ${task.status === option.value ? 'bg-gray-50' : ''
+                                                            }`}
+                                                    >
+                                                        <span className={`px-2 py-0.5 rounded border ${option.color}`}>
+                                                            {option.label}
+                                                        </span>
+                                                        {task.status === option.value && (
+                                                            <Check className="w-3 h-3 text-gray-600" />
+                                                        )}
+                                                    </button>
+                                                ))}
+                                            </motion.div>
+                                        )}
+                                    </AnimatePresence>
+
+                                    {/* Priority */}
+                                    {task.priority && (
+                                        <span className={`text-xs font-medium ${getPriorityColor(task.priority)}`}>
+                                            {task.priority}
+                                        </span>
+                                    )}
+
+                                    {/* Due Date */}
+                                    {task.dueDate && (
+                                        <span className="text-xs text-gray-500 ml-auto">
+                                            {new Date(task.dueDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                                        </span>
+                                    )}
+                                </div>
+                            </motion.div>
+                        ))}
+
+                        {/* Add Task Card */}
+                        <button
+                            onClick={() => setIsModalOpen(true)}
+                            className="bg-white border border-gray-200 border-dashed rounded-lg p-4 hover:border-gray-400 hover:bg-gray-50 transition-all flex flex-col items-center justify-center min-h-[140px] text-gray-500 hover:text-gray-700"
+                        >
+                            <Plus className="w-6 h-6 mb-2" />
+                            <span className="text-sm font-medium">Add task</span>
                         </button>
                     </div>
                 )}

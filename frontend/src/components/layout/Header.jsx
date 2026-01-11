@@ -41,7 +41,7 @@ const Header = () => {
                         <div className="w-5 h-5 rounded bg-gray-900 flex items-center justify-center text-white text-xs font-bold">
                             {currentWorkspace ? currentWorkspace.name.substring(0, 1).toUpperCase() : "W"}
                         </div>
-                        <span>{currentWorkspace?.name || "Select Workspace"}</span>
+                        <span className="hidden sm:inline">{currentWorkspace?.name || "Select Workspace"}</span>
                         <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform ${isWsOpen ? 'rotate-180' : ''}`} />
                     </button>
 
@@ -102,8 +102,8 @@ const Header = () => {
                     </AnimatePresence>
                 </div>
 
-                {/* Search Bar */}
-                <div className="relative flex-1 max-w-md">
+                {/* Search Bar - Hidden on mobile */}
+                <div className="relative flex-1 max-w-md hidden md:block">
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
                     <input
                         type="text"
@@ -140,6 +140,15 @@ const Header = () => {
                                     <p className="text-xs text-gray-500">user@example.com</p>
                                 </div>
                                 <div className="p-1">
+                                    <button
+                                        onClick={() => {
+                                            setIsProfileOpen(false);
+                                            navigate("/dashboard/profile");
+                                        }}
+                                        className="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded flex items-center gap-2 transition-colors"
+                                    >
+                                        <User className="w-4 h-4" /> Profile
+                                    </button>
                                     <button className="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded flex items-center gap-2 transition-colors">
                                         <Settings className="w-4 h-4" /> Settings
                                     </button>

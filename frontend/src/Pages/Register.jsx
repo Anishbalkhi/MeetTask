@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { ArrowLeft } from "lucide-react";
+import { motion } from "framer-motion";
+import AnimatedBackground from "../components/common/AnimatedBackground";
 
 const Register = () => {
   const [form, setForm] = useState({ name: "", email: "", password: "" });
@@ -26,31 +28,44 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center px-6 py-12">
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center px-6 py-12 relative overflow-hidden">
+      {/* Enhanced Animated Background */}
+      <AnimatedBackground />
 
-      <div className="w-full max-w-md">
+      <div className="w-full max-w-md relative z-10">
 
         {/* Back to Home */}
-        <Link
-          to="/"
-          className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-8 font-medium transition-colors text-sm"
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5 }}
         >
-          <ArrowLeft className="w-4 h-4" />
-          Back to home
-        </Link>
+          <Link
+            to="/"
+            className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-8 font-medium transition-colors text-sm"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            Back to home
+          </Link>
+        </motion.div>
 
-        <div className="bg-white border border-gray-200 rounded-lg p-8">
+        <motion.div
+          className="bg-white border border-gray-200 rounded-lg p-8 shadow-lg"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+        >
           <div className="mb-8">
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">
-              Create an account
+            <h1 className="text-3xl font-bold mb-2">
+              <span className="text-gradient-fast">Create an account</span>
             </h1>
-            <p className="text-gray-600">
+            <p className="text-gray-600 text-reveal-delay-1">
               Start your journey with MeetTask
             </p>
           </div>
 
           {error && (
-            <div className="bg-red-50 border border-red-200 rounded-lg p-3 mb-6">
+            <div className="bg-red-50 border border-red-200 rounded-lg p-3 mb-6 shake">
               <p className="text-red-700 text-sm">{error}</p>
             </div>
           )}
@@ -104,7 +119,7 @@ const Register = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-gray-900 text-white px-6 py-2.5 rounded font-medium hover:bg-gray-800 transition-colors disabled:opacity-50 text-sm"
+              className="w-full bg-gray-900 text-white px-6 py-2.5 rounded font-medium hover:bg-gray-800 transition-all disabled:opacity-50 text-sm magnetic-hover"
             >
               {loading ? "Creating account..." : "Create account"}
             </button>
@@ -121,7 +136,7 @@ const Register = () => {
               </Link>
             </p>
           </div>
-        </div>
+        </motion.div>
 
         <p className="text-center text-xs text-gray-500 mt-6">
           By signing up, you agree to our Terms and Privacy Policy

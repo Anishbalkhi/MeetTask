@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import useMeeting from "../hooks/useMeeting";
 import { AuthContext } from "../context/AuthContext";
 import { Video, Calendar, Users, ArrowLeft, Clock, Plus } from "lucide-react";
+import AnimatedBackground from "../components/common/AnimatedBackground";
 
 export default function CreateMeeting() {
   const { user } = useContext(AuthContext);
@@ -51,7 +52,9 @@ export default function CreateMeeting() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-6">
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-6 relative overflow-hidden">
+      {/* Enhanced Animated Background */}
+      <AnimatedBackground />
 
       <div className="w-full max-w-2xl">
         {/* Back button */}

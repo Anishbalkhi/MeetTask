@@ -262,51 +262,61 @@ const CreateTaskModal = ({ isOpen, onClose, onSubmit, loading = false }) => {
                                                     <input
                                                         type="text"
                                                         value={assigneeInput}
-                                                        onChange={(e) => setAssigneeInput(e.target.value)}
+                                                        onChange={(e) => {
+                                                            setAssigneeInput(e.target.value);
+                                                            setShowAssigneeDropdown(true);
+                                                        }}
                                                         onFocus={() => setShowAssigneeDropdown(true)}
+                                                        onBlur={() => setTimeout(() => setShowAssigneeDropdown(false), 200)}
                                                         onKeyPress={handleAssigneeKeyPress}
                                                         placeholder="Search or enter email..."
                                                         className="w-full pl-9 pr-3 py-2 bg-gray-100 hover:bg-gray-200 rounded text-sm text-gray-700 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-200 transition-colors"
                                                     />
 
                                                     {/* Dropdown */}
-                                                    {showAssigneeDropdown && filteredMembers.length > 0 && (
+                                                    {showAssigneeDropdown && (assigneeInput.trim() !== '' || filteredMembers.length > 0) && (
                                                         <motion.div
                                                             initial={{ opacity: 0, y: -10 }}
                                                             animate={{ opacity: 1, y: 0 }}
                                                             className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-10 max-h-60 overflow-y-auto"
                                                         >
-                                                            {filteredMembers.map((member) => (
-                                                                <button
-                                                                    key={member.id}
-                                                                    type="button"
-                                                                    onClick={() => handleAddAssignee(member.email)}
-                                                                    disabled={formData.assignees.includes(member.email)}
-                                                                    className="w-full px-3 py-2 text-left hover:bg-gray-50 transition-colors flex items-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed"
-                                                                >
-                                                                    <div className={`w-7 h-7 rounded-full flex items-center justify-center text-white text-xs font-medium ${member.isCurrentUser ? 'bg-gray-900' : 'bg-blue-500'
-                                                                        }`}>
-                                                                        {member.isCurrentUser ? 'ME' : member.name.substring(0, 2).toUpperCase()}
-                                                                    </div>
-                                                                    <div className="flex-1 min-w-0">
-                                                                        <p className="text-sm font-medium text-gray-900 truncate">
-                                                                            {member.name}
-                                                                        </p>
-                                                                        {member.name !== member.email && (
-                                                                            <p className="text-xs text-gray-500 truncate">
-                                                                                {member.email}
-                                                                            </p>
-                                                                        )}
-                                                                    </div>
-                                                                    {formData.assignees.includes(member.email) && (
-                                                                        <div className="text-green-600">
-                                                                            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                                                                                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                                                                            </svg>
+                                                            {filteredMembers.length > 0 ? (
+                                                                filteredMembers.map((member) => (
+                                                                    <button
+                                                                        key={member.id}
+                                                                        type="button"
+                                                                        onClick={() => handleAddAssignee(member.email)}
+                                                                        disabled={formData.assignees.includes(member.email)}
+                                                                        className="w-full px-3 py-2 text-left hover:bg-gray-50 transition-colors flex items-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed"
+                                                                    >
+                                                                        <div className={`w-7 h-7 rounded-full flex items-center justify-center text-white text-xs font-medium ${member.isCurrentUser ? 'bg-gray-900' : 'bg-blue-500'
+                                                                            }`}>
+                                                                            {member.isCurrentUser ? 'ME' : member.name.substring(0, 2).toUpperCase()}
                                                                         </div>
-                                                                    )}
-                                                                </button>
-                                                            ))}
+                                                                        <div className="flex-1 min-w-0">
+                                                                            <p className="text-sm font-medium text-gray-900 truncate">
+                                                                                {member.name}
+                                                                            </p>
+                                                                            {member.name !== member.email && (
+                                                                                <p className="text-xs text-gray-500 truncate">
+                                                                                    {member.email}
+                                                                                </p>
+                                                                            )}
+                                                                        </div>
+                                                                        {formData.assignees.includes(member.email) && (
+                                                                            <div className="text-green-600">
+                                                                                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                                                                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                                                                                </svg>
+                                                                            </div>
+                                                                        )}
+                                                                    </button>
+                                                                ))
+                                                            ) : assigneeInput.trim() !== '' ? (
+                                                                <div className="px-3 py-3 text-center text-sm text-gray-500">
+                                                                    No members found. Press Enter to add "{assigneeInput}" as email.
+                                                                </div>
+                                                            ) : null}
                                                         </motion.div>
                                                     )}
                                                 </div>

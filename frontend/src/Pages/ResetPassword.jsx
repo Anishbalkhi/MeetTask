@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { ArrowLeft, Lock } from "lucide-react";
+import { motion } from "framer-motion";
 
 const ResetPassword = () => {
   const [form, setForm] = useState({ password: "", confirmPassword: "" });
@@ -26,33 +27,46 @@ const ResetPassword = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center px-6 py-12">
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center px-6 py-12 relative overflow-hidden">
+      {/* Enhanced Animated Background */}
+      <AnimatedBackground />
 
-      <div className="w-full max-w-md">
+      <div className="w-full max-w-md relative z-10">
 
-        <Link
-          to="/login"
-          className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-8 font-medium transition-colors text-sm"
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5 }}
         >
-          <ArrowLeft className="w-4 h-4" />
-          Back to login
-        </Link>
+          <Link
+            to="/login"
+            className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-8 font-medium transition-colors text-sm"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            Back to login
+          </Link>
+        </motion.div>
 
-        <div className="bg-white border border-gray-200 rounded-lg p-8">
+        <motion.div
+          className="bg-white border border-gray-200 rounded-lg p-8 shadow-lg"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+        >
           <div className="mb-8">
             <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center mb-4">
               <Lock className="w-6 h-6 text-gray-700" />
             </div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">
-              Set new password
+            <h1 className="text-3xl font-bold mb-2">
+              <span className="text-gradient-fast">Set new password</span>
             </h1>
-            <p className="text-gray-600">
+            <p className="text-gray-600 text-reveal-delay-1">
               Your new password must be different from previous passwords
             </p>
           </div>
 
           {error && (
-            <div className="bg-red-50 border border-red-200 rounded-lg p-3 mb-6">
+            <div className="bg-red-50 border border-red-200 rounded-lg p-3 mb-6 shake">
               <p className="text-red-700 text-sm">{error}</p>
             </div>
           )}
@@ -92,12 +106,12 @@ const ResetPassword = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-gray-900 text-white px-6 py-2.5 rounded font-medium hover:bg-gray-800 transition-colors disabled:opacity-50 text-sm"
+              className="w-full bg-gray-900 text-white px-6 py-2.5 rounded font-medium hover:bg-gray-800 transition-all disabled:opacity-50 text-sm magnetic-hover"
             >
               {loading ? "Resetting..." : "Reset password"}
             </button>
           </form>
-        </div>
+        </motion.div>
       </div>
     </div>
   );

@@ -4,6 +4,7 @@ import { createWorkspace } from "../api/workspaceApi";
 import { useWorkspace } from "../context/WorkspaceContext";
 import { motion } from "framer-motion";
 import { ArrowRight, Copy, Check, Link as LinkIcon, ArrowLeft } from "lucide-react";
+import AnimatedBackground from "../components/common/AnimatedBackground";
 
 const CreateWorkspace = () => {
     const [step, setStep] = useState(1);
@@ -63,10 +64,12 @@ const CreateWorkspace = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gray-50 flex items-center justify-center px-6 py-12">
+        <div className="min-h-screen bg-gray-50 flex items-center justify-center px-6 py-12 relative overflow-hidden">
+            {/* Enhanced Animated Background */}
+            <AnimatedBackground />
 
             <motion.div
-                className="w-full max-w-2xl"
+                className="w-full max-w-2xl relative z-10"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}

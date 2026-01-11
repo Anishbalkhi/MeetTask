@@ -11,6 +11,7 @@ import UserHome from "../pages/UserHome";
 import TeamHome from "../pages/TeamHome";
 import CreateWorkspace from "../pages/CreateWorkspace";
 import WorkspaceSettings from "../pages/Workspace";
+import Profile from "../pages/Profile";
 import ProtectedRoute from "../components/layout/ProtectedRoute";
 import MainLayout from "../components/layout/MainLayout";
 
@@ -32,11 +33,11 @@ const AppRoutes = () => {
         path="/dashboard"
         element={<MainLayout />}
       >
-        {/* Nested Routes */}
         <Route index element={<UserHome />} />
         <Route path="home" element={<UserHome />} />
         <Route path="team" element={<TeamHome />} />
         <Route path="workspace" element={<WorkspaceSettings />} />
+        <Route path="profile" element={<Profile />} />
         <Route path="create-workspace" element={<CreateWorkspace />} />
       </Route>
 

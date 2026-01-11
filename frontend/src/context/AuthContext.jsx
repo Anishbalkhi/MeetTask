@@ -1,34 +1,62 @@
 import { createContext, useContext, useEffect, useState, useCallback, useMemo } from "react";
+import { loginApi, registerApi } from "../api/authApi";
+import { mockUsers } from "../data/mockData";
 
 const AuthContext = createContext();
 
 // Mock mode for testing without backend
-const MOCK_MODE = true; // Set to false when backend is ready
+const MOCK_MODE = true; // Set to true for mock mode, false for backend integration
 
 export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(
     MOCK_MODE ? "mock-token-123" : localStorage.getItem("token")
   );
+  const [user, setUser] = useState(null);
 
-  // Derive user state from token with mock data
-  const user = useMemo(() => {
-    if (MOCK_MODE) {
-      return {
+  // Fetch user data when token changes (if needed)
+  useEffect(() => {
+    if (MOCK_MODE && token) {
+      // Use first mock user as logged in user
+      const mockUser = mockUsers[0];
+      setUser({
         loggedIn: true,
-        id: 1,
-        name: "John Doe",
-        email: "john@example.com",
-        avatar: "https://i.pravatar.cc/150?u=john"
-      };
+        ...mockUser,
+        avatar: `https://ui-avatars.com/api/?name=${mockUser.name.replace(' ', '+')}&background=random`
+      });
+    } else if (token) {
+      setUser({ loggedIn: true });
+      // TODO: Optionally fetch user details from /api/auth/me or similar
+    } else {
+      setUser(null);
     }
-    return token ? { loggedIn: true } : null;
   }, [token]);
 
-  const login = useCallback((jwt) => {
-    if (!MOCK_MODE) {
-      localStorage.setItem("token", jwt);
+  const login = useCallback(async (email, password) => {
+    if (MOCK_MODE) {
+      setToken("mock-token-123");
+      return { success: true };
     }
-    setToken(jwt);
+
+    const response = await loginApi({ email, password });
+    const jwtToken = response.data.token;
+    localStorage.setItem("token", jwtToken);
+    setToken(jwtToken);
+    return response;
+  }, []);
+
+  const register = useCallback(async (name, email, password) => {
+    if (MOCK_MODE) {
+      return { success: true };
+    }
+
+    const response = await registerApi({ name, email, password });
+    // Note: Register may or may not return a token immediately
+    // Depending on if email verification is required
+    if (response.data.token) {
+      localStorage.setItem("token", response.data.token);
+      setToken(response.data.token);
+    }
+    return response;
   }, []);
 
   const logout = useCallback(() => {
@@ -36,6 +64,7 @@ export const AuthProvider = ({ children }) => {
       localStorage.removeItem("token");
     }
     setToken(null);
+    setUser(null);
   }, []);
 
   // Listen for logout events from axios interceptor
@@ -49,7 +78,7 @@ export const AuthProvider = ({ children }) => {
   }, [logout]);
 
   return (
-    <AuthContext.Provider value={{ user, token, login, logout }}>
+    <AuthContext.Provider value={{ user, token, login, register, logout }}>
       {children}
     </AuthContext.Provider>
   );

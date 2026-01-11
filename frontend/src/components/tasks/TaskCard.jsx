@@ -55,9 +55,10 @@ const TaskCard = ({ task, onClick, onStatusChange, viewMode = "grid" }) => {
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -10 }}
-                whileHover={{ x: 2 }}
+                whileHover={{ x: 4, scale: 1.01 }}
+                whileTap={{ scale: 0.98 }}
                 onClick={onClick}
-                className="group bg-[#141517]/80 backdrop-blur-sm border border-white/10 hover:border-[#CCFF00]/50 rounded-xl p-4 cursor-pointer transition-all hover:shadow-lg"
+                className="group bg-[#141517]/80 backdrop-blur-sm border border-white/10 hover:border-[#CCFF00]/50 rounded-xl p-4 cursor-pointer transition-all hover:shadow-xl hover:shadow-[#CCFF00]/10"
             >
                 <div className="flex items-center justify-between gap-4">
                     {/* Left side - Task info */}
@@ -133,9 +134,10 @@ const TaskCard = ({ task, onClick, onStatusChange, viewMode = "grid" }) => {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95 }}
-            whileHover={{ y: -2 }}
+            whileHover={{ y: -4, scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
             onClick={onClick}
-            className="group bg-[#141517]/80 backdrop-blur-sm border border-white/10 hover:border-[#CCFF00]/50 rounded-xl p-4 cursor-pointer transition-all hover:shadow-lg"
+            className="group bg-[#141517]/80 backdrop-blur-sm border border-white/10 hover:border-[#CCFF00]/50 rounded-xl p-4 cursor-pointer transition-all hover:shadow-xl hover:shadow-[#CCFF00]/10"
         >
             {/* Task Header */}
             <div className="flex items-start justify-between mb-3">
