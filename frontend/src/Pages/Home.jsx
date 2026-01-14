@@ -48,11 +48,11 @@ const Home = () => {
   return (
     <div className="min-h-screen bg-white">
 
-      {/* ENHANCED NAVBAR */}
+      
       <motion.nav
         className="sticky top-0 z-50 backdrop-blur-md"
         style={{
-          background: 'var(--bg-primary)cc',  // cc = 80% opacity for glassmorphism
+          background: 'var(--bg-primary)cc',  
           borderBottom: '1px solid var(--border-primary)',
           boxShadow: 'var(--shadow-sm)'
         }}
@@ -62,14 +62,14 @@ const Home = () => {
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 py-4">
           <div className="flex justify-between items-center">
-            {/* Logo with Professional Icon */}
+            
             <Link to="/" className="flex items-center gap-3 group">
               <motion.div
                 className="w-11 h-11 relative"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                {/* Theme-aware Premium Background */}
+                
                 <div
                   className="absolute inset-0 rounded-2xl shadow-2xl transition-all duration-500"
                   style={{
@@ -77,13 +77,13 @@ const Home = () => {
                   }}
                 ></div>
 
-                {/* Accent ring */}
+                
                 <div
                   className="absolute inset-0 rounded-2xl border-2 transition-all duration-500"
                   style={{ borderColor: 'var(--border-secondary)' }}
                 ></div>
 
-                {/* Icon - Modern Checkmark/Task Symbol */}
+                
                 <div className="absolute inset-0 flex items-center justify-center">
                   <svg
                     className="w-6 h-6 drop-shadow-lg"
@@ -95,17 +95,17 @@ const Home = () => {
                     strokeLinecap="round"
                     strokeLinejoin="round"
                   >
-                    {/* Check mark combined with circle */}
+                    
                     <circle cx="12" cy="12" r="10" strokeWidth="2" opacity="0.3" />
                     <path d="M9 12l2 2 4-4" />
                     <path d="M12 2v4M12 18v4M2 12h4M18 12h4" opacity="0.5" strokeWidth="1.5" />
                   </svg>
                 </div>
 
-                {/* Subtle shine */}
+                
                 <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/20 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-all duration-500 blur-sm"></div>
 
-                {/* Dark glow aura */}
+                
                 <div className="absolute -inset-1 bg-gradient-to-br from-gray-700/30 via-gray-600/20 to-gray-500/30 rounded-2xl blur-lg opacity-0 group-hover:opacity-70 transition-all duration-500 -z-10"></div>
               </motion.div>
 
@@ -122,7 +122,7 @@ const Home = () => {
               </div>
             </Link>
 
-            {/* Desktop Navigation */}
+            
             <div className="hidden md:flex items-center gap-8">
               {['Features', 'Benefits', 'Pricing'].map((item, index) => (
                 <motion.a
@@ -141,11 +141,11 @@ const Home = () => {
                 </motion.a>
               ))}
 
-              {/* Theme Toggle */}
+              
               <ThemeToggle />
             </div>
 
-            {/* CTA Buttons */}
+            
             <motion.div
               className="flex items-center gap-3"
               initial={{ opacity: 0, x: 20 }}
@@ -219,9 +219,9 @@ const Home = () => {
         </div>
       </motion.nav>
 
-      {/* HERO SECTION */}
+      
       <section className="relative pt-20 pb-32 px-6 overflow-hidden">
-        {/* Animated Background Orbs */}
+        
         <div className="bg-orbs-container">
           <div className="bg-orb bg-orb-1"></div>
           <div className="bg-orb bg-orb-2"></div>
@@ -229,24 +229,24 @@ const Home = () => {
           <div className="bg-orb bg-orb-4"></div>
         </div>
 
-        {/* Additional Animated Background Elements */}
+        
         <div className="absolute inset-0 pointer-events-none">
-          {/* Floating circles */}
+          
           <div className="floating-shape circle-1"></div>
           <div className="floating-shape circle-2"></div>
           <div className="floating-shape circle-3"></div>
 
-          {/* Floating squares */}
+          
           <div className="floating-square square-1"></div>
           <div className="floating-square square-2"></div>
 
-          {/* Grid pattern overlay */}
+          
           <div className="grid-pattern"></div>
 
-          {/* Animated gradient mesh */}
+          
           <div className="gradient-mesh"></div>
 
-          {/* Scanning line */}
+          
           <div className="scan-line"></div>
         </div>
 
@@ -289,14 +289,14 @@ const Home = () => {
             <p className="text-sm mt-6 slide-up-stagger stagger-delay-4" style={{ color: 'var(--text-muted)' }}>Free forever. No credit card required.</p>
           </motion.div>
 
-          {/* Hero Image/Mockup */}
+          
           <motion.div
             className="mt-16 rounded-lg overflow-hidden shadow-2xl border border-gray-200"
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-            {/* Animated Dashboard Mockup */}
+            
             <div className="animated-dashboard aspect-video">
               <div className="dashboard-header">
                 <div className="dashboard-dot dot-red"></div>
@@ -304,7 +304,7 @@ const Home = () => {
                 <div className="dashboard-dot dot-green"></div>
               </div>
 
-              {/* Task Cards List */}
+              
               <div className="dashboard-card">
                 <div className="card-header">
                   <div className="card-title"></div>
@@ -338,9 +338,9 @@ const Home = () => {
         </div>
       </section>
 
-      {/* FEATURES SECTION */}
+      
       <section id="features" className="py-20 px-6 bg-gray-50 relative overflow-hidden">
-        {/* Subtle animated mesh gradient */}
+        
         <div className="absolute inset-0 mesh-gradient-animated opacity-60"></div>
 
         <div className="max-w-6xl mx-auto relative z-10">
@@ -378,7 +378,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* BENEFITS SECTION */}
+      
       <section id="benefits" className="py-20 px-6">
         <div className="max-w-6xl mx-auto">
           <div className="grid md:grid-cols-2 gap-12 items-center">
@@ -400,22 +400,22 @@ const Home = () => {
                 ))}
               </div>
             </div>
-            {/* Animated Team Illustration */}
+            
             <div className="team-illustration aspect-square">
-              {/* Connection Lines SVG */}
+              
               <svg className="connection-lines" viewBox="0 0 400 400">
                 <path className="connection-line line-1" d="M 100 120 Q 200 150 300 300" />
                 <path className="connection-line line-2" d="M 100 120 Q 200 200 200 200" />
                 <path className="connection-line line-3" d="M 300 300 Q 250 250 200 200" />
               </svg>
 
-              {/* Floating Particles */}
+              
               <div className="particle particle-1"></div>
               <div className="particle particle-2"></div>
               <div className="particle particle-3"></div>
               <div className="particle particle-4"></div>
 
-              {/* Animated Avatars */}
+              
               <div className="avatar-circle avatar-1">JD</div>
               <div className="avatar-circle avatar-2">AS</div>
               <div className="avatar-circle avatar-3">MK</div>
@@ -424,9 +424,9 @@ const Home = () => {
         </div>
       </section>
 
-      {/* PRICING SECTION */}
+      
       <section id="pricing" className="py-20 px-6 bg-gray-50 relative overflow-hidden">
-        {/* Subtle animated mesh gradient */}
+        
         <div className="absolute inset-0 mesh-gradient-animated opacity-60"></div>
 
         <div className="max-w-4xl mx-auto text-center relative z-10">
@@ -438,7 +438,7 @@ const Home = () => {
           </p>
 
           <div className="grid md:grid-cols-2 gap-8">
-            {/* Free Plan */}
+            
             <div className="bg-white border border-gray-200 rounded-lg p-8 text-left">
               <h3 className="text-2xl font-bold text-gray-900 mb-2">Free</h3>
               <p className="text-gray-600 mb-6">Perfect for individuals and small teams</p>
@@ -468,7 +468,7 @@ const Home = () => {
               </Link>
             </div>
 
-            {/* Pro Plan */}
+            
             <div className="bg-gray-900 text-white rounded-lg p-8 text-left relative">
               <div className="absolute top-4 right-4 bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-full">
                 POPULAR
@@ -508,7 +508,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* CTA SECTION */}
+      
       <section className="py-20 px-6">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-4xl font-bold text-gray-900 mb-4">
@@ -527,7 +527,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* FOOTER */}
+      
       <footer className="border-t border-gray-200 py-12 px-6 bg-gray-50">
         <div className="max-w-6xl mx-auto">
           <div className="grid md:grid-cols-4 gap-8 mb-8">

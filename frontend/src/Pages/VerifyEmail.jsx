@@ -14,7 +14,7 @@ const VerifyEmail = () => {
     e.preventDefault();
     setLoading(true);
 
-    // Mock API call
+    
     setTimeout(() => {
       navigate("/dashboard");
     }, 1000);

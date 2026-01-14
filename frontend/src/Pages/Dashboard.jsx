@@ -17,7 +17,6 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen">
 
-      {/* NAVBAR */}
       <nav className="bg-white/90 backdrop-blur-xl shadow-sm sticky top-0 z-50 border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
           <Link to="/dashboard" className="flex items-center gap-3">
@@ -39,10 +38,8 @@ const Dashboard = () => {
         </div>
       </nav>
 
-      {/* MAIN CONTENT */}
       <div className="max-w-7xl mx-auto px-6 py-10">
 
-        {/* HEADER */}
         <div className="mb-10">
           <h1 className="text-5xl font-extrabold text-gray-900 mb-3">
             Your Dashboard
@@ -52,7 +49,6 @@ const Dashboard = () => {
           </p>
         </div>
 
-        {/* STATS GRID */}
         <div className="grid md:grid-cols-4 gap-6 mb-12">
           {[
             {
@@ -102,7 +98,6 @@ const Dashboard = () => {
           ))}
         </div>
 
-        {/* QUICK ACTIONS */}
         <div className="grid md:grid-cols-2 gap-6 mb-12">
           <motion.div
             className="bg-gradient-to-br from-purple-600 to-blue-600 rounded-3xl shadow-2xl p-8 text-white relative overflow-hidden group cursor-pointer"
@@ -154,7 +149,6 @@ const Dashboard = () => {
           </motion.div>
         </div>
 
-        {/* WORKSPACES SECTION */}
         <div className="mb-10">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-3xl font-bold text-gray-900">Your Workspaces</h2>
@@ -233,7 +227,6 @@ const Dashboard = () => {
           )}
         </div>
 
-        {/* RECENT ACTIVITY */}
         <div className="mt-12">
           <h2 className="text-3xl font-bold text-gray-900 mb-6">Recent Activity</h2>
           <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-100">

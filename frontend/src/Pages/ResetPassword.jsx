@@ -22,7 +22,7 @@ const ResetPassword = () => {
 
     setLoading(true);
 
-    // Mock API call
+    
     setTimeout(() => {
       navigate("/login");
     }, 1000);

@@ -9,11 +9,11 @@ export default function useMeeting() {
     setLoading(true);
     setError(null);
     try {
-      // Prefer caller-provided start time; fallback to now to avoid undefined
+      
       const payload = {
         title,
         startTime: startTime || new Date().toISOString(),
-        participants, // array of emails or userIds (backend expects IDs)
+        participants, 
       };
       const res = await meetingApi.createMeeting(payload);
       setLoading(false);

@@ -9,14 +9,14 @@ const LoadingSpinner = ({ size = "md", text }) => {
 
     return (
         <div className="flex flex-col items-center justify-center py-12">
-            {/* Spinner */}
+            
             <div className="relative">
-                {/* Outer ring */}
+                
                 <motion.div
                     className={`${sizes[size]} border-4 border-gray-200 rounded-full`}
                 />
 
-                {/* Animated inner ring */}
+                
                 <motion.div
                     className={`absolute inset-0 ${sizes[size]} border-4 border-gray-900 border-t-transparent rounded-full`}
                     animate={{ rotate: 360 }}
@@ -27,7 +27,7 @@ const LoadingSpinner = ({ size = "md", text }) => {
                     }}
                 />
 
-                {/* Center dot */}
+                
                 <motion.div
                     className="absolute inset-0 flex items-center justify-center"
                     animate={{
@@ -43,7 +43,7 @@ const LoadingSpinner = ({ size = "md", text }) => {
                 </motion.div>
             </div>
 
-            {/* Loading text */}
+            
             {text && (
                 <motion.p
                     className="mt-4 text-gray-600 font-medium"

@@ -5,7 +5,6 @@ import { useWorkspace } from "../context/WorkspaceContext";
 import { createTask } from "../api/taskApi";
 import CreateTaskModal from "../components/tasks/CreateTaskModal";
 
-// Fake demo users for team tasks
 const DEMO_USERS = [
     { id: 'demo-user-1', name: 'Sarah Chen', email: 'sarah.chen@example.com' },
     { id: 'demo-user-2', name: 'Marcus Johnson', email: 'marcus.j@example.com' },
@@ -13,7 +12,6 @@ const DEMO_USERS = [
     { id: 'demo-user-4', name: 'David Kim', email: 'david.kim@example.com' },
 ];
 
-// Fake demo team tasks (with both single and multiple assignees)
 const DEMO_TEAM_TASKS = [
     {
         id: 'team-demo-1',
@@ -21,7 +19,7 @@ const DEMO_TEAM_TASKS = [
         status: 'InProgress',
         priority: 'High',
         dueDate: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).toISOString(),
-        assignedUsers: [DEMO_USERS[0], DEMO_USERS[1]], // Multiple assignees
+        assignedUsers: [DEMO_USERS[0], DEMO_USERS[1]], 
     },
     {
         id: 'team-demo-2',
@@ -29,7 +27,7 @@ const DEMO_TEAM_TASKS = [
         status: 'Todo',
         priority: 'Medium',
         dueDate: new Date(Date.now() + 4 * 24 * 60 * 60 * 1000).toISOString(),
-        assignedUsers: [DEMO_USERS[1]], // Single assignee
+        assignedUsers: [DEMO_USERS[1]], 
     },
     {
         id: 'team-demo-3',
@@ -37,7 +35,7 @@ const DEMO_TEAM_TASKS = [
         status: 'InProgress',
         priority: 'High',
         dueDate: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000).toISOString(),
-        assignedUsers: [DEMO_USERS[2], DEMO_USERS[3], DEMO_USERS[0]], // Three assignees
+        assignedUsers: [DEMO_USERS[2], DEMO_USERS[3], DEMO_USERS[0]], 
     },
     {
         id: 'team-demo-4',
@@ -45,7 +43,7 @@ const DEMO_TEAM_TASKS = [
         status: 'Completed',
         priority: 'Low',
         dueDate: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
-        assignedUsers: [DEMO_USERS[0]], // Single assignee
+        assignedUsers: [DEMO_USERS[0]], 
     },
     {
         id: 'team-demo-5',
@@ -53,7 +51,7 @@ const DEMO_TEAM_TASKS = [
         status: 'Todo',
         priority: 'Medium',
         dueDate: new Date(Date.now() + 6 * 24 * 60 * 60 * 1000).toISOString(),
-        assignedUsers: [DEMO_USERS[3], DEMO_USERS[2]], // Multiple assignees
+        assignedUsers: [DEMO_USERS[3], DEMO_USERS[2]], 
     },
     {
         id: 'team-demo-6',
@@ -61,7 +59,7 @@ const DEMO_TEAM_TASKS = [
         status: 'InProgress',
         priority: 'High',
         dueDate: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000).toISOString(),
-        assignedUsers: [DEMO_USERS[1]], // Single assignee
+        assignedUsers: [DEMO_USERS[1]], 
     },
     {
         id: 'team-demo-7',
@@ -69,7 +67,7 @@ const DEMO_TEAM_TASKS = [
         status: 'Todo',
         priority: 'Medium',
         dueDate: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toISOString(),
-        assignedUsers: [DEMO_USERS[2]], // Single assignee
+        assignedUsers: [DEMO_USERS[2]], 
     },
     {
         id: 'team-demo-8',
@@ -77,7 +75,7 @@ const DEMO_TEAM_TASKS = [
         status: 'Completed',
         priority: 'High',
         dueDate: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
-        assignedUsers: [DEMO_USERS[3], DEMO_USERS[0], DEMO_USERS[1], DEMO_USERS[2]], // Four assignees
+        assignedUsers: [DEMO_USERS[3], DEMO_USERS[0], DEMO_USERS[1], DEMO_USERS[2]], 
     },
 ];
 
@@ -91,10 +89,10 @@ const TeamHome = () => {
     const [statusDropdownOpen, setStatusDropdownOpen] = useState(null);
     const dropdownRef = useRef(null);
 
-    // Always combine real tasks with demo tasks to show assignee examples
+    
     const allTasks = tasks && tasks.length > 0 ? [...DEMO_TEAM_TASKS, ...tasks] : DEMO_TEAM_TASKS;
 
-    // Close dropdown when clicking outside
+    
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -106,10 +104,10 @@ const TeamHome = () => {
     }, []);
 
     const handleStatusChange = (taskId, newStatus) => {
-        // TODO: Update task status via API
-        // For now, just update local state
+        
+        
         setStatusDropdownOpen(null);
-        // updateTaskStatus(taskId, newStatus).then(() => refreshTasks());
+        
     };
 
     const statusOptions = [
@@ -140,14 +138,14 @@ const TeamHome = () => {
     const filteredTasks = allTasks.filter((task) => {
         const statusMatch = filterStatus === "all" || task.status?.toLowerCase() === filterStatus.toLowerCase();
 
-        // Handle both single assignedUser and multiple assignedUsers
+        
         let assigneeMatch = filterAssignee === "all";
         if (!assigneeMatch) {
             if (task.assignedUsers && Array.isArray(task.assignedUsers)) {
-                // Multiple assignees: check if any match
+                
                 assigneeMatch = task.assignedUsers.some(user => user?.id === filterAssignee);
             } else if (task.assignedUser) {
-                // Single assignee (backward compatibility)
+                
                 assigneeMatch = task.assignedUser?.id === filterAssignee;
             }
         }
@@ -155,7 +153,7 @@ const TeamHome = () => {
         return statusMatch && assigneeMatch;
     });
 
-    // Extract unique assignees from all tasks (supporting both single and multiple)
+    
     const assignees = allTasks.reduce((acc, task) => {
         const users = task.assignedUsers || (task.assignedUser ? [task.assignedUser] : []);
         users.forEach(user => {
@@ -188,7 +186,7 @@ const TeamHome = () => {
     return (
         <div className="min-h-screen bg-gray-50">
             <div className="p-6">
-                {/* Page Header */}
+                
                 <div className="mb-6">
                     <div className="flex items-center justify-between mb-4">
                         <div>
@@ -209,10 +207,10 @@ const TeamHome = () => {
                         </button>
                     </div>
 
-                    {/* Toolbar */}
+                    
                     <div className="flex items-center justify-between bg-white border border-gray-200 rounded-lg p-3">
                         <div className="flex items-center gap-2">
-                            {/* View Toggle */}
+                            
                             <div className="flex items-center gap-1 bg-gray-100 rounded p-0.5">
                                 <button
                                     onClick={() => setViewMode("list")}
@@ -230,13 +228,13 @@ const TeamHome = () => {
                                 </button>
                             </div>
 
-                            {/* Filters */}
+                            
                             <button className="px-3 py-1.5 text-sm text-gray-700 hover:bg-gray-100 rounded flex items-center gap-2 transition-colors">
                                 <Filter className="w-4 h-4" />
                                 Filter
                             </button>
 
-                            {/* Status Filter */}
+                            
                             <select
                                 value={filterStatus}
                                 onChange={(e) => setFilterStatus(e.target.value)}
@@ -248,7 +246,7 @@ const TeamHome = () => {
                                 <option value="completed">Completed</option>
                             </select>
 
-                            {/* Assignee Filter */}
+                            
                             {assignees.length > 0 && (
                                 <select
                                     value={filterAssignee}
@@ -265,7 +263,7 @@ const TeamHome = () => {
                             )}
                         </div>
 
-                        {/* Search */}
+                        
                         <div className="relative">
                             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
                             <input
@@ -277,7 +275,7 @@ const TeamHome = () => {
                     </div>
                 </div>
 
-                {/* Tasks Table */}
+                
                 {taskLoading ? (
                     <div className="flex items-center justify-center py-20">
                         <div className="animate-spin rounded-full h-8 w-8 border-2 border-gray-200 border-t-gray-900"></div>
@@ -296,9 +294,9 @@ const TeamHome = () => {
                         </button>
                     </div>
                 ) : viewMode === "list" ? (
-                    // LIST VIEW
+                    
                     <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
-                        {/* Table Header */}
+                        
                         <div className="grid grid-cols-12 gap-4 px-4 py-3 bg-gray-50 border-b border-gray-200 text-xs font-semibold text-gray-500 uppercase">
                             <div className="col-span-5">Task Name</div>
                             <div className="col-span-2">Assignee</div>
@@ -308,7 +306,7 @@ const TeamHome = () => {
                             <div className="col-span-1"></div>
                         </div>
 
-                        {/* Table Rows */}
+                        
                         <div>
                             {filteredTasks.map((task, index) => (
                                 <motion.div
@@ -318,7 +316,7 @@ const TeamHome = () => {
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ delay: index * 0.05 }}
                                 >
-                                    {/* Task Name */}
+                                    
                                     <div className="col-span-5 flex items-center gap-3">
                                         <button className="text-gray-300 hover:text-gray-900 transition-colors">
                                             <Circle className="w-4 h-4" />
@@ -328,7 +326,7 @@ const TeamHome = () => {
                                         </span>
                                     </div>
 
-                                    {/* Assignee */}
+                                    
                                     <div className="col-span-2 flex items-center">
                                         {(() => {
                                             const users = task.assignedUsers || (task.assignedUser ? [task.assignedUser] : []);
@@ -383,7 +381,7 @@ const TeamHome = () => {
                                         })()}
                                     </div>
 
-                                    {/* Status */}
+                                    
                                     <div className="col-span-2 flex items-center relative">
                                         <button
                                             onClick={() => setStatusDropdownOpen(statusDropdownOpen === task.id ? null : task.id)}
@@ -422,21 +420,21 @@ const TeamHome = () => {
                                         </AnimatePresence>
                                     </div>
 
-                                    {/* Priority */}
+                                    
                                     <div className="col-span-1 flex items-center">
                                         <span className={`text-sm font-medium ${getPriorityColor(task.priority)}`}>
                                             {task.priority || "—"}
                                         </span>
                                     </div>
 
-                                    {/* Due Date */}
+                                    
                                     <div className="col-span-1 flex items-center">
                                         <span className="text-sm text-gray-500">
                                             {task.dueDate ? new Date(task.dueDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : "—"}
                                         </span>
                                     </div>
 
-                                    {/* Actions */}
+                                    
                                     <div className="col-span-1 flex items-center justify-end">
                                         <button className="p-1 text-gray-400 hover:text-gray-900 hover:bg-gray-100 rounded opacity-0 group-hover:opacity-100 transition-all">
                                             <MoreHorizontal className="w-4 h-4" />
@@ -446,7 +444,7 @@ const TeamHome = () => {
                             ))}
                         </div>
 
-                        {/* Add Task Row */}
+                        
                         <button
                             onClick={() => setIsModalOpen(true)}
                             className="w-full px-4 py-3 text-left text-sm text-gray-500 hover:bg-gray-50 transition-colors flex items-center gap-2"
@@ -456,7 +454,7 @@ const TeamHome = () => {
                         </button>
                     </div>
                 ) : (
-                    // GRID VIEW
+                    
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                         {filteredTasks.map((task, index) => (
                             <motion.div
@@ -466,7 +464,7 @@ const TeamHome = () => {
                                 animate={{ opacity: 1, scale: 1 }}
                                 transition={{ delay: index * 0.05 }}
                             >
-                                {/* Card Header */}
+                                
                                 <div className="flex items-start justify-between mb-3">
                                     <div className="flex items-start gap-2 flex-1">
                                         <button className="text-gray-300 hover:text-gray-900 transition-colors mt-0.5">
@@ -481,7 +479,7 @@ const TeamHome = () => {
                                     </button>
                                 </div>
 
-                                {/* Assignees */}
+                                
                                 <div className="mb-3">
                                     {(() => {
                                         const users = task.assignedUsers || (task.assignedUser ? [task.assignedUser] : []);
@@ -536,9 +534,9 @@ const TeamHome = () => {
                                     })()}
                                 </div>
 
-                                {/* Meta Info */}
+                                
                                 <div className="flex flex-wrap items-center gap-2 pt-3 border-t border-gray-100 relative">
-                                    {/* Status */}
+                                    
                                     <button
                                         onClick={() => setStatusDropdownOpen(statusDropdownOpen === task.id ? null : task.id)}
                                         className={`px-2 py-1 rounded text-xs font-medium border ${getStatusColor(task.status)} hover:opacity-80 transition-opacity flex items-center gap-1`}
@@ -574,14 +572,14 @@ const TeamHome = () => {
                                         )}
                                     </AnimatePresence>
 
-                                    {/* Priority */}
+                                    
                                     {task.priority && (
                                         <span className={`text-xs font-medium ${getPriorityColor(task.priority)}`}>
                                             {task.priority}
                                         </span>
                                     )}
 
-                                    {/* Due Date */}
+                                    
                                     {task.dueDate && (
                                         <span className="text-xs text-gray-500 ml-auto">
                                             {new Date(task.dueDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
@@ -591,7 +589,7 @@ const TeamHome = () => {
                             </motion.div>
                         ))}
 
-                        {/* Add Task Card */}
+                        
                         <button
                             onClick={() => setIsModalOpen(true)}
                             className="bg-white border border-gray-200 border-dashed rounded-lg p-4 hover:border-gray-400 hover:bg-gray-50 transition-all flex flex-col items-center justify-center min-h-[180px] text-gray-500 hover:text-gray-700"

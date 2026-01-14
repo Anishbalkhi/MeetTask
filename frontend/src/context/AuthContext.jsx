@@ -4,8 +4,7 @@ import { mockUsers } from "../data/mockData";
 
 const AuthContext = createContext();
 
-// Mock mode for testing without backend
-const MOCK_MODE = true; // Set to true for mock mode, false for backend integration
+const MOCK_MODE = true;
 
 export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(
@@ -13,10 +12,9 @@ export const AuthProvider = ({ children }) => {
   );
   const [user, setUser] = useState(null);
 
-  // Fetch user data when token changes (if needed)
   useEffect(() => {
     if (MOCK_MODE && token) {
-      // Use first mock user as logged in user
+
       const mockUser = mockUsers[0];
       setUser({
         loggedIn: true,
@@ -25,7 +23,7 @@ export const AuthProvider = ({ children }) => {
       });
     } else if (token) {
       setUser({ loggedIn: true });
-      // TODO: Optionally fetch user details from /api/auth/me or similar
+
     } else {
       setUser(null);
     }
@@ -50,8 +48,7 @@ export const AuthProvider = ({ children }) => {
     }
 
     const response = await registerApi({ name, email, password });
-    // Note: Register may or may not return a token immediately
-    // Depending on if email verification is required
+
     if (response.data.token) {
       localStorage.setItem("token", response.data.token);
       setToken(response.data.token);
@@ -67,7 +64,6 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
   }, []);
 
-  // Listen for logout events from axios interceptor
   useEffect(() => {
     const handleLogout = () => {
       logout();

@@ -3,14 +3,14 @@ import { motion } from "framer-motion";
 const EmptyState = ({ icon: Icon, title, description, actionLabel, onAction }) => {
     return (
         <div className="flex flex-col items-center justify-center py-16 px-6">
-            {/* Animated Icon Container */}
+            
             <motion.div
                 className="relative mb-6"
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
                 transition={{ type: "spring", stiffness: 200, delay: 0.1 }}
             >
-                {/* Background circles */}
+                
                 <motion.div
                     className="absolute inset-0 w-32 h-32 bg-gray-100 rounded-full -z-10"
                     animate={{
@@ -35,7 +35,7 @@ const EmptyState = ({ icon: Icon, title, description, actionLabel, onAction }) =
                     }}
                 />
 
-                {/* Icon */}
+                
                 <motion.div
                     className="w-32 h-32 flex items-center justify-center"
                     animate={{
@@ -51,7 +51,7 @@ const EmptyState = ({ icon: Icon, title, description, actionLabel, onAction }) =
                 </motion.div>
             </motion.div>
 
-            {/* Text content */}
+            
             <motion.div
                 className="text-center max-w-md"
                 initial={{ opacity: 0, y: 20 }}

@@ -14,7 +14,7 @@ const ForgotPassword = () => {
     e.preventDefault();
     setLoading(true);
 
-    // Mock API call
+    
     setTimeout(() => {
       setSubmitted(true);
       setLoading(false);

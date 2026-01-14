@@ -38,9 +38,9 @@ const Header = () => {
             }}
         >
 
-            {/* Left Side - Workspace Switcher & Search */}
+            
             <div className="flex items-center gap-4 flex-1">
-                {/* Workspace Switcher */}
+                
                 <div className="relative">
                     <button
                         onClick={() => setIsWsOpen(!isWsOpen)}
@@ -68,7 +68,7 @@ const Header = () => {
                         />
                     </button>
 
-                    {/* Workspace Dropdown */}
+                    
                     <AnimatePresence>
                         {isWsOpen && (
                             <motion.div
@@ -154,7 +154,7 @@ const Header = () => {
                     </AnimatePresence>
                 </div>
 
-                {/* Search Bar - Hidden on mobile */}
+                
                 <div className="relative flex-1 max-w-md hidden md:block">
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: 'var(--text-tertiary)' }} />
                     <input
@@ -178,12 +178,12 @@ const Header = () => {
                 </div>
             </div>
 
-            {/* Right Side Actions */}
+            
             <div className="flex items-center gap-2">
-                {/* Theme Toggle */}
+                
                 <ThemeToggle />
 
-                {/* Profile Dropdown */}
+                
                 <div className="relative">
                     <button
                         onClick={() => setIsProfileOpen(!isProfileOpen)}

@@ -5,9 +5,9 @@ import { motion, AnimatePresence } from "framer-motion";
 
 const TaskView = ({ userOnly = false, title }) => {
     const { tasks, currentWorkspace, loading, taskLoading } = useWorkspace();
-    const [viewMode, setViewMode] = useState("list"); // 'list' (Table) or 'block' (Kanban)
+    const [viewMode, setViewMode] = useState("list"); 
 
-    const filteredTasks = tasks; // Add filtering logic here if needed
+    const filteredTasks = tasks; 
 
     const statusColors = {
         "TODO": "bg-gray-500/10 text-gray-400 border-gray-500/20",
@@ -37,7 +37,7 @@ const TaskView = ({ userOnly = false, title }) => {
     return (
         <div className="w-full pt-6 pb-20">
 
-            {/* Header / Controls */}
+            
             <div className="flex flex-col md:flex-row justify-between items-end mb-8 gap-4 px-2">
                 <div>
                     <h1 className="text-3xl font-bold text-white mb-1 tracking-tight">
@@ -64,7 +64,7 @@ const TaskView = ({ userOnly = false, title }) => {
                 </div>
             </div>
 
-            {/* Content */}
+            
             {filteredTasks.length === 0 ? (
                 <div className="text-center py-32 text-gray-500 bg-[#141517]/60 rounded-2xl border border-white/10 border-dashed mx-2">
                     <p>No tasks found.</p>

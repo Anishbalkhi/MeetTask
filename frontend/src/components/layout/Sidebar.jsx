@@ -14,7 +14,7 @@ const Sidebar = () => {
 
     return (
         <>
-            {/* Desktop Sidebar */}
+            
             <aside
                 className="hidden md:flex w-16 flex-col items-center py-4 fixed left-0 top-0 h-full z-50"
                 style={{
@@ -23,7 +23,7 @@ const Sidebar = () => {
                 }}
             >
 
-                {/* App Logo */}
+                
                 <Link to="/dashboard" className="mb-8 group relative">
                     <motion.div
                         className="w-10 h-10 rounded-lg flex items-center justify-center shadow-lg"
@@ -37,7 +37,7 @@ const Sidebar = () => {
                         <Sparkles className="w-5 h-5" style={{ color: 'var(--text-inverse)' }} />
                     </motion.div>
 
-                    {/* Tooltip */}
+                    
                     <div
                         className="absolute left-14 top-1/2 -translate-y-1/2 px-3 py-1.5 rounded text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50 shadow-xl"
                         style={{
@@ -53,7 +53,7 @@ const Sidebar = () => {
                     </div>
                 </Link>
 
-                {/* Nav Links */}
+                
                 <nav className="flex flex-col gap-1 w-full items-center px-2 mb-4">
                     {navItems.map((item) => (
                         <Link
@@ -85,7 +85,7 @@ const Sidebar = () => {
                             >
                                 <item.icon className="w-5 h-5" />
 
-                                {/* Active indicator */}
+                                
                                 {isActive(item.path) && (
                                     <motion.div
                                         layoutId="activeIndicator"
@@ -97,7 +97,7 @@ const Sidebar = () => {
                                 )}
                             </motion.div>
 
-                            {/* Tooltip */}
+                            
                             <div
                                 className="absolute left-14 top-1/2 -translate-y-1/2 px-3 py-1.5 rounded text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50 shadow-xl"
                                 style={{
@@ -115,10 +115,10 @@ const Sidebar = () => {
                     ))}
                 </nav>
 
-                {/* Divider */}
+                
                 <div className="w-8 h-px bg-gradient-to-r from-transparent via-gray-700 to-transparent mb-4"></div>
 
-                {/* Create Button */}
+                
                 <Link to="/dashboard/create-workspace" className="group relative w-full px-2">
                     <motion.button
                         whileHover={{ scale: 1.08, y: -2 }}
@@ -132,7 +132,7 @@ const Sidebar = () => {
                         <Plus className="w-5 h-5" />
                     </motion.button>
 
-                    {/* Tooltip */}
+                    
                     <div
                         className="absolute left-14 top-1/2 -translate-y-1/2 px-3 py-1.5 rounded text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50 shadow-xl"
                         style={{
@@ -148,7 +148,7 @@ const Sidebar = () => {
                     </div>
                 </Link>
 
-                {/* Settings at Bottom */}
+                
                 <div className="mt-auto px-2 w-full">
                     <Link to="/dashboard/workspace" className="group relative w-full block">
                         <motion.button
@@ -170,7 +170,7 @@ const Sidebar = () => {
                         >
                             <Settings className="w-5 h-5" />
 
-                            {/* Tooltip */}
+                            
                             <div
                                 className="absolute left-14 top-1/2 -translate-y-1/2 px-3 py-1.5 rounded text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50 shadow-xl"
                                 style={{
@@ -190,7 +190,7 @@ const Sidebar = () => {
 
             </aside>
 
-            {/* Mobile Bottom Navigation */}
+            
             <nav
                 className="md:hidden fixed bottom-0 left-0 right-0 z-50 safe-area-inset-bottom"
                 style={{
@@ -229,7 +229,7 @@ const Sidebar = () => {
                         </Link>
                     ))}
 
-                    {/* Create Button */}
+                    
                     <Link
                         to="/dashboard/create-workspace"
                         className="flex flex-col items-center gap-1 px-4 py-2"
@@ -247,7 +247,7 @@ const Sidebar = () => {
                         <span className="text-xs font-medium" style={{ color: 'var(--text-muted)' }}>Create</span>
                     </Link>
 
-                    {/* Settings */}
+                    
                     <Link
                         to="/dashboard/workspace"
                         className="flex flex-col items-center gap-1 px-4 py-2"

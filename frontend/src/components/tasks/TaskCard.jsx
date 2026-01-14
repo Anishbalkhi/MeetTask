@@ -48,7 +48,7 @@ const TaskCard = ({ task, onClick, onStatusChange, viewMode = "grid" }) => {
 
     const isCompleted = task.status?.toLowerCase() === 'completed';
 
-    // List View Layout
+    
     if (viewMode === "list") {
         return (
             <motion.div
@@ -61,9 +61,9 @@ const TaskCard = ({ task, onClick, onStatusChange, viewMode = "grid" }) => {
                 className="group bg-[#141517]/80 backdrop-blur-sm border border-white/10 hover:border-[#CCFF00]/50 rounded-xl p-4 cursor-pointer transition-all hover:shadow-xl hover:shadow-[#CCFF00]/10"
             >
                 <div className="flex items-center justify-between gap-4">
-                    {/* Left side - Task info */}
+                    
                     <div className="flex-1 flex items-center gap-3">
-                        {/* Task content */}
+                        
                         <div className="flex-1 min-w-0">
                             <h3 className="text-white font-semibold text-sm mb-0.5 truncate group-hover:text-[#CCFF00] transition-colors">
                                 {task.title || "Untitled Task"}
@@ -76,19 +76,19 @@ const TaskCard = ({ task, onClick, onStatusChange, viewMode = "grid" }) => {
                         </div>
                     </div>
 
-                    {/* Middle - Meta info */}
+                    
                     <div className="flex items-center gap-3 text-xs">
-                        {/* Status */}
+                        
                         <div className={`px-2.5 py-1 rounded-md font-medium border whitespace-nowrap ${getStatusClass(task.status)}`}>
                             {formatStatus(task.status)}
                         </div>
 
-                        {/* Priority */}
+                        
                         <div className={`px-2.5 py-1 rounded-md font-semibold uppercase border whitespace-nowrap text-[10px] ${getPriorityClass(task.priority)}`}>
                             {task.priority || "Low"}
                         </div>
 
-                        {/* Assigned User */}
+                        
                         {task.assignedUser && (
                             <div className="flex items-center gap-1.5 text-gray-400">
                                 <FiUser className="text-xs" />
@@ -96,7 +96,7 @@ const TaskCard = ({ task, onClick, onStatusChange, viewMode = "grid" }) => {
                             </div>
                         )}
 
-                        {/* Due Date */}
+                        
                         {task.dueDate && (
                             <div className="flex items-center gap-1.5 text-gray-400">
                                 <FiClock className="text-xs" />
@@ -110,7 +110,7 @@ const TaskCard = ({ task, onClick, onStatusChange, viewMode = "grid" }) => {
                         )}
                     </div>
 
-                    {/* Right side - Actions */}
+                    
                     <div className="flex items-center gap-2">
                         <button
                             onClick={handleMarkComplete}
@@ -128,7 +128,7 @@ const TaskCard = ({ task, onClick, onStatusChange, viewMode = "grid" }) => {
         );
     }
 
-    // Grid View Layout
+    
     return (
         <motion.div
             initial={{ opacity: 0, y: 10 }}
@@ -139,7 +139,7 @@ const TaskCard = ({ task, onClick, onStatusChange, viewMode = "grid" }) => {
             onClick={onClick}
             className="group bg-[#141517]/80 backdrop-blur-sm border border-white/10 hover:border-[#CCFF00]/50 rounded-xl p-4 cursor-pointer transition-all hover:shadow-xl hover:shadow-[#CCFF00]/10"
         >
-            {/* Task Header */}
+            
             <div className="flex items-start justify-between mb-3">
                 <h3 className="text-white font-semibold text-sm flex-1 pr-2 line-clamp-2 group-hover:text-[#CCFF00] transition-colors">
                     {task.title || "Untitled Task"}
@@ -153,17 +153,17 @@ const TaskCard = ({ task, onClick, onStatusChange, viewMode = "grid" }) => {
                 </div>
             </div>
 
-            {/* Task Description */}
+            
             {task.description && (
                 <p className="text-gray-400 text-xs mb-3 line-clamp-2">
                     {task.description}
                 </p>
             )}
 
-            {/* Task Footer */}
+            
             <div className="space-y-2.5 pt-3 border-t border-white/10">
                 <div className="flex items-center justify-between">
-                    {/* Status */}
+                    
                     <div
                         className={`px-2.5 py-1 rounded-md text-[11px] font-medium border ${getStatusClass(
                             task.status
@@ -172,9 +172,9 @@ const TaskCard = ({ task, onClick, onStatusChange, viewMode = "grid" }) => {
                         {formatStatus(task.status)}
                     </div>
 
-                    {/* Meta Info */}
+                    
                     <div className="flex items-center gap-2 text-gray-400 text-[11px]">
-                        {/* Assigned User */}
+                        
                         {task.assignedUser && (
                             <div className="flex items-center gap-1 group/user">
                                 <FiUser className="text-xs group-hover/user:text-[#CCFF00] transition-colors" />
@@ -184,7 +184,7 @@ const TaskCard = ({ task, onClick, onStatusChange, viewMode = "grid" }) => {
                             </div>
                         )}
 
-                        {/* Due Date */}
+                        
                         {task.dueDate && (
                             <div className="flex items-center gap-1 group/date">
                                 <FiClock className="text-xs group-hover/date:text-[#CCFF00] transition-colors" />
@@ -199,7 +199,7 @@ const TaskCard = ({ task, onClick, onStatusChange, viewMode = "grid" }) => {
                     </div>
                 </div>
 
-                {/* Mark Complete Button */}
+                
                 <button
                     onClick={handleMarkComplete}
                     className={`w-full py-2 rounded-lg font-medium text-xs transition-all flex items-center justify-center gap-1.5 ${isCompleted

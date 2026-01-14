@@ -18,7 +18,6 @@ const WorkspaceSettings = () => {
         if (currentWorkspace) {
             fetchMembers();
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentWorkspace]);
 
     const fetchMembers = async () => {
@@ -42,7 +41,6 @@ const WorkspaceSettings = () => {
         navigate("/dashboard");
     };
 
-    // eslint-disable-next-line no-unused-vars
     const handleRemoveMember = async (_memberId) => {
         alert(`Member removed! (Mock)`);
         fetchMembers();
@@ -76,7 +74,6 @@ const WorkspaceSettings = () => {
 
             <div className="max-w-5xl mx-auto p-6">
 
-                {/* Page Header */}
                 <motion.div
                     className="mb-8"
                     initial={{ opacity: 0, y: 20 }}
@@ -86,7 +83,6 @@ const WorkspaceSettings = () => {
                     <p className="text-gray-600">Manage your workspace and team</p>
                 </motion.div>
 
-                {/* Tabs */}
                 <motion.div
                     className="border-b border-gray-200 mb-8"
                     initial={{ opacity: 0 }}
@@ -110,17 +106,14 @@ const WorkspaceSettings = () => {
                     </div>
                 </motion.div>
 
-                {/* Tab Content */}
                 <div className="space-y-6">
 
-                    {/* General Tab */}
                     {activeTab === "general" && (
                         <motion.div
                             className="space-y-6"
                             initial={{ opacity: 0, x: -20 }}
                             animate={{ opacity: 1, x: 0 }}
                         >
-                            {/* Workspace Info Card */}
                             <div className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm">
                                 <h2 className="text-xl font-semibold text-gray-900 mb-6">Workspace Information</h2>
 
@@ -174,7 +167,6 @@ const WorkspaceSettings = () => {
                                 </form>
                             </div>
 
-                            {/* Danger Zone */}
                             <div className="bg-white border border-red-200 rounded-lg p-6 shadow-sm">
                                 <h2 className="text-xl font-semibold text-red-600 mb-4">Danger Zone</h2>
 
@@ -212,7 +204,6 @@ const WorkspaceSettings = () => {
                         </motion.div>
                     )}
 
-                    {/* Members Tab */}
                     {activeTab === "members" && (
                         <motion.div
                             initial={{ opacity: 0, x: -20 }}
@@ -273,7 +264,6 @@ const WorkspaceSettings = () => {
                         </motion.div>
                     )}
 
-                    {/* Invite Tab */}
                     {activeTab === "invite" && (
                         <motion.div
                             initial={{ opacity: 0, x: -20 }}

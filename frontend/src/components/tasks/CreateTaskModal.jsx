@@ -23,7 +23,7 @@ const CreateTaskModal = ({ isOpen, onClose, onSubmit, loading = false }) => {
     const [teamMembers, setTeamMembers] = useState([]);
     const [loadingMembers, setLoadingMembers] = useState(false);
 
-    // Fetch team members when modal opens
+    
     useEffect(() => {
         if (isOpen && currentWorkspace) {
             fetchTeamMembers();
@@ -36,7 +36,7 @@ const CreateTaskModal = ({ isOpen, onClose, onSubmit, loading = false }) => {
             const res = await getWorkspaceMembers(currentWorkspace.id);
             const members = res.data || [];
 
-            // Add current user at the top
+            
             const formattedMembers = members.map(member => ({
                 id: member.id || member._id,
                 name: member.name || member.email,
@@ -44,7 +44,7 @@ const CreateTaskModal = ({ isOpen, onClose, onSubmit, loading = false }) => {
                 isCurrentUser: member.email === user?.email
             }));
 
-            // Sort to put current user first
+            
             formattedMembers.sort((a, b) => b.isCurrentUser - a.isCurrentUser);
 
             setTeamMembers(formattedMembers);
@@ -95,7 +95,7 @@ const CreateTaskModal = ({ isOpen, onClose, onSubmit, loading = false }) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         onSubmit(formData);
-        // Reset form
+        
         setFormData({
             title: "",
             description: "",
@@ -124,7 +124,7 @@ const CreateTaskModal = ({ isOpen, onClose, onSubmit, loading = false }) => {
         <AnimatePresence>
             {isOpen && (
                 <>
-                    {/* Backdrop */}
+                    
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
@@ -133,7 +133,7 @@ const CreateTaskModal = ({ isOpen, onClose, onSubmit, loading = false }) => {
                         className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50"
                     />
 
-                    {/* Modal */}
+                    
                     <motion.div
                         initial={{ opacity: 0, scale: 0.95 }}
                         animate={{ opacity: 1, scale: 1 }}
@@ -145,7 +145,7 @@ const CreateTaskModal = ({ isOpen, onClose, onSubmit, loading = false }) => {
                             onClick={(e) => e.stopPropagation()}
                             className="bg-white rounded-lg shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden flex flex-col"
                         >
-                            {/* Header */}
+                            
                             <div className="border-b border-gray-200 px-6 py-4 flex items-center justify-between">
                                 <h2 className="text-lg font-semibold text-gray-900">Create Task</h2>
                                 <button
@@ -156,10 +156,10 @@ const CreateTaskModal = ({ isOpen, onClose, onSubmit, loading = false }) => {
                                 </button>
                             </div>
 
-                            {/* Content */}
+                            
                             <div className="flex-1 overflow-y-auto p-6">
                                 <form onSubmit={handleSubmit} className="space-y-5">
-                                    {/* Task Name */}
+                                    
                                     <div>
                                         <input
                                             type="text"
@@ -173,7 +173,7 @@ const CreateTaskModal = ({ isOpen, onClose, onSubmit, loading = false }) => {
                                         />
                                     </div>
 
-                                    {/* Description */}
+                                    
                                     {!showDescription ? (
                                         <button
                                             type="button"
@@ -194,9 +194,9 @@ const CreateTaskModal = ({ isOpen, onClose, onSubmit, loading = false }) => {
                                         />
                                     )}
 
-                                    {/* Quick Actions */}
+                                    
                                     <div className="space-y-3">
-                                        {/* Status */}
+                                        
                                         <div className="flex items-center gap-3">
                                             <label className="w-24 text-sm font-medium text-gray-600 flex items-center gap-2">
                                                 Status
@@ -215,7 +215,7 @@ const CreateTaskModal = ({ isOpen, onClose, onSubmit, loading = false }) => {
                                             </select>
                                         </div>
 
-                                        {/* Priority */}
+                                        
                                         <div className="flex items-center gap-3">
                                             <label className="w-24 text-sm font-medium text-gray-600 flex items-center gap-2">
                                                 <Flag className="w-4 h-4" />
@@ -235,7 +235,7 @@ const CreateTaskModal = ({ isOpen, onClose, onSubmit, loading = false }) => {
                                             </select>
                                         </div>
 
-                                        {/* Due Date */}
+                                        
                                         <div className="flex items-center gap-3">
                                             <label className="w-24 text-sm font-medium text-gray-600 flex items-center gap-2">
                                                 <Calendar className="w-4 h-4" />
@@ -250,7 +250,7 @@ const CreateTaskModal = ({ isOpen, onClose, onSubmit, loading = false }) => {
                                             />
                                         </div>
 
-                                        {/* Assignees */}
+                                        
                                         <div className="flex items-start gap-3">
                                             <label className="w-24 text-sm font-medium text-gray-600 flex items-center gap-2 pt-2">
                                                 <Users className="w-4 h-4" />
@@ -273,7 +273,7 @@ const CreateTaskModal = ({ isOpen, onClose, onSubmit, loading = false }) => {
                                                         className="w-full pl-9 pr-3 py-2 bg-gray-100 hover:bg-gray-200 rounded text-sm text-gray-700 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-200 transition-colors"
                                                     />
 
-                                                    {/* Dropdown */}
+                                                    
                                                     {showAssigneeDropdown && (assigneeInput.trim() !== '' || filteredMembers.length > 0) && (
                                                         <motion.div
                                                             initial={{ opacity: 0, y: -10 }}
@@ -321,7 +321,7 @@ const CreateTaskModal = ({ isOpen, onClose, onSubmit, loading = false }) => {
                                                     )}
                                                 </div>
 
-                                                {/* Assignee List */}
+                                                
                                                 {formData.assignees.length > 0 && (
                                                     <div className="flex flex-wrap gap-2">
                                                         {formData.assignees.map((email, index) => {
@@ -354,7 +354,7 @@ const CreateTaskModal = ({ isOpen, onClose, onSubmit, loading = false }) => {
                                 </form>
                             </div>
 
-                            {/* Footer */}
+                            
                             <div className="border-t border-gray-200 px-6 py-4 flex items-center justify-end gap-3 bg-gray-50">
                                 <button
                                     type="button"

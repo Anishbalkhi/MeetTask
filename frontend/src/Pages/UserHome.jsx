@@ -5,7 +5,6 @@ import { useWorkspace } from "../context/WorkspaceContext";
 import { getUserTasks, createTask } from "../api/taskApi";
 import CreateTaskModal from "../components/tasks/CreateTaskModal";
 
-// Fake demo data for when there are no real tasks
 const DEMO_TASKS = [
     {
         id: 'demo-1',
@@ -67,11 +66,9 @@ const UserHome = () => {
             try {
                 setLoading(true);
                 const res = await getUserTasks();
-                // Always combine demo data with real tasks for demonstration
                 setUserTasks(res.data && res.data.length > 0 ? [...DEMO_TASKS, ...res.data] : DEMO_TASKS);
             } catch (error) {
                 console.error("Failed to fetch user tasks:", error);
-                // Use demo data on error
                 setUserTasks(DEMO_TASKS);
             } finally {
                 setLoading(false);
@@ -80,7 +77,6 @@ const UserHome = () => {
 
         fetchUserTasks();
 
-        // Fallback timeout - if still loading after 6 seconds, show demo data
         const timeoutId = setTimeout(() => {
             if (loading) {
                 console.warn('⚠️ Task loading timeout - showing demo data');
@@ -92,7 +88,6 @@ const UserHome = () => {
         return () => clearTimeout(timeoutId);
     }, []);
 
-    // Close dropdown when clicking outside
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -104,14 +99,10 @@ const UserHome = () => {
     }, []);
 
     const handleStatusChange = (taskId, newStatus) => {
-        // Update task status in state
         setUserTasks(prev => prev.map(task =>
             task.id === taskId ? { ...task, status: newStatus } : task
         ));
         setStatusDropdownOpen(null);
-
-        // TODO: Call API to update task status on backend
-        // updateTaskStatus(taskId, newStatus);
     };
 
     const statusOptions = [
@@ -165,7 +156,6 @@ const UserHome = () => {
     return (
         <div className="min-h-screen" style={{ background: 'var(--bg-secondary)' }}>
             <div className="p-6">
-                {/* Page Header */}
                 <div className="mb-6">
                     <div className="flex items-center justify-between mb-4">
                         <div>
@@ -184,10 +174,8 @@ const UserHome = () => {
                         </button>
                     </div>
 
-                    {/* Toolbar */}
                     <div className="flex items-center justify-between rounded-lg p-3" style={{ background: 'var(--bg-primary)', border: '1px solid var(--border-primary)' }}>
                         <div className="flex items-center gap-2">
-                            {/* View Toggle */}
                             <div className="flex items-center gap-1 rounded p-0.5" style={{ background: 'var(--bg-tertiary)' }}>
                                 <button
                                     onClick={() => setViewMode("list")}
@@ -213,13 +201,11 @@ const UserHome = () => {
                                 </button>
                             </div>
 
-                            {/* Filters */}
                             <button className="px-3 py-1.5 text-sm text-gray-700 hover:bg-gray-100 rounded flex items-center gap-2 transition-colors">
                                 <Filter className="w-4 h-4" />
                                 Filter
                             </button>
 
-                            {/* Status Filter */}
                             <select
                                 value={filterStatus}
                                 onChange={(e) => setFilterStatus(e.target.value)}
@@ -232,7 +218,6 @@ const UserHome = () => {
                             </select>
                         </div>
 
-                        {/* Search */}
                         <div className="relative">
                             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
                             <input
@@ -244,7 +229,6 @@ const UserHome = () => {
                     </div>
                 </div>
 
-                {/* Tasks Table */}
                 {loading ? (
                     <div className="flex items-center justify-center py-20">
                         <div className="animate-spin rounded-full h-8 w-8 border-2 border-gray-200 border-t-gray-900"></div>
@@ -260,9 +244,8 @@ const UserHome = () => {
                         </button>
                     </div>
                 ) : viewMode === "list" ? (
-                    // LIST VIEW
                     <div className="rounded-lg overflow-hidden" style={{ background: 'var(--card-bg)', border: '1px solid var(--card-border)' }}>
-                        {/* Table Header */}
+                        
                         <div className="grid grid-cols-12 gap-4 px-4 py-3 text-xs font-semibold uppercase" style={{ background: 'var(--bg-tertiary)', borderBottom: '1px solid var(--border-primary)', color: 'var(--text-muted)' }}>
                             <div className="col-span-6">Task Name</div>
                             <div className="col-span-2">Status</div>
@@ -271,7 +254,6 @@ const UserHome = () => {
                             <div className="col-span-1"></div>
                         </div>
 
-                        {/* Table Rows */}
                         <div>
                             {filteredTasks.map((task, index) => (
                                 <motion.div
@@ -284,7 +266,6 @@ const UserHome = () => {
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ delay: index * 0.05 }}
                                 >
-                                    {/* Task Name */}
                                     <div className="col-span-6 flex items-center gap-3">
                                         <button className="text-gray-300 hover:text-gray-900 transition-colors">
                                             <Circle className="w-4 h-4" />
@@ -294,7 +275,6 @@ const UserHome = () => {
                                         </span>
                                     </div>
 
-                                    {/* Status */}
                                     <div className="col-span-2 flex items-center relative">
                                         <button
                                             onClick={() => setStatusDropdownOpen(statusDropdownOpen === task.id ? null : task.id)}
@@ -333,21 +313,18 @@ const UserHome = () => {
                                         </AnimatePresence>
                                     </div>
 
-                                    {/* Priority */}
                                     <div className="col-span-2 flex items-center">
                                         <span className={`text-sm font-medium ${getPriorityColor(task.priority)}`}>
                                             {task.priority || "—"}
                                         </span>
                                     </div>
 
-                                    {/* Due Date */}
                                     <div className="col-span-1 flex items-center">
                                         <span className="text-sm text-gray-500">
                                             {task.dueDate ? new Date(task.dueDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : "—"}
                                         </span>
                                     </div>
 
-                                    {/* Actions */}
                                     <div className="col-span-1 flex items-center justify-end">
                                         <button className="p-1 text-gray-400 hover:text-gray-900 hover:bg-gray-100 rounded opacity-0 group-hover:opacity-100 transition-all">
                                             <MoreHorizontal className="w-4 h-4" />
@@ -357,7 +334,6 @@ const UserHome = () => {
                             ))}
                         </div>
 
-                        {/* Add Task Row */}
                         <button
                             onClick={() => setIsModalOpen(true)}
                             className="w-full px-4 py-3 text-left text-sm text-gray-500 hover:bg-gray-50 transition-colors flex items-center gap-2"
@@ -367,7 +343,6 @@ const UserHome = () => {
                         </button>
                     </div>
                 ) : (
-                    // GRID VIEW
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                         {filteredTasks.map((task, index) => (
                             <motion.div
@@ -377,7 +352,6 @@ const UserHome = () => {
                                 animate={{ opacity: 1, scale: 1 }}
                                 transition={{ delay: index * 0.05 }}
                             >
-                                {/* Card Header */}
                                 <div className="flex items-start justify-between mb-3">
                                     <div className="flex items-start gap-2 flex-1">
                                         <button className="text-gray-300 hover:text-gray-900 transition-colors mt-0.5">
@@ -392,9 +366,8 @@ const UserHome = () => {
                                     </button>
                                 </div>
 
-                                {/* Meta Info */}
                                 <div className="flex flex-wrap items-center gap-2 relative">
-                                    {/* Status */}
+                                    
                                     <button
                                         onClick={() => setStatusDropdownOpen(statusDropdownOpen === task.id ? null : task.id)}
                                         className={`px-2 py-1 rounded text-xs font-medium border ${getStatusColor(task.status)} hover:opacity-80 transition-opacity flex items-center gap-1`}
@@ -430,14 +403,12 @@ const UserHome = () => {
                                         )}
                                     </AnimatePresence>
 
-                                    {/* Priority */}
                                     {task.priority && (
                                         <span className={`text-xs font-medium ${getPriorityColor(task.priority)}`}>
                                             {task.priority}
                                         </span>
                                     )}
 
-                                    {/* Due Date */}
                                     {task.dueDate && (
                                         <span className="text-xs text-gray-500 ml-auto">
                                             {new Date(task.dueDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
@@ -447,7 +418,6 @@ const UserHome = () => {
                             </motion.div>
                         ))}
 
-                        {/* Add Task Card */}
                         <button
                             onClick={() => setIsModalOpen(true)}
                             className="bg-white border border-gray-200 border-dashed rounded-lg p-4 hover:border-gray-400 hover:bg-gray-50 transition-all flex flex-col items-center justify-center min-h-[140px] text-gray-500 hover:text-gray-700"

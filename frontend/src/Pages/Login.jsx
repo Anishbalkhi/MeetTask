@@ -30,17 +30,17 @@ const Login = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center px-6 py-12 relative overflow-hidden" style={{ background: 'var(--bg-secondary)' }}>
-      {/* Enhanced Animated Background */}
+      
       <AnimatedBackground />
 
-      {/* Theme Toggle - Fixed Position */}
+      
       <div className="fixed top-6 right-6 z-50">
         <ThemeToggle />
       </div>
 
       <div className="w-full max-w-md relative z-10">
 
-        {/* Back to Home Link */}
+        
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}

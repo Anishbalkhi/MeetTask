@@ -1,4 +1,4 @@
-// Mock data for testing MeetTask application
+
 
 export const mockUsers = [
   {
@@ -79,7 +79,7 @@ export const mockWorkspaces = [
 ];
 
 export const mockTasks = [
-  // Tech Startup workspace tasks
+  
   {
     id: "task_1",
     title: "Design new landing page",
@@ -165,7 +165,7 @@ export const mockTasks = [
     progress: 0
   },
 
-  // Design Team workspace tasks
+  
   {
     id: "task_7",
     title: "Create design system",
@@ -209,7 +209,7 @@ export const mockTasks = [
     progress: 0
   },
 
-  // Marketing Hub workspace tasks
+  
   {
     id: "task_10",
     title: "Q1 content calendar",
@@ -325,7 +325,6 @@ export const mockComments = [
   }
 ];
 
-// Helper functions
 export const getUserById = (userId) => {
   return mockUsers.find(user => user.id === userId);
 };

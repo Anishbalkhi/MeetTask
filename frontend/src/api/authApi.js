@@ -15,7 +15,6 @@ export const resetPasswordApi = (token, password) =>
 export const verifyEmailApi = (token) =>
   axiosClient.get(`/auth/verify-email?token=${token}`);
 
-// Alias exports for convenience
 export const forgotPassword = forgotPasswordApi;
 export const resetPassword = resetPasswordApi;
 export const verifyEmail = verifyEmailApi;

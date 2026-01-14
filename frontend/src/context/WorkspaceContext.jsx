@@ -6,8 +6,7 @@ import { mockWorkspaces, mockTasks, mockUsers, getTasksByWorkspace } from "../da
 
 const WorkspaceContext = createContext();
 
-// Mock mode for testing without backend
-const MOCK_MODE = true; // Set to false when backend is ready
+const MOCK_MODE = true; 
 
 export const useWorkspace = () => useContext(WorkspaceContext);
 
@@ -19,7 +18,7 @@ export const WorkspaceProvider = ({ children }) => {
     const [loading, setLoading] = useState(!MOCK_MODE);
     const [taskLoading, setTaskLoading] = useState(false);
 
-    // Fetch Workspaces on Mount/Login
+    
     const fetchWorkspaces = useCallback(async () => {
         if (MOCK_MODE) {
             setLoading(false);
@@ -31,7 +30,7 @@ export const WorkspaceProvider = ({ children }) => {
             setLoading(true);
             const res = await getAllWorkspaces();
             setWorkspaces(res.data);
-            // Set default query to first workspace if exists
+            
             if (res.data.length > 0 && !currentWorkspace) {
                 setCurrentWorkspace(res.data[0]);
             }
@@ -40,17 +39,17 @@ export const WorkspaceProvider = ({ children }) => {
         } finally {
             setLoading(false);
         }
-    }, [token]); // removed currentWorkspace dependency to avoid loop, handled logically
+    }, [token]); 
 
     useEffect(() => {
         fetchWorkspaces();
     }, [fetchWorkspaces]);
 
-    // Fetch Tasks when Workspace Changes
+    
     useEffect(() => {
         const fetchTasks = async () => {
             if (MOCK_MODE) {
-                // Use helper to get tasks by workspace
+                
                 const filteredTasks = getTasksByWorkspace(currentWorkspace?.id);
                 setTasks(filteredTasks);
                 return;
@@ -72,7 +71,7 @@ export const WorkspaceProvider = ({ children }) => {
         fetchTasks();
     }, [currentWorkspace, token]);
 
-    // Helper to refresh tasks
+    
     const refreshTasks = async () => {
         if (MOCK_MODE) {
             const filteredTasks = getTasksByWorkspace(currentWorkspace?.id);

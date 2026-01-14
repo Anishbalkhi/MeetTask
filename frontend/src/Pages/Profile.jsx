@@ -37,7 +37,7 @@ const Profile = () => {
         setMessage({ type: "", text: "" });
 
         try {
-            // Mock API call
+            
             await new Promise(resolve => setTimeout(resolve, 1000));
             setMessage({ type: "success", text: "Profile updated successfully!" });
         } catch (error) {
@@ -59,7 +59,7 @@ const Profile = () => {
         setMessage({ type: "", text: "" });
 
         try {
-            // Mock API call
+            
             await new Promise(resolve => setTimeout(resolve, 1000));
             setMessage({ type: "success", text: "Password changed successfully!" });
             setPasswordData({ currentPassword: "", newPassword: "", confirmPassword: "" });
@@ -73,7 +73,7 @@ const Profile = () => {
     const handleNotificationUpdate = async () => {
         setLoading(true);
         try {
-            // Mock API call
+            
             await new Promise(resolve => setTimeout(resolve, 1000));
             setMessage({ type: "success", text: "Notification preferences updated!" });
         } catch (error) {
@@ -92,13 +92,13 @@ const Profile = () => {
     return (
         <div className="min-h-screen bg-gray-50 p-6 pb-24 md:pb-6">
             <div className="max-w-4xl mx-auto">
-                {/* Header */}
+                
                 <div className="mb-8">
                     <h1 className="text-3xl font-bold text-gray-900 mb-2">Settings</h1>
                     <p className="text-gray-600">Manage your account settings and preferences</p>
                 </div>
 
-                {/* Message Display */}
+                
                 {message.text && (
                     <motion.div
                         initial={{ opacity: 0, y: -10 }}
@@ -112,7 +112,7 @@ const Profile = () => {
                     </motion.div>
                 )}
 
-                {/* Tabs */}
+                
                 <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
                     <div className="border-b border-gray-200">
                         <div className="flex overflow-x-auto">
@@ -133,7 +133,7 @@ const Profile = () => {
                     </div>
 
                     <div className="p-6">
-                        {/* Profile Tab */}
+                        
                         {activeTab === "profile" && (
                             <motion.div
                                 initial={{ opacity: 0 }}
@@ -141,7 +141,7 @@ const Profile = () => {
                                 transition={{ duration: 0.3 }}
                             >
                                 <form onSubmit={handleProfileUpdate} className="space-y-6">
-                                    {/* Avatar Upload */}
+                                    
                                     <div className="flex items-center gap-6">
                                         <div className="relative">
                                             <div className="w-24 h-24 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white text-3xl font-bold">
@@ -163,7 +163,7 @@ const Profile = () => {
                                         </div>
                                     </div>
 
-                                    {/* Form Fields */}
+                                    
                                     <div className="grid md:grid-cols-2 gap-6">
                                         <div>
                                             <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -236,7 +236,7 @@ const Profile = () => {
                             </motion.div>
                         )}
 
-                        {/* Security Tab */}
+                        
                         {activeTab === "security" && (
                             <motion.div
                                 initial={{ opacity: 0 }}
@@ -313,7 +313,7 @@ const Profile = () => {
                             </motion.div>
                         )}
 
-                        {/* Notifications Tab */}
+                        
                         {activeTab === "notifications" && (
                             <motion.div
                                 initial={{ opacity: 0 }}

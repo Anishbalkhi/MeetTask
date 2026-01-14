@@ -3,13 +3,13 @@ import { createContext, useContext, useEffect, useState } from "react";
 const ThemeContext = createContext();
 
 export const ThemeProvider = ({ children }) => {
-    // Initialize theme from localStorage or default to 'dark'
+    
     const [theme, setTheme] = useState(() => {
         const savedTheme = localStorage.getItem("theme");
         return savedTheme || "dark";
     });
 
-    // Apply theme to document
+    
     useEffect(() => {
         const root = document.documentElement;
         root.setAttribute("data-theme", theme);

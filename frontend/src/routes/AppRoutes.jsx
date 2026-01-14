@@ -28,7 +28,6 @@ const AppRoutes = () => {
       <Route path="/verify-info" element={<VerifyInfo />} />
       <Route path="/verify-email" element={<VerifyEmail />} />
 
-      {/* Protected Dashboard Routes with MainLayout */}
       <Route
         path="/dashboard"
         element={<MainLayout />}

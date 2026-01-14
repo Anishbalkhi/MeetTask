@@ -53,11 +53,11 @@ export default function CreateMeeting() {
 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center p-6 relative overflow-hidden">
-      {/* Enhanced Animated Background */}
+      
       <AnimatedBackground />
 
       <div className="w-full max-w-2xl">
-        {/* Back button */}
+        
         <button
           onClick={() => navigate(-1)}
           className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-6 font-medium transition-colors text-sm"
@@ -67,7 +67,7 @@ export default function CreateMeeting() {
         </button>
 
         <div className="bg-white border border-gray-200 rounded-lg p-8">
-          {/* Header */}
+          
           <div className="flex items-center gap-4 mb-8">
             <div className="w-12 h-12 rounded-lg bg-gray-900 flex items-center justify-center text-white">
               <Video className="w-6 h-6" />
@@ -85,7 +85,7 @@ export default function CreateMeeting() {
           )}
 
           <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Meeting Title */}
+            
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Meeting Title *
@@ -99,7 +99,7 @@ export default function CreateMeeting() {
               />
             </div>
 
-            {/* Schedule Time */}
+            
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
                 <Calendar className="w-4 h-4" />
@@ -117,7 +117,7 @@ export default function CreateMeeting() {
               </p>
             </div>
 
-            {/* Participants */}
+            
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
                 <Users className="w-4 h-4" />
@@ -135,7 +135,7 @@ export default function CreateMeeting() {
               </p>
             </div>
 
-            {/* Features Info */}
+            
             <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
               <h4 className="font-semibold text-gray-900 mb-1 text-sm">AI-Powered Features</h4>
               <p className="text-sm text-gray-600">
@@ -143,7 +143,7 @@ export default function CreateMeeting() {
               </p>
             </div>
 
-            {/* Action Buttons */}
+            
             <div className="flex flex-col sm:flex-row items-center gap-3 pt-4">
               <button
                 type="submit"
@@ -174,7 +174,7 @@ export default function CreateMeeting() {
             </div>
           </form>
 
-          {/* User Info */}
+          
           <div className="mt-6 pt-6 border-t border-gray-200">
             <p className="text-sm text-gray-600 text-center">
               Creating meeting as <span className="font-semibold text-gray-900">{user?.name || "Guest"}</span>

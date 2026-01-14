@@ -19,9 +19,9 @@ const ThemeToggle = () => {
             title={isDark ? "Switch to Light Mode" : "Switch to Dark Mode"}
             aria-label="Toggle theme"
         >
-            {/* Animated Icon Container */}
+            
             <div className="relative w-5 h-5">
-                {/* Sun Icon */}
+                
                 <motion.div
                     initial={false}
                     animate={{
@@ -35,7 +35,7 @@ const ThemeToggle = () => {
                     <Sun className="w-5 h-5" />
                 </motion.div>
 
-                {/* Moon Icon */}
+                
                 <motion.div
                     initial={false}
                     animate={{
@@ -50,7 +50,7 @@ const ThemeToggle = () => {
                 </motion.div>
             </div>
 
-            {/* Ripple Effect on Click */}
+            
             <motion.div
                 className="absolute inset-0 rounded-lg"
                 initial={{ scale: 1, opacity: 0.5 }}

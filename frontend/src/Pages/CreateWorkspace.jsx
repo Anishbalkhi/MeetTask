@@ -65,7 +65,7 @@ const CreateWorkspace = () => {
 
     return (
         <div className="min-h-screen bg-gray-50 flex items-center justify-center px-6 py-12 relative overflow-hidden">
-            {/* Enhanced Animated Background */}
+            
             <AnimatedBackground />
 
             <motion.div
@@ -74,11 +74,11 @@ const CreateWorkspace = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
             >
-                {/* Step Indicator */}
+                
                 <p className="text-gray-500 text-sm mb-6">Step {step} of 2</p>
 
                 {step === 1 ? (
-                    // Step 1: Workspace Name
+                    
                     <>
                         <motion.h1
                             className="text-5xl font-bold text-gray-900 mb-8 leading-tight"
@@ -136,7 +136,7 @@ const CreateWorkspace = () => {
                         </motion.div>
                     </>
                 ) : (
-                    // Step 2: Add Team Members
+                    
                     <>
                         <motion.h1
                             className="text-5xl font-bold text-gray-900 mb-8 leading-tight"
@@ -167,7 +167,7 @@ const CreateWorkspace = () => {
                             </p>
                         </motion.div>
 
-                        {/* Invitation Link */}
+                        
                         <motion.div
                             className="bg-gray-100 border border-gray-300 rounded-lg p-4 mb-8"
                             initial={{ opacity: 0 }}

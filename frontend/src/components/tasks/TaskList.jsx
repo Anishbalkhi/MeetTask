@@ -28,7 +28,7 @@ const TaskList = ({ tasks, onTaskClick, emptyMessage = "No tasks found", viewMod
         );
     }
 
-    // Grid view (blocks)
+    
     if (viewMode === "grid") {
         return (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
@@ -46,7 +46,7 @@ const TaskList = ({ tasks, onTaskClick, emptyMessage = "No tasks found", viewMod
         );
     }
 
-    // List view
+    
     return (
         <div className="flex flex-col gap-2">
             <AnimatePresence mode="popLayout">
